@@ -1,0 +1,8 @@
+Classes:
+	Fitxa
+	Moviment
+	Posicio
+	Tauler
+
+getters/setters/constructores
+mostrar tauler
