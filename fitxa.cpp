@@ -1,9 +1,10 @@
 #include "fitxa.h"
 
-class fitxa 
-{
-public:
+/**
+* FITXER fitxa.cpp
+* AUTOR François Liraud
+* DATA 19/03/2025
+* VERSIO 1.0
+* Aquest fitxer conté les funcions de la classe Fitxa
+*/
 
-private:
-
-};
