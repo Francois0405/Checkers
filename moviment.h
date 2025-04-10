@@ -2,12 +2,31 @@
 #ifndef MOVIMENT_H
 #define MOVIMENT_H
 
-/**
-* FITXER moviment.h
-* AUTOR François Liraud
-* DATA 19/03/2025
-* VERSIO 1.0
-* Aquest fitxer conté la classe Moviment
-*/
+#include "Posicio.h"
+const int MAX_POSICIONS = 10;
+
+class Moviment {
+public:
+    Moviment();
+    Moviment(const Posicio& posInicial);
+
+    int getNumPosicions() const;
+    const Posicio& getPosicio(int index) const;
+    Posicio getPosicioInicial() const;
+    Posicio getPosicioFinal() const;
+    bool esMovimentDeCaptura() const;
+    int getNumCaptures() const;
+    void afegeixPosicio(const Posicio& posicio);
+    void estableixPosicions(const Posicio posicions[], int numPosicions);
+
+    // Comprobaciones
+    bool contePosicio(const Posicio& posicio) const;
+
+private:
+    Posicio m_posicions[MAX_POSICIONS];
+    int m_numPosicions;
+    bool m_esCaptura;
+    int m_numCaptures;
+};
 
 #endif
