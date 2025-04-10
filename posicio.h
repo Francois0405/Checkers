@@ -1,6 +1,13 @@
 #pragma once
 #ifndef POSICIO_H
 #define POSICIO_H
+/**
+* FITXER posicio.h
+* AUTOR Jennifer Martínez
+* DATA 10/04/2025
+* VERSIO 1.0
+* Aquest fitxer conté les funcions de la classe Posicio.h
+*/
 
 #include <string>
 using namespace std;

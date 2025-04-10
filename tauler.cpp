@@ -1,6 +1,14 @@
 #include "Tauler.h"
 #include <fstream>
 using namespace std;
+/**
+* FITXER tauler.cpp
+* AUTOR Jennifer Martínez
+* DATA 10/04/2025
+* VERSIO 1.0
+* Aquest fitxer conté les funcions de la classe Tauler.cpp
+*/
+
 
 Tauler::Tauler() {
     for (int i = 0; i < N_FILES; ++i) {

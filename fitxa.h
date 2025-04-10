@@ -1,4 +1,13 @@
 #pragma once
+
+/**
+* FITXER fitxa.h
+* AUTOR Jennifer Martínez
+* DATA 10/04/2025
+* VERSIO 1.0
+* Aquest fitxer conté les funcions de la classe Fitxa.h
+*/
+
 #ifndef FITXA_H
 #define FITXA_H
 #include "Posicio.h"

@@ -1,4 +1,13 @@
 #pragma once
+/**
+* FITXER tauler.h
+* AUTOR Jennifer Martínez
+* DATA 10/04/2025
+* VERSIO 1.0
+* Aquest fitxer conté les funcions de la classe Tauler.h
+*/
+
+
 #include "posicio.h"
 #include <iostream>
 #include "Fitxa.h"

@@ -1,4 +1,13 @@
 #pragma once
+
+/**
+* FITXER moviment.h
+* AUTOR Jennifer Martínez
+* DATA 10/04/2025
+* VERSIO 1.0
+* Aquest fitxer conté les funcions de la classe Moviment.h
+*/
+
 #ifndef MOVIMENT_H
 #define MOVIMENT_H
 
