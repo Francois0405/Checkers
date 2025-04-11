@@ -27,8 +27,6 @@ public:
     int getNumCaptures() const;
     void afegeixPosicio(const Posicio& posicio);
     void estableixPosicions(const Posicio posicions[], int numPosicions);
-
-    // Comprobaciones
     bool contePosicio(const Posicio& posicio) const;
 
 private:

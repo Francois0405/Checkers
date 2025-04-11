@@ -42,7 +42,6 @@ public:
     void setPosicio(const Posicio& posicio);
 
     void afegeixMovimentValid(const Moviment& moviment);
-    void netejaMovimentsValids();
     void convertirADama();
 private:
     TipusFitxa m_tipus;

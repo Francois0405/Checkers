@@ -10,9 +10,11 @@
 */
 
 #include <string>
+
 using namespace std;
 
-class Posicio {
+class Posicio 
+{
 public:
     Posicio();
     Posicio(const string& posicio);
