@@ -1,12 +1,11 @@
 #pragma once
 /**
 * FITXER tauler.h
-* AUTOR Jennifer Martínez
+* AUTOR Jennifer Martínez | François Liraud
 * DATA 10/04/2025
 * VERSIO 1.0
 * Aquest fitxer conté les funcions de la classe Tauler.h
 */
-
 
 #include "posicio.h"
 #include <iostream>
@@ -23,6 +22,7 @@ using namespace std;
 class Tauler
 {
 public:
+	Tauler();
 	void inicialitza(const string& nomFitxer);
 	void actualitzaMovimentsValids();
 	void getPosicionsPossibles(const Posicio& origen,

@@ -4,7 +4,7 @@
 
 /**
 * FITXER main.cpp
-* AUTOR François Liraud
+* AUTOR Jennifer Martínez | François Liraud
 * DATA 19/03/2025
 * VERSIO 1.2
 * Aquest fitxer conté el main i algunes funcions auxiliars.
