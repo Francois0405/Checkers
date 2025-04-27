@@ -19,7 +19,12 @@ Tauler::Tauler() {
 
 void Tauler::inicialitza(const string& nomFitxer) 
 {
-    
+    ifstream fitxer("nomFitxer");
+
+    m_tauler[][]
+
+
+    fitxer.close();
 }
 
 void Tauler::actualitzaMovimentsValids() 

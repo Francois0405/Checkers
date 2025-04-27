@@ -9,6 +9,7 @@
 * Aquest fitxer conté les funcions de la classe Posicio.h
 */
 
+
 #include <string>
 
 using namespace std;
@@ -29,7 +30,8 @@ public:
     bool operator==(const Posicio& posicio) const;
     bool operator!=(const Posicio& posicio) const;
 
-    string toString() const;
+    void stringToPosicio(const string& posicio, int& fila, int& columna);
+    void posicioToString(string& posicio) const;
 
 private:
     int m_fila;    

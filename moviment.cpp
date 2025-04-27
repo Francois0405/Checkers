@@ -1,4 +1,4 @@
-
+#include "moviment.h"
 
 /**
 * FITXER moviment.cpp

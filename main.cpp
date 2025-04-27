@@ -15,11 +15,7 @@ using namespace std;
 int const N_FILES = 8;
 int const N_COLUMNES = 8;
 
-void stringToPosicio(const string& posicio, int& fila, int& columna)
-{
-	columna = posicio[0] - 'a'; // Resta en codigo ASCII
-	fila = (N_FILES - 1) - (posicio[1] - '0'); // Convertimos a int restandole el caracter 0.
-}
+
 
 void llegeixFitxa(const string& nomFitxer, char& tipusFitxa, int& fila, int& columna)
 {
@@ -32,14 +28,9 @@ void llegeixFitxa(const string& nomFitxer, char& tipusFitxa, int& fila, int& col
 	stringToPosicio(posicio, fila, columna);
 	fitxer.close();
 
-}
+} // quitar open todo el rato, pasar por parametro ifstream
 
-void posicioToString(int fila, int columna, string& posicio)
-{
-	posicio = "aa";
-	posicio[0] = ('a' + columna);
-	posicio[1] = ('0' + (N_FILES - fila));
-}
+
 
 void escriuFitxa(const string& nomFitxer, char tipusFitxa, int fila, int columna)
 {

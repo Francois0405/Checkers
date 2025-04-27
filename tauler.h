@@ -23,10 +23,11 @@ class Tauler
 {
 public:
 	Tauler();
+
 	void inicialitza(const string& nomFitxer);
 	void actualitzaMovimentsValids();
 	void getPosicionsPossibles(const Posicio& origen,
-	int& nPosicions, Posicio posicionsPossibles[]);
+		int& nPosicions, Posicio posicionsPossibles[]);
 	bool mouFitxa(const Posicio& origen, const Posicio& desti);
 	string toString() const;
 private:
