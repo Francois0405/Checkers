@@ -138,6 +138,7 @@
     <ClInclude Include="moviment.h" />
     <ClInclude Include="posicio.h" />
     <ClInclude Include="tauler.h" />
+    <ClInclude Include="tauler.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="instructions.txt" />

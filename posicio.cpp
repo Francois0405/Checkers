@@ -1,4 +1,4 @@
-#include "posicio.h"
+#include "posicio.hpp"
 
 /**
 * FITXER posicio.cpp
@@ -155,4 +155,21 @@ void Posicio::posicioToString(string& posicio) const
 	posicio = "aa";
 	posicio[0] = ('a' + m_columna);
 	posicio[1] = ('0' + (N_FILES - m_fila));
+}
+
+/**
+* operator<<
+* Operador que imprimeix la posicio en format string.
+* 
+* @param out: referencia a l'ostream on es imprimirà la posicio.
+* @param pos: referencia a la posicio a imprimir.
+* @return ostream&: referencia a l'ostream.
+*/
+
+ostream& operator<<(ostream& out, const Posicio& pos)
+{
+	string posicio;
+	pos.posicioToString(posicio);
+	out << posicio;
+	return out;
 }

@@ -7,9 +7,9 @@
 * Aquest fitxer conté les funcions de la classe Tauler.h
 */
 
-#include "posicio.h"
+#include "posicio.hpp"
+#include "fitxa.h"
 #include <iostream>
-#include "Fitxa.h"
 #include <string>
 
 #ifndef TAULER_H

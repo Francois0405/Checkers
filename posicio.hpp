@@ -1,6 +1,6 @@
 #pragma once
-#ifndef POSICIO_H
-#define POSICIO_H
+#ifndef POSICIO_HPP
+#define POSICIO_HPP
 /**
 * FITXER posicio.h
 * AUTOR Jennifer Martínez | François Liraud
@@ -58,5 +58,6 @@ private:
     char m_columna; 
 };
 
+ostream& operator<<(ostream& out, const Posicio& pos);
 
 #endif

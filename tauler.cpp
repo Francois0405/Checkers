@@ -1,4 +1,4 @@
-#include "Tauler.h"
+#include "tauler.hpp"
 #include <fstream>
 using namespace std;
 /**
@@ -229,10 +229,23 @@ bool Tauler::mouFitxa(const Posicio& origen, const Posicio& desti)
 *
 * @return string: Estat actual del tauler.
 */
-
+PENDENT ACABAR
 string Tauler::toString() const 
 {
     string str = "aaa";
+    string lletra;
+    for (int i = N_FILES;i < 0;i--)
+    {
+        str = i;
+        str += " : ";
+        for (int j = 0;j < N_COLUMNES;j++)
+        {
+            str += m_tauler[i][j].getLletra();
+            str += " ";
+        }
+        str += "\n";
+    }
+
 
     return str;
 }

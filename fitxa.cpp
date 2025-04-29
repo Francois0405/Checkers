@@ -58,6 +58,40 @@ Posicio Fitxa::getPosicio() const
 	return m_posicio;
 }
 
+
+/*
+* getLletra
+* Getter que retorna la lletra traduida
+
+* @return string: Lletra traduida  
+*/
+
+string Fitxa::getLletra() const
+{
+	string lletra;
+	
+	if (m_color == COLOR_BLANC)
+	{
+		if (m_tipus == TIPUS_NORMAL)
+			lletra = 'O';
+		if (m_tipus == TIPUS_DAMA)
+			lletra = 'D';
+	}
+	else if (m_color == COLOR_NEGRE)
+	{
+		if (m_tipus == TIPUS_NORMAL)
+			lletra = 'X';
+		if (m_tipus == TIPUS_DAMA)
+			lletra = 'R';
+	}
+	else
+	{
+		lletra = '-';
+	}
+
+	return lletra;
+}
+
 /*
 * getNumMovimentsValids
 * Getter que retorna el numero de moviments valids de la fitxa.
