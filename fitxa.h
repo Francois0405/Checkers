@@ -14,16 +14,46 @@
 #include "Moviment.h"
 const int MAX_MOVIMENTS = 20;
 
+/*
+* TIPUS FITXA
+* Tipus de fitxa que pot ser normal, dama o empty.
+*/
+
 typedef enum {
     TIPUS_NORMAL,
     TIPUS_DAMA,
     TIPUS_EMPTY
 } TipusFitxa;
 
+/*
+* COLOR FITXA
+* Color de la fitxa que pot ser blanc o negre.
+*/
+
 typedef enum {
     COLOR_NEGRE,
     COLOR_BLANC
 } ColorFitxa;
+
+/*
+* CLASS fitxa
+* Classe que representa una fitxa del tauler de dames.
+* 
+* Els seus atributs son:
+* - tipus: tipus de la fitxa (normal, dama o empty).
+* - color: color de la fitxa (blanc o negre).
+* - posicio: posicio de la fitxa al tauler.
+* - movimentsValids: array de moviments valids de la fitxa.
+* - numMovimentsValids: nombre de moviments valids de la fitxa.
+* 
+* Els seus metodes son:
+* - un constructor per defecte (inicialitza la fitxa a empty).
+* - un constructor per parametres (inicialitza la fitxa amb el tipus, color i posicio especificats).
+* - getters per obtenir el tipus, color, posicio i moviments valids de la fitxa.
+* - setters per establir el tipus, color i posicio de la fitxa.
+* - un metode per afegir un moviment valid a la fitxa.
+* - un metode per convertir la fitxa en dama.
+*/
 
 class Fitxa
 {

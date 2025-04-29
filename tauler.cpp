@@ -9,6 +9,12 @@ using namespace std;
 * Aquest fitxer conté les funcions de la classe Tauler.cpp
 */
 
+/*
+* Tauler
+* Constructor per defecte, inicialitza el tauler a empty "de color blanc" (empty).
+* No hi ha cap fitxa en el tauler.
+*/
+
 Tauler::Tauler() {
     for (int i = 0; i < N_FILES; ++i) {
         for (int j = 0; j < N_COLUMNES; ++j) {
@@ -16,6 +22,14 @@ Tauler::Tauler() {
         }
     }
 }
+
+/*
+* inicialitza
+* Inicialitza el tauler des de un arxiu.
+* 
+* @param nomFitxer: nom del Fitxer del qual extreiem el tauler.
+* @return void
+*/
 
 void Tauler::inicialitza(const string& nomFitxer) 
 {
@@ -61,6 +75,14 @@ void Tauler::inicialitza(const string& nomFitxer)
     fitxer.close();
 }
 
+/*
+* actualitzaMovimentsValids
+* Actualitza els moviments valids de totes les peces del joc i les guarda en fitxa -> movimentsValids[]
+* un array de Moviment.
+* 
+* @return void
+*/
+
 void Tauler::actualitzaMovimentsValids() 
 {
     for (int i = 0; i < N_FILES; ++i) 
@@ -104,6 +126,16 @@ void Tauler::actualitzaMovimentsValids()
     }
 }
 
+/*
+* getPosicionsPossibles
+* Getters que retorna l'array de posicions valides d'una fitxa d'un punt origen.
+* 
+* @param origen: Tipus Posicio, es el punt on es troba la fitxa actualment 
+* @param nPosicions: int, ens diu el numero de posicions valides
+* @param posicionsPossibles[]: Tipus Posicio ens dona les posicions possibles de la fitxa
+* @return void
+*/
+
 void Tauler::getPosicionsPossibles(const Posicio& origen, int& nPosicions, Posicio posicionsPossibles[]) 
 {
     nPosicions = 0;
@@ -140,6 +172,16 @@ void Tauler::getPosicionsPossibles(const Posicio& origen, int& nPosicions, Posic
     }
 }
 
+/*
+* mouFitxa
+* Funció que mou la fitxa i gestiona el que pot passar durant el seu moviment (si mata o no)
+* primer comprova si la posicio que es vol accedir es valida per la fitxa seleccionada. Si no es possible
+* retorna false.
+*
+* @param origen: Tipus Posicio, es el punt on es troba la fitxa actualment
+* @param desti: Tipus Posicio, es el punt on vol anar aquesta fitxa.
+* @return bool: Retorna si el moviment s'ha pogut realitzar o no.
+*/
 
 bool Tauler::mouFitxa(const Posicio& origen, const Posicio& desti) 
 {
@@ -180,6 +222,13 @@ bool Tauler::mouFitxa(const Posicio& origen, const Posicio& desti)
 
     return true;
 }
+
+/*
+* toString
+* Genera un string amb l’estat actual del tauler de joc
+*
+* @return string: Estat actual del tauler.
+*/
 
 string Tauler::toString() const 
 {
