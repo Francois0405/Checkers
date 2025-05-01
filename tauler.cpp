@@ -225,15 +225,29 @@ bool Tauler::mouFitxa(const Posicio& origen, const Posicio& desti)
 
 /*
 * toString
-* Genera un string amb l’estat actual del tauler de joc
+* Genera un string amb l’estat actual del tauler de joc. Cerquem extreure m_tauler a
+* '-' Casella buida
+* 'O' Normal Blanca
+* 'X' Normal Negra
+* 'D' Dama Blanca
+* 'R' Reina Negra
 *
+* EXEMPLE:
+    8: _ X _ D _ _ _ X
+    7: _ _ _ _ _ _ X _
+    6: _ _ _ _ _ _ _ _
+    5: R _ _ _ _ _ _ _
+    4: _ _ _ _ _ _ _ O
+    3: _ _ O _ _ _ O _
+    2: _ O _ _ _ _ _ X
+    1: O _ O _ D _ _ _
+       A B C D E F G H
+* 
 * @return string: Estat actual del tauler.
 */
-PENDENT ACABAR
 string Tauler::toString() const 
 {
-    string str = "aaa";
-    string lletra;
+    string str;
     for (int i = N_FILES;i < 0;i--)
     {
         str = i;
@@ -245,7 +259,6 @@ string Tauler::toString() const
         }
         str += "\n";
     }
-
-
+    str += "   A B C D E F G H";
     return str;
 }

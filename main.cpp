@@ -1,4 +1,8 @@
 #include "fitxa.h"
+#include "posicio.hpp"
+#include "tauler.hpp"
+#include "moviment.h"
+
 #include <iostream>
 #include <fstream>
 
@@ -11,11 +15,6 @@
 */
 
 using namespace std;
-
-int const N_FILES = 8;
-int const N_COLUMNES = 8;
-
-
 
 //void llegeixFitxa(const string& nomFitxer, char& tipusFitxa, int& fila, int& columna)
 //{
@@ -46,5 +45,10 @@ int const N_COLUMNES = 8;
 
 int main()
 {
-	cout << "Good luck!" << endl;
+	cout << "Here we go!" << endl;
+	Tauler taulerDames;
+	string taulerString;
+	taulerDames.inicialitza("taulerInicial.txt");
+	taulerString = taulerDames.toString();
+	cout << taulerString;
 }
