@@ -10,6 +10,7 @@
 
 #ifndef FITXA_H
 #define FITXA_H
+
 #include "posicio.hpp"
 #include "moviment.h"
 const int MAX_MOVIMENTS = 20;
@@ -64,7 +65,7 @@ public:
     TipusFitxa getTipus() const;
     ColorFitxa getColor() const;
     Posicio getPosicio() const;
-    string getLletra() const;
+    char getLletra() const;
     int getNumMovimentsValids() const;
     const Moviment& getMovimentValid(int index) const;
 

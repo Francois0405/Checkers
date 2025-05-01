@@ -13,14 +13,14 @@
 * Constructor per defecte, inicialitza la fitxa a empty "de color blanc" (sense color).
 */
 
-Fitxa::Fitxa() : m_tipus(TIPUS_EMPTY), m_color(COLOR_BLANC) {}
+Fitxa::Fitxa() : m_tipus(TIPUS_EMPTY), m_color(COLOR_BLANC), m_numMovimentsValids(0) {}
 
 /*
 * Fitxa(TipusFitxa tipus, ColorFitxa color, const Posicio& posicio)
 * Constructor per parametres, inicialitza la fitxa amb el tipus, color i posicio especificats.
 */
 
-Fitxa::Fitxa(TipusFitxa tipus, ColorFitxa color, const Posicio& posicio) : m_tipus(tipus), m_color(color), m_posicio(posicio) {}
+Fitxa::Fitxa(TipusFitxa tipus, ColorFitxa color, const Posicio& posicio) : m_tipus(tipus), m_color(color), m_posicio(posicio), m_numMovimentsValids(0) {}
 
 /*
 * getTipus
@@ -58,7 +58,6 @@ Posicio Fitxa::getPosicio() const
 	return m_posicio;
 }
 
-
 /*
 * getLletra
 * Getter que retorna la lletra traduida
@@ -66,9 +65,9 @@ Posicio Fitxa::getPosicio() const
 * @return string: Lletra traduida  
 */
 
-string Fitxa::getLletra() const
+char Fitxa::getLletra() const
 {
-	string lletra;
+	char lletra = '-';
 	
 	if (m_color == COLOR_BLANC)
 	{
@@ -84,11 +83,6 @@ string Fitxa::getLletra() const
 		if (m_tipus == TIPUS_DAMA)
 			lletra = 'R';
 	}
-	else
-	{
-		lletra = '-';
-	}
-
 	return lletra;
 }
 

@@ -1,17 +1,18 @@
-#include "fitxa.h"
+ï»¿#include "fitxa.h"
 #include "posicio.hpp"
 #include "tauler.hpp"
 #include "moviment.h"
 
 #include <iostream>
 #include <fstream>
+#include <string>
 
 /**
 * FITXER main.cpp
-* AUTOR Jennifer Martínez | François Liraud
+* AUTOR Jennifer MartÃ­nez | FranÃ§ois Liraud
 * DATA 19/03/2025
 * VERSIO 1.2
-* Aquest fitxer conté el main i algunes funcions auxiliars.
+* Aquest fitxer contÃ© el main i algunes funcions auxiliars.
 */
 
 using namespace std;
@@ -43,12 +44,62 @@ using namespace std;
 //	fitxer.close();
 //}
 
+int menu()
+{
+	cout << "   ___             ______      ______                          " << endl
+		<< "   |_  |            |  _  \\     |  _  \\                         " << endl
+		<< "     | | ___   ___  | | | |___  | | | |__ _ _ __ ___   ___  ___ " << endl
+		<< "     | |/ _ \\ / __| | | | / _ \\ | | | / _` | '_ ` _ \\ / _ \\/ __|" << endl
+		<< "/ \\__/ / (_) | (__  | |/ /  __/ | |/ / (_| | | | | | |  __/\\__ \\ " << endl
+		<< " \\____/ \\___/ \\___| |___/ \\___| |___/ \\__,_|_| |_| |_|\\___||___/" << endl << endl;
+
+	cout << endl << "==============================================================" << endl << endl;
+	cout << "1. Jugar contra un adversari" << endl
+		<< "2. Jugar contra un ordinador" << endl
+		<< "3. Depuracio" << endl
+		<< "4. Sortir" << endl;
+	cout << endl << "Trieu una opcio: ";
+	int opcio;
+	cin >> opcio;
+	while (opcio > 4 || opcio < 1)
+	{
+		cout << "ERROR: Trieu una opcio valida: ";
+		cin >> opcio;
+	}
+	return opcio;
+}
+
+
+
 int main()
 {
-	cout << "Here we go!" << endl;
+	int opcio;
+	opcio = menu();
+	system("CLS");
 	Tauler taulerDames;
 	string taulerString;
-	taulerDames.inicialitza("taulerInicial.txt");
-	taulerString = taulerDames.toString();
-	cout << taulerString;
+	string nomFitxer;
+	switch (opcio)
+	{
+	case 1:
+		cout << "Jugant contra huma" << endl;
+		break;
+	case 2:
+		cout << "Jugant contra maquina" << endl;
+		break;
+	case 3:
+		cout << "Menu de depuracio" << endl;
+		cout << "Introdueix el nom de fitxer a mostrar" << endl;
+		cin >> nomFitxer;
+		taulerDames.inicialitza(nomFitxer);
+		taulerString = taulerDames.toString();
+		cout << taulerString;
+		break;
+	default: // Cas 4 i errors
+		cout << "Sortint..." << endl;
+		break;
+	}
+	return 0;
+	
+	
 }

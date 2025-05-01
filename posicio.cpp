@@ -1,4 +1,5 @@
 #include "posicio.hpp"
+#include <iostream>
 
 /**
 * FITXER posicio.cpp

@@ -1,5 +1,8 @@
 #include "tauler.hpp"
+
 #include <fstream>
+#include <iostream>
+
 using namespace std;
 /**
 * FITXER tauler.cpp
@@ -248,17 +251,19 @@ bool Tauler::mouFitxa(const Posicio& origen, const Posicio& desti)
 string Tauler::toString() const 
 {
     string str;
-    for (int i = N_FILES;i < 0;i--)
+    int fila = 8;
+    for (int i = N_FILES-1;i >= 0;i--) // Files (numeros)
     {
-        str = i;
+        str += to_string(fila);
         str += " : ";
-        for (int j = 0;j < N_COLUMNES;j++)
+        for (int j = 0;j < N_COLUMNES;j++) // Columnes (lletres)
         {
             str += m_tauler[i][j].getLletra();
             str += " ";
         }
         str += "\n";
+        fila--;
     }
-    str += "   A B C D E F G H";
+    str += "    A B C D E F G H";
     return str;
 }

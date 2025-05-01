@@ -1,4 +1,5 @@
 #include "moviment.h"
+#include <iostream>
 
 /**
 * FITXER moviment.cpp

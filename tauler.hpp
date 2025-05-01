@@ -12,8 +12,8 @@
 #include <iostream>
 #include <string>
 
-#ifndef TAULER_H
-#define TAULER_H
+#ifndef TAULER_HPP
+#define TAULER_HPP
 
 const int N_FILES = 8;
 const int N_COLUMNES = 8;
