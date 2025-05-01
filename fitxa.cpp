@@ -67,7 +67,7 @@ Posicio Fitxa::getPosicio() const
 
 char Fitxa::getLletra() const
 {
-	char lletra = '-';
+	char lletra = '_';
 	
 	if (m_color == COLOR_BLANC)
 	{

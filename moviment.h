@@ -23,6 +23,7 @@ public:
     const Posicio& getPosicio(int index) const;
     Posicio getPosicioInicial() const;
     Posicio getPosicioFinal() const;
+
     bool esMovimentDeCaptura() const;
     int getNumCaptures() const;
     void afegeixPosicio(const Posicio& posicio);

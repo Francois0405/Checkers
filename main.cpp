@@ -108,8 +108,11 @@ int main()
 	int opcio = 0;
 	char confirmacio;
 	Tauler taulerDames;
+	taulerDames.inicialitza("taulerInicial.txt");
 	string taulerString;
 	string nomFitxer;
+	Posicio origen("c3");
+	Posicio final("d4");
 	while (opcio != 5)
 	{
 		opcio = menu();
@@ -120,6 +123,10 @@ int main()
 		case 1:
 			cout << "Jugant contra huma" << endl;
 
+
+			taulerDames.mouFitxa(origen, final);
+			taulerString = taulerDames.toString();
+			cout << taulerString;
 			break;
 		case 2:
 			cout << "Jugant contra maquina" << endl;

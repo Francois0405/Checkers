@@ -153,7 +153,6 @@ void Posicio::stringToPosicio(const string& posicio, int& fila, int& columna)
 
 void Posicio::posicioToString(string& posicio) const
 {
-	posicio = "aa";
 	posicio[0] = ('a' + m_columna);
 	posicio[1] = ('0' + (N_FILES - m_fila));
 }

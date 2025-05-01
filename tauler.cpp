@@ -100,7 +100,7 @@ void Tauler::actualitzaMovimentsValids()
                 int direccio;
                 if (fitxa.getColor() == COLOR_BLANC)
                     direccio = 1;
-                else
+                else // Color negre
                     direccio = -1; //determina direccio de las fitxes segons el color
 
                 int filaActual = i;
@@ -188,53 +188,44 @@ void Tauler::getPosicionsPossibles(const Posicio& origen, int& nPosicions, Posic
 * @return bool: Retorna si el moviment s'ha pogut realitzar o no.
 */
 
-bool Tauler::mouFitxa(const Posicio& origen, const Posicio& desti) 
+bool Tauler::mouFitxa(const Posicio& origen, const Posicio& desti)
 {
     int filaOrig = origen.getFila() - 1;
     int colOrig = origen.getColumna();
-    bool moure = true;
 
-    Fitxa& fitxaOrig = m_tauler[filaOrig][colOrig]; // Agafem la fitxa que volem moure
+    Fitxa& fitxaOrig = m_tauler[filaOrig][colOrig];
 
     if (fitxaOrig.getTipus() == TIPUS_EMPTY) //si la casella esta buida no es pot moure res
+        return false;
+
+    bool movimentValid = false;
+    int i = 0;
+    while (i < fitxaOrig.getNumMovimentsValids() && !movimentValid) //per comprobar si el moviment es valid, sino retorna false
     {
-        moure = false;
+        if (fitxaOrig.getMovimentValid(i).getPosicioFinal() == desti)
+        {
+            movimentValid = true;
+        }
+        ++i;
     }
-    else
+
+    if (!movimentValid) //si no es valid no s'executa el moviment
+        return false;
+
+    int filaDest = desti.getFila() - 1;
+    int colDest = desti.getColumna(); //transforma desti en indexs de l'array
+
+    m_tauler[filaDest][colDest] = fitxaOrig;
+    m_tauler[filaDest][colDest].setPosicio(desti);//actualitza posicio
+
+    m_tauler[filaOrig][colOrig] = Fitxa(TIPUS_EMPTY, COLOR_BLANC, origen); //casella original ara buida
+
+    if ((m_tauler[filaDest][colDest].getColor() == COLOR_BLANC && filaDest == 7) || (m_tauler[filaDest][colDest].getColor() == COLOR_NEGRE && filaDest == 0))
     {
-        bool movimentValid = false;
-        int i = 0;
-        while (i < fitxaOrig.getNumMovimentsValids() && !movimentValid) //per comprobar si el moviment es valid, sino retorna false
-        {
-            // Cerquem si algun moviment valid te com a desti el que el usuari ha seleccionat
-            if (fitxaOrig.getMovimentValid(i).getPosicioFinal() == desti) 
-            { 
-                movimentValid = true;
-            }
-            ++i;
-        }
-
-        if (!movimentValid) //si no es valid no s'executa el moviment
-        {
-            moure = false;
-        }
-        else
-        {
-            int filaDest = desti.getFila() - 1;
-            int colDest = desti.getColumna(); //transforma desti en indexs de l'array
-
-            m_tauler[filaDest][colDest] = fitxaOrig;
-            m_tauler[filaDest][colDest].setPosicio(desti);//actualitza posicio
-
-            m_tauler[filaOrig][colOrig] = Fitxa(TIPUS_EMPTY, COLOR_BLANC, origen); //casella original ara buida
-
-            if ((m_tauler[filaDest][colDest].getColor() == COLOR_BLANC && filaDest == 7) || (m_tauler[filaDest][colDest].getColor() == COLOR_NEGRE && filaDest == 0))
-            {
-                m_tauler[filaDest][colDest].convertirADama(); //si la fitxa arriba al final es converteix en dama
-            }
-        }    
+        m_tauler[filaDest][colDest].convertirADama(); //si la fitxa arriba al final es converteix en dama
     }
-    return moure;
+
+    return true;
 }
 
 /*
@@ -266,7 +257,7 @@ string Tauler::toString() const
     for (int i = N_FILES-1;i >= 0;i--) // Files (numeros)
     {
         str += to_string(fila);
-        str += " : ";
+        str += ": ";
         for (int j = 0;j < N_COLUMNES;j++) // Columnes (lletres)
         {
             str += m_tauler[i][j].getLletra();
@@ -275,6 +266,6 @@ string Tauler::toString() const
         str += "\n";
         fila--;
     }
-    str += "    A B C D E F G H";
+    str += "   a b c d e f g h";
     return str;
 }
