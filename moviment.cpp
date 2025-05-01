@@ -3,10 +3,10 @@
 
 /**
 * FITXER moviment.cpp
-* AUTOR Jennifer Martínez | François Liraud
+* AUTOR Jennifer Martinez | Francois Liraud
 * DATA 29/03/2025
 * VERSIO 1.0
-* Aquest fitxer conté les funcions de la classe Moviment
+* Aquest fitxer conte les funcions de la classe Moviment
 */
 
 /*
@@ -33,7 +33,7 @@ Moviment::Moviment(const Posicio& posInicial) : m_numPosicions(1), m_esCaptura(f
 * @return int: numero de posicions del moviment.
 */
 
-int Moviment::getNumPosicions() const //retorn del nujm de posicions que hi ha en el moviment
+int Moviment::getNumPosicions() const //retorn del num de posicions que hi ha en el moviment
 {
 	return m_numPosicions;
 }

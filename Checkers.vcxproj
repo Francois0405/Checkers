@@ -136,8 +136,7 @@
   <ItemGroup>
     <ClInclude Include="fitxa.h" />
     <ClInclude Include="moviment.h" />
-    <ClInclude Include="posicio.h" />
-    <ClInclude Include="tauler.h" />
+    <ClInclude Include="posicio.hpp" />
     <ClInclude Include="tauler.hpp" />
   </ItemGroup>
   <ItemGroup>

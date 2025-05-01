@@ -3,10 +3,10 @@
 
 /**
 * FITXER posicio.cpp
-* AUTOR Jennifer Martínez | François Liraud
+* AUTOR Jennifer Martinez | Francois Liraud
 * DATA 29/03/2025
 * VERSIO 1.0
-* Aquest fitxer conté les funcions de la classe Posicio
+* Aquest fitxer conte les funcions de la classe Posicio
 */
 
 const int N_FILES = 8;
@@ -132,8 +132,8 @@ bool Posicio::operator!=(const Posicio& posicio) const
 * Funcio que converteix una posicio en forma de string a una fila i columna.
 * 
 * @param posicio: string que representa la posicio.
-* @param fila: referencia a la fila on es guardarà el resultat.
-* @param columna: referencia a la columna on es guardarà el resultat.
+* @param fila: referencia a la fila on es guardara el resultat.
+* @param columna: referencia a la columna on es guardara el resultat.
 * @return void
 */
 
@@ -147,7 +147,7 @@ void Posicio::stringToPosicio(const string& posicio, int& fila, int& columna)
 * posicioToString
 * Funcio que converteix una posicio a una string.
 * 
-* @param posicio: referencia a la string on es guardarà el resultat.
+* @param posicio: referencia a la string on es guardara el resultat.
 * @return void
 */
 
@@ -162,7 +162,7 @@ void Posicio::posicioToString(string& posicio) const
 * operator<<
 * Operador que imprimeix la posicio en format string.
 * 
-* @param out: referencia a l'ostream on es imprimirà la posicio.
+* @param out: referencia a l'ostream on es imprimira la posicio.
 * @param pos: referencia a la posicio a imprimir.
 * @return ostream&: referencia a l'ostream.
 */

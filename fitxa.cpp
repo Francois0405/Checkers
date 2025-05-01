@@ -2,10 +2,10 @@
 
 /**
 * FITXER fitxa.cpp
-* AUTOR Jennifer Martínez | François Liraud
+* AUTOR Jennifer Martinez | Francois Liraud
 * DATA 19/03/2025
 * VERSIO 1.0
-* Aquest fitxer conté les funcions de la classe Fitxa
+* Aquest fitxer conte les funcions de la classe Fitxa
 */
 
 /*

@@ -6,10 +6,10 @@
 using namespace std;
 /**
 * FITXER tauler.cpp
-* AUTOR Jennifer Martínez | François Liraud
+* AUTOR Jennifer Martinez | Francois Liraud
 * DATA 10/04/2025
 * VERSIO 1.1
-* Aquest fitxer conté les funcions de la classe Tauler.cpp
+* Aquest fitxer conte les funcions de la classe Tauler.cpp
 */
 
 /*

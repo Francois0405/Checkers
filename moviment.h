@@ -2,10 +2,10 @@
 
 /**
 * FITXER moviment.h
-* AUTOR Jennifer Martínez | François Liraud
+* AUTOR Jennifer Martinez | Francois Liraud
 * DATA 10/04/2025
 * VERSIO 1.0
-* Aquest    fitxer conté les funcions de la classe Moviment.h
+* Aquest    fitxer conte les funcions de la classe Moviment.h
 */
 
 #ifndef MOVIMENT_H

@@ -1,10 +1,10 @@
 #pragma once
 /**
 * FITXER tauler.h
-* AUTOR Jennifer Martínez | François Liraud
+* AUTOR Jennifer Martinez | Francois Liraud
 * DATA 10/04/2025
 * VERSIO 1.0
-* Aquest fitxer conté les funcions de la classe Tauler.h
+* Aquest fitxer conte les funcions de la classe Tauler.h
 */
 
 #include "posicio.hpp"
@@ -32,7 +32,7 @@ using namespace std;
 * una funcio que actualitza els moviments valids de totes les peces del joc i les guarda
 *	en un array de moviments valids de tipus moviment a l'objecte fitxa.
 * un getter per retornar aquest array de moviments valids d'una fitxa.
-* una funcio per moure una peça, primerament comprova si el desti es un moviment valid,
+* una funcio per moure una peca, primerament comprova si el desti es un moviment valid,
 *	si no ho aconsegueix retorna false, y fa l'accio de matar peces contraries en el moviment.
 * una funcio per generar un string amb l’estat actual del tauler de joc
 */
