@@ -69,8 +69,6 @@ int menu()
 	return opcio;
 }
 
-
-
 int main()
 {
 	int opcio;
