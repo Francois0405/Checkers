@@ -29,12 +29,12 @@ Tauler::Tauler() {
 /*
 * inicialitza
 * Inicialitza el tauler des de un arxiu.
-* 
+*
 * @param nomFitxer: nom del Fitxer del qual extreiem el tauler.
 * @return void
 */
 
-void Tauler::inicialitza(const string& nomFitxer) 
+void Tauler::inicialitza(const string& nomFitxer)
 {
     ifstream fitxer(nomFitxer);
     if (fitxer.is_open())
@@ -82,15 +82,15 @@ void Tauler::inicialitza(const string& nomFitxer)
 * actualitzaMovimentsValids
 * Actualitza els moviments valids de totes les peces del joc i les guarda en fitxa -> movimentsValids[]
 * un array de Moviment.
-* 
+*
 * @return void
 */
 
-void Tauler::actualitzaMovimentsValids() 
+void Tauler::actualitzaMovimentsValids()
 {
-    for (int i = 0; i < N_FILES; ++i) 
+    for (int i = 0; i < N_FILES; ++i)
     {
-        for (int j = 0; j < N_COLUMNES; ++j) 
+        for (int j = 0; j < N_COLUMNES; ++j)
         {
             Fitxa& fitxa = m_tauler[i][j];
             fitxa.setPosicio(Posicio(i + 1, j)); //agafa referencia de la fitxa i comproba que sigui correcta la seva posicio
@@ -108,12 +108,12 @@ void Tauler::actualitzaMovimentsValids()
                 int filaNova = filaActual + direccio;
 
                 // Amb aquest for, farem dues iteracions, una a -1 i una altre a 1. (les dues caselles diagonals)
-                for (int dCol = -1; dCol <= 1; dCol += 2) 
+                for (int dCol = -1; dCol <= 1; dCol += 2)
                 {
                     int colNova = colActual + dCol; // dreta o esquerra.
-                    if (filaNova >= 0 && filaNova < N_FILES && colNova >= 0 && colNova < N_COLUMNES) 
+                    if (filaNova >= 0 && filaNova < N_FILES && colNova >= 0 && colNova < N_COLUMNES)
                     {
-                        if (m_tauler[filaNova][colNova].getTipus() == TIPUS_EMPTY) 
+                        if (m_tauler[filaNova][colNova].getTipus() == TIPUS_EMPTY)
                         {
                             Moviment mov(fitxa.getPosicio());
                             mov.afegeixPosicio(Posicio(filaNova + 1, colNova));
@@ -122,7 +122,7 @@ void Tauler::actualitzaMovimentsValids()
                     }
                 }
             }
-            else 
+            else
             {
                 fitxa = Fitxa(TIPUS_EMPTY, COLOR_BLANC, Posicio(i + 1, j));
             }
@@ -133,19 +133,19 @@ void Tauler::actualitzaMovimentsValids()
 /*
 * getPosicionsPossibles
 * Getters que retorna l'array de posicions valides d'una fitxa d'un punt origen.
-* 
-* @param origen: Tipus Posicio, es el punt on es troba la fitxa actualment 
+*
+* @param origen: Tipus Posicio, es el punt on es troba la fitxa actualment
 * @param nPosicions: int, ens diu el numero de posicions valides
 * @param posicionsPossibles[]: Tipus Posicio ens dona les posicions possibles de la fitxa
 * @return void
 */
 
-void Tauler::getPosicionsPossibles(const Posicio& origen, int& nPosicions, Posicio posicionsPossibles[]) 
+void Tauler::getPosicionsPossibles(const Posicio& origen, int& nPosicions, Posicio posicionsPossibles[])
 {
     nPosicions = 0;
 
     //verifiquem que la posicio d'origen es dins del tauler
-    if (origen.getFila() >= 1 && origen.getFila() <= N_FILES && origen.getColumna() >= 0 && origen.getColumna() < N_COLUMNES) 
+    if (origen.getFila() >= 1 && origen.getFila() <= N_FILES && origen.getColumna() >= 0 && origen.getColumna() < N_COLUMNES)
     {
 
         int fila = origen.getFila() - 1;
@@ -153,23 +153,23 @@ void Tauler::getPosicionsPossibles(const Posicio& origen, int& nPosicions, Posic
 
         const Fitxa& fitxa = m_tauler[fila][col];
 
-        if (fitxa.getTipus() != TIPUS_EMPTY) 
+        if (fitxa.getTipus() != TIPUS_EMPTY)
         {
-            for (int i = 0; i < fitxa.getNumMovimentsValids(); ++i) 
+            for (int i = 0; i < fitxa.getNumMovimentsValids(); ++i)
             {
                 const Moviment& mov = fitxa.getMovimentValid(i);
                 const Posicio& posFinal = mov.getPosicioFinal();
                 bool trobada = false;
 
-                for (int j = 0; j < nPosicions && !trobada; ++j) 
+                for (int j = 0; j < nPosicions && !trobada; ++j)
                 {
-                    if (posicionsPossibles[j] == posFinal) 
+                    if (posicionsPossibles[j] == posFinal)
                     {
                         trobada = true;
                     }
                 }
 
-                if (!trobada) 
+                if (!trobada)
                 {
                     posicionsPossibles[nPosicions++] = posFinal;
                 }
@@ -178,7 +178,7 @@ void Tauler::getPosicionsPossibles(const Posicio& origen, int& nPosicions, Posic
     }
 }
 
-// Auxiliar: comprova si una posició està dins del tauler
+// Auxiliar: comprova si una posici  est  dins del tauler
 //FALTA POSAR COMNETARI BE
 bool Tauler::esDinsTauler(int fila, int col) const
 {
@@ -267,7 +267,7 @@ void Tauler::getCapturesDisponibles(const Fitxa& fitxa, const Moviment& movActua
 
 /*
 * mouFitxa
-* Funció que mou la fitxa i gestiona el que pot passar durant el seu moviment (si mata o no)
+* Funci  que mou la fitxa i gestiona el que pot passar durant el seu moviment (si mata o no)
 * primer comprova si la posicio que es vol accedir es valida per la fitxa seleccionada. Si no es possible
 * retorna false.
 *
@@ -366,7 +366,7 @@ void Tauler::calculaMovimentsFitxa(int fila, int col) {
 
 /*
 * toString
-* Genera un string amb l’estat actual del tauler de joc. Cerquem extreure m_tauler a
+* Genera un string amb l estat actual del tauler de joc. Cerquem extreure m_tauler a
 * '-' Casella buida
 * 'O' Normal Blanca
 * 'X' Normal Negra
@@ -383,18 +383,18 @@ void Tauler::calculaMovimentsFitxa(int fila, int col) {
     2: _ O _ _ _ _ _ X
     1: O _ O _ D _ _ _
        A B C D E F G H
-* 
+*
 * @return string: Estat actual del tauler.
 */
-string Tauler::toString() const 
+string Tauler::toString() const
 {
     string taulerString;
     int fila = 8;
-    for (int i = N_FILES-1;i >= 0;i--) // Files (numeros)
+    for (int i = N_FILES - 1; i >= 0; i--) // Files (numeros)
     {
         taulerString += to_string(fila);
         taulerString += ": ";
-        for (int j = 0;j < N_COLUMNES;j++) // Columnes (lletres)
+        for (int j = 0; j < N_COLUMNES; j++) // Columnes (lletres)
         {
             taulerString += m_tauler[i][j].getLletra();
             taulerString += " ";

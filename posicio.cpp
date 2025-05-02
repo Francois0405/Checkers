@@ -26,8 +26,12 @@ Posicio::Posicio() : m_fila(0), m_columna('a') {}
 
 Posicio::Posicio(const string& posicio)
 {
-	m_columna = posicio[0];
-	m_fila = posicio[1] - '0';
+	m_columna = posicio[0];  // 'a' a 'h'
+	m_fila = posicio[1] - '0'; // 1 a 8
+
+	// Validació (opcional)
+	if (m_fila < 1 || m_fila > 8) m_fila = 1;
+	if (m_columna < 'a' || m_columna > 'h') m_columna = 'a';
 }
 
 /**
@@ -153,8 +157,9 @@ void Posicio::stringToPosicio(const string& posicio, int& fila, int& columna)
 
 void Posicio::posicioToString(string& posicio) const
 {
-	posicio[0] = ('a' + m_columna);
-	posicio[1] = ('0' + (N_FILES - m_fila));
+	posicio = "";
+	posicio += m_columna;
+	posicio += to_string(m_fila);
 }
 
 /**

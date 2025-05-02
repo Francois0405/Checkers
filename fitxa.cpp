@@ -144,7 +144,7 @@ void Fitxa::setColor(ColorFitxa color)
 * @param posicio: posicio de la fitxa.
 * @return void
 */
-
+	
 void Fitxa::setPosicio(const Posicio& posicio)
 {
 	m_posicio = posicio;
