@@ -75,6 +75,8 @@ public:
 
     void afegeixMovimentValid(const Moviment& moviment);
     void convertirADama();
+    void resetMovimentsValids();
+
 private:
     TipusFitxa m_tipus;
     ColorFitxa m_color;

@@ -178,3 +178,8 @@ void Fitxa::convertirADama()
 	if (m_tipus == TIPUS_NORMAL)
 		m_tipus = TIPUS_DAMA;
 }
+
+void Fitxa::resetMovimentsValids()
+{
+	m_numMovimentsValids = 0;
+}
