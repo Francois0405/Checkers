@@ -48,6 +48,15 @@ public:
 		int& nPosicions, Posicio posicionsPossibles[]);
 	bool mouFitxa(const Posicio& origen, const Posicio& desti);
 	string toString() const;
+
+	// Auxiliars
+	bool esDinsTauler(int fila, int col) const;
+	void getCapturesDama(const Fitxa& fitxa, const Moviment& movActual,
+		Moviment pendents[], int& numPendents);
+	void calculaMovimentsFitxa(int fila, int col);
+	void getCapturesDisponibles(const Fitxa& fitxa, const Moviment& movActual,
+		Moviment pendents[], int& numPendents);
+
 private:
 	Fitxa m_tauler[N_FILES][N_COLUMNES];
 };

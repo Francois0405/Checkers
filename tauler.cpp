@@ -178,6 +178,93 @@ void Tauler::getPosicionsPossibles(const Posicio& origen, int& nPosicions, Posic
     }
 }
 
+// Auxiliar: comprova si una posició està dins del tauler
+//FALTA POSAR COMNETARI BE
+bool Tauler::esDinsTauler(int fila, int col) const
+{
+    return fila >= 0 && fila < N_FILES && col >= 0 && col < N_COLUMNES;
+}
+
+//FALTA COMENTARIO BIEN
+// Auxiliar: captura per dama
+void Tauler::getCapturesDama(const Fitxa& fitxa, const Moviment& movActual, Moviment pendents[], int& numPendents)
+{
+    const int dirs[4][2] = { {1, 1}, {1, -1}, {-1, 1}, {-1, -1} };
+    Posicio pos = movActual.getPosicioFinal();
+    int fila = pos.getFila() - 1;
+    int col = pos.getColumna();
+
+    for (int d = 0; d < 4; ++d)
+    {
+        int df = dirs[d][0];
+        int dc = dirs[d][1];
+        int f = fila + df;
+        int c = col + dc;
+
+        bool trobatEnemic = false;
+        //int fEnemic = -1, cEnemic = -1;
+        bool sortir = false;
+
+        while (!sortir && esDinsTauler(f, c)) {
+            const Fitxa& actual = m_tauler[f][c];
+
+            if (!trobatEnemic) {
+                if (actual.getTipus() != TIPUS_EMPTY && actual.getColor() != fitxa.getColor()) {
+                    trobatEnemic = true;
+                }
+                else if (actual.getTipus() != TIPUS_EMPTY) {
+                    sortir = true;
+                }
+            }
+            else {
+                if (actual.getTipus() == TIPUS_EMPTY) {
+                    if (numPendents < MAX_MOVIMENTS && movActual.getNumPosicions() < MAX_POSICIONS - 1) {
+                        Moviment nou = movActual;
+                        nou.afegeixPosicio(Posicio(f + 1, c));
+                        pendents[numPendents++] = nou;
+                    }
+                }
+                else {
+                    sortir = true;
+                }
+            }
+
+            f += df;
+            c += dc;
+        }
+    }
+}
+
+//FALTA COMENTARIO BIEN
+void Tauler::getCapturesDisponibles(const Fitxa& fitxa, const Moviment& movActual, Moviment pendents[], int& numPendents)
+{
+    const int dirs[4][2] = { {1, 1}, {1, -1}, {-1, 1}, {-1, -1} };
+    Posicio pos = movActual.getPosicioFinal();
+    int fila = pos.getFila() - 1;
+    int col = pos.getColumna();
+
+    for (int i = 0; i < 4; ++i) {
+        int fmid = fila + dirs[i][0];
+        int cmid = col + dirs[i][1];
+        int fdest = fmid + dirs[i][0];
+        int cdest = cmid + dirs[i][1];
+
+        if (esDinsTauler(fmid, cmid) && esDinsTauler(fdest, cdest)) {
+            const Fitxa& interm = m_tauler[fmid][cmid];
+            const Fitxa& desti = m_tauler[fdest][cdest];
+
+            if (interm.getTipus() != TIPUS_EMPTY && interm.getColor() != fitxa.getColor() && desti.getTipus() == TIPUS_EMPTY) {
+                if (numPendents < MAX_MOVIMENTS && movActual.getNumPosicions() < MAX_POSICIONS - 1) {
+                    Moviment nou = movActual;
+                    nou.afegeixPosicio(Posicio(fdest + 1, cdest));
+                    pendents[numPendents++] = nou;
+                }
+            }
+        }
+    }
+}
+
+
 /*
 * mouFitxa
 * Funció que mou la fitxa i gestiona el que pot passar durant el seu moviment (si mata o no)
@@ -228,6 +315,54 @@ bool Tauler::mouFitxa(const Posicio& origen, const Posicio& desti)
 
     return true;
 }
+
+//FALTA PONER COMENATARIO BIEN
+// Auxiliar: calcula tots els moviments (captures encadenades o simples) d'una fitxa
+void Tauler::calculaMovimentsFitxa(int fila, int col) {
+    if (!esDinsTauler(fila, col)) return;
+
+    Fitxa& fitxa = m_tauler[fila][col];
+    Posicio origen = fitxa.getPosicio();
+
+    Moviment pendents[MAX_MOVIMENTS];
+    int numPendents = 0;
+
+    if (numPendents < MAX_MOVIMENTS)
+    {
+        pendents[numPendents++] = Moviment(origen);
+    }
+
+    while (numPendents > 0) {
+        Moviment actual = pendents[--numPendents];
+        Posicio posAct = actual.getPosicioFinal();
+
+        int anteriorNum = numPendents;
+
+        if (fitxa.getTipus() == TIPUS_DAMA)
+            getCapturesDama(fitxa, actual, pendents, numPendents);
+        else
+            getCapturesDisponibles(fitxa, actual, pendents, numPendents);
+
+        if (numPendents == anteriorNum && actual.getNumPosicions() > 1) {
+            fitxa.afegeixMovimentValid(actual);
+        }
+    }
+
+    if (fitxa.getNumMovimentsValids() == 0 && fitxa.getTipus() == TIPUS_NORMAL) {
+        int dir = (fitxa.getColor() == COLOR_BLANC) ? 1 : -1;
+
+        for (int dc = -1; dc <= 1; dc += 2) {
+            int nf = fila + dir;
+            int nc = col + dc;
+            if (esDinsTauler(nf, nc) && m_tauler[nf][nc].getTipus() == TIPUS_EMPTY) {
+                Moviment m(fitxa.getPosicio());
+                m.afegeixPosicio(Posicio(nf + 1, nc));
+                fitxa.afegeixMovimentValid(m);
+            }
+        }
+    }
+}
+
 
 /*
 * toString
