@@ -305,6 +305,7 @@ bool Tauler::mouFitxa(const Posicio& origen, const Posicio& desti)
 
     bool movimentValid = false;
     int i = 0;
+
     while (i < fitxaOrig.getNumMovimentsValids() && !movimentValid) //per comprobar si el moviment es valid, sino retorna false
     {
         if (fitxaOrig.getMovimentValid(i).getPosicioFinal() == desti)
@@ -316,6 +317,16 @@ bool Tauler::mouFitxa(const Posicio& origen, const Posicio& desti)
 
     if (!movimentValid) //si no es valid no s'executa el moviment
         return false;
+
+	const Moviment& mov = fitxaOrig.getMovimentValid(-1); //agafem el moviment valid
+    
+    if (mov.getEsMovimentDeCaptura()) // Si el moviment es captura, eliminem la fitxa /les fitxes.
+    {
+        int filaCaptura = (filaOrig + (desti.getFila() - 1)) / 2;
+        int colCaptura = (colOrig + desti.getColumna()) / 2;
+        m_tauler[filaCaptura][colCaptura] = Fitxa(TIPUS_EMPTY, COLOR_BLANC, Posicio(filaCaptura + 1, colCaptura));
+		//eliminem la fitxa que hem menjat
+    }
 
     int filaDest = desti.getFila() - 1;
     int colDest = desti.getColumna(); //transforma desti en indexs de l'array
