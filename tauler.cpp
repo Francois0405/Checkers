@@ -132,18 +132,41 @@ void Tauler::getPosicionsPossibles(const Posicio& origen, int& nPosicions, Posic
     for (int i = 0; i < fitxa.getNumMovimentsValids(); ++i)
     {
         const Moviment& mov = fitxa.getMovimentValid(i);
-        const Posicio& posFinal = mov.getPosicioFinal();
 
-        // Evitar duplicats
-        bool trobada = false;
-        for (int j = 0; j < nPosicions && !trobada; ++j)
+        // Para movimientos de captura, añadir todas las posiciones intermedias
+        if (mov.getEsMovimentDeCaptura())
         {
-            if (posicionsPossibles[j] == posFinal)
-                trobada = true;
-        }
+            for (int p = 1; p < mov.getNumPosicions(); ++p)
+            {
+                const Posicio& posIntermedia = mov.getPosicio(p);
 
-        if (!trobada)
-            posicionsPossibles[nPosicions++] = posFinal;
+                // Evitar duplicados
+                bool trobada = false;
+                for (int j = 0; j < nPosicions && !trobada; ++j)
+                {
+                    if (posicionsPossibles[j] == posIntermedia)
+                        trobada = true;
+                }
+
+                if (!trobada)
+                    posicionsPossibles[nPosicions++] = posIntermedia;
+            }
+        }
+        else // Para movimientos simples, solo añadir la posición final
+        {
+            const Posicio& posFinal = mov.getPosicioFinal();
+
+            // Evitar duplicados
+            bool trobada = false;
+            for (int j = 0; j < nPosicions && !trobada; ++j)
+            {
+                if (posicionsPossibles[j] == posFinal)
+                    trobada = true;
+            }
+
+            if (!trobada)
+                posicionsPossibles[nPosicions++] = posFinal;
+        }
     }
 }
 
