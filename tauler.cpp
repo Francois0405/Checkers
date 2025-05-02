@@ -394,6 +394,9 @@ void Tauler::calculaMovimentsFitxa(int fila, int col)
     if (numPendents < MAX_MOVIMENTS)
         pendents[numPendents++] = Moviment(origen);
 
+    bool hiHaCaptures = false;
+
+    // Primero calculamos todas las capturas posibles
     while (numPendents > 0)
     {
         Moviment actual = pendents[--numPendents];
@@ -404,16 +407,16 @@ void Tauler::calculaMovimentsFitxa(int fila, int col)
         else
             getCapturesDisponibles(fitxa, actual, pendents, numPendents);
 
-        // Si no s'han afegit més moviments, aquest és un moviment final
         if (numPendents == anteriorNum && actual.getNumPosicions() > 1)
         {
             actual.setEsMovimentDeCaptura(true);
             fitxa.afegeixMovimentValid(actual);
+            hiHaCaptures = true;
         }
     }
 
-    // Si no hi ha captures, afegim moviments normals (només fitxes normals)
-    if (fitxa.getTipus() == TIPUS_NORMAL && fitxa.getNumMovimentsValids() == 0)
+    // Para fichas normales, añadir movimientos simples si no hay capturas O SIEMPRE
+    if (fitxa.getTipus() == TIPUS_NORMAL)
     {
         int dir = (fitxa.getColor() == COLOR_BLANC) ? 1 : -1;
         for (int dc = -1; dc <= 1; dc += 2)
@@ -428,7 +431,7 @@ void Tauler::calculaMovimentsFitxa(int fila, int col)
             }
         }
     }
-    else if (fitxa.getTipus() == TIPUS_DAMA && fitxa.getNumMovimentsValids() == 0)
+    else if (fitxa.getTipus() == TIPUS_DAMA)
     {
         const int dirs[4][2] = { {1, 1}, {1, -1}, {-1, 1}, {-1, -1} };
         for (int d = 0; d < 4; ++d)
@@ -448,7 +451,6 @@ void Tauler::calculaMovimentsFitxa(int fila, int col)
             }
         }
     }
-
 }
 
 
