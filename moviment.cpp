@@ -82,7 +82,7 @@ Posicio Moviment::getPosicioFinal() const
 * @return bool: true si el moviment es de captura, false en cas contrari.
 */
 
-bool Moviment::esMovimentDeCaptura() const //indica si en el moviment s'ha menjat alguna fitxa del rival
+bool Moviment::getEsMovimentDeCaptura() const //indica si en el moviment s'ha menjat alguna fitxa del rival
 {
 	return m_esCaptura;
 }
@@ -97,6 +97,19 @@ bool Moviment::esMovimentDeCaptura() const //indica si en el moviment s'ha menja
 int Moviment::getNumCaptures() const
 {
 	return m_numCaptures;
+}
+
+/*
+* setEsMovimentDeCaptura
+* Setter que estableix si el moviment es de captura.
+* 
+* @param esCaptura: true si el moviment es de captura, false en cas contrari.
+* @return void
+*/
+
+void Moviment::setEsMovimentDeCaptura(bool esCaptura)
+{
+	m_esCaptura = esCaptura;
 }
 
 /*

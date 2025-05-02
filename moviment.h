@@ -12,7 +12,7 @@
 #define MOVIMENT_H
 
 #include "posicio.hpp"
-const int MAX_POSICIONS = 60;
+const int MAX_POSICIONS = 20;
 
 class Moviment {
 public:
@@ -23,9 +23,11 @@ public:
     const Posicio& getPosicio(int index) const;
     Posicio getPosicioInicial() const;
     Posicio getPosicioFinal() const;
-
-    bool esMovimentDeCaptura() const;
+    bool getEsMovimentDeCaptura() const;
     int getNumCaptures() const;
+
+    void setEsMovimentDeCaptura(bool esCaptura);
+
     void afegeixPosicio(const Posicio& posicio);
     void estableixPosicions(const Posicio posicions[], int numPosicions);
     bool contePosicio(const Posicio& posicio) const;

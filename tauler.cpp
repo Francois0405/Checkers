@@ -105,19 +105,36 @@ void Tauler::actualitzaMovimentsValids()
 
                 int filaActual = i;
                 int colActual = j;
-                int filaNova = filaActual + direccio;
 
                 // Amb aquest for, farem dues iteracions, una a -1 i una altre a 1. (les dues caselles diagonals)
                 for (int dCol = -1; dCol <= 1; dCol += 2)
                 {
+                    int filaNova = filaActual + direccio;
                     int colNova = colActual + dCol; // dreta o esquerra.
                     if (filaNova >= 0 && filaNova < N_FILES && colNova >= 0 && colNova < N_COLUMNES)
                     {
                         if (m_tauler[filaNova][colNova].getTipus() == TIPUS_EMPTY)
                         {
                             Moviment mov(fitxa.getPosicio());
+                            mov.setEsMovimentDeCaptura(true);
                             mov.afegeixPosicio(Posicio(filaNova + 1, colNova));
                             fitxa.afegeixMovimentValid(mov);
+                        }
+                        else if ((m_tauler[filaNova][colNova].getColor() == COLOR_BLANC) && (direccio == -1) ||
+                            (m_tauler[filaNova][colNova].getColor() == COLOR_NEGRE) && (direccio == 1))
+                        {
+							filaNova += direccio; // Vamos una mas para abajo
+							colNova += dCol; // Dreta o esquerra
+                            if (filaNova >= 0 && filaNova < N_FILES && colNova >= 0 && colNova < N_COLUMNES)
+                            {
+								if (m_tauler[filaNova][colNova].getTipus() == TIPUS_EMPTY)
+								{
+									Moviment mov(fitxa.getPosicio());
+									mov.setEsMovimentDeCaptura(true);
+									mov.afegeixPosicio(Posicio(filaNova + 1, colNova));
+									fitxa.afegeixMovimentValid(mov);
+								}
+                            }
                         }
                     }
                 }
@@ -329,10 +346,12 @@ void Tauler::calculaMovimentsFitxa(int fila, int col) {
 
     if (numPendents < MAX_MOVIMENTS)
     {
+        // Creem un nou moviment des de l'origen
         pendents[numPendents++] = Moviment(origen);
     }
 
-    while (numPendents > 0) {
+    while (numPendents > 0) 
+    {
         Moviment actual = pendents[--numPendents];
         Posicio posAct = actual.getPosicioFinal();
 
