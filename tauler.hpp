@@ -49,6 +49,9 @@ public:
 	bool mouFitxa(const Posicio& origen, const Posicio& desti);
 	string toString() const;
 
+
+private:
+	Fitxa m_tauler[N_FILES][N_COLUMNES];
 	// Auxiliars
 	bool esDinsTauler(int fila, int col) const;
 	void getCapturesDama(const Fitxa& fitxa, const Moviment& movActual,
@@ -57,8 +60,6 @@ public:
 	void getCapturesDisponibles(const Fitxa& fitxa, const Moviment& movActual,
 		Moviment pendents[], int& numPendents);
 
-private:
-	Fitxa m_tauler[N_FILES][N_COLUMNES];
 };
 
 #endif
