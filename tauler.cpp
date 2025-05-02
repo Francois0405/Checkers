@@ -107,9 +107,10 @@ void Tauler::actualitzaMovimentsValids()
                 int colActual = j;
                 int filaNova = filaActual + direccio;
 
+                // Amb aquest for, farem dues iteracions, una a -1 i una altre a 1. (les dues caselles diagonals)
                 for (int dCol = -1; dCol <= 1; dCol += 2) 
                 {
-                    int colNova = colActual + dCol;
+                    int colNova = colActual + dCol; // dreta o esquerra.
                     if (filaNova >= 0 && filaNova < N_FILES && colNova >= 0 && colNova < N_COLUMNES) 
                     {
                         if (m_tauler[filaNova][colNova].getTipus() == TIPUS_EMPTY) 
@@ -252,20 +253,20 @@ bool Tauler::mouFitxa(const Posicio& origen, const Posicio& desti)
 */
 string Tauler::toString() const 
 {
-    string str;
+    string taulerString;
     int fila = 8;
     for (int i = N_FILES-1;i >= 0;i--) // Files (numeros)
     {
-        str += to_string(fila);
-        str += ": ";
+        taulerString += to_string(fila);
+        taulerString += ": ";
         for (int j = 0;j < N_COLUMNES;j++) // Columnes (lletres)
         {
-            str += m_tauler[i][j].getLletra();
-            str += " ";
+            taulerString += m_tauler[i][j].getLletra();
+            taulerString += " ";
         }
-        str += "\n";
+        taulerString += "\n";
         fila--;
     }
-    str += "   a b c d e f g h";
-    return str;
+    taulerString += "   a b c d e f g h";
+    return taulerString;
 }

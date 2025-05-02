@@ -13,7 +13,7 @@
 
 #include "posicio.hpp"
 #include "moviment.h"
-const int MAX_MOVIMENTS = 20;
+const int MAX_MOVIMENTS = 60;
 
 /*
 * TIPUS FITXA

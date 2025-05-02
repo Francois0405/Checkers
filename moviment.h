@@ -12,7 +12,7 @@
 #define MOVIMENT_H
 
 #include "posicio.hpp"
-const int MAX_POSICIONS = 10;
+const int MAX_POSICIONS = 60;
 
 class Moviment {
 public:
