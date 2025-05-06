@@ -171,15 +171,29 @@ void Tauler::getPosicionsPossibles(const Posicio& origen, int& nPosicions, Posic
 }
 
 
-// Auxiliar: comprova si una posici  est  dins del tauler
-//FALTA POSAR COMNETARI BE
+/*
+* esDinsTauler
+* Funcio auxiliar que comprova si una posicio es valida dins del tauler.
+*  
+* @param fila: int, fila de la posicio
+* @param col: int, columna de la posicio
+* @return bool: retorna si la posicio es valida o no.
+*/
 bool Tauler::esDinsTauler(int fila, int col) const
 {
     return fila >= 0 && fila < N_FILES && col >= 0 && col < N_COLUMNES;
 }
 
-//FALTA COMENTARIO BIEN
-// Auxiliar: captura per dama
+/**
+* getCapturesDama
+* Funcio auxiliar que busca les captures disponibles per una dama.
+* 
+* @param fitxa: Tipus Fitxa, es la fitxa que volem moure
+* @param movActual: Tipus Moviment, es el moviment actual que volem fer
+* @param pendents[]: Tipus Moviment, es l'array de moviments pendents
+* @param numPendents: int, es el numero de moviments pendents
+* @return void
+*/
 void Tauler::getCapturesDama(const Fitxa& fitxa, const Moviment& movActual, Moviment pendents[], int& numPendents)
 {
     const int dirs[4][2] = { {1, 1}, {1, -1}, {-1, 1}, {-1, -1} };
@@ -242,7 +256,16 @@ void Tauler::getCapturesDama(const Fitxa& fitxa, const Moviment& movActual, Movi
 }
 
 
-//FALTA COMENTARIO BIEN
+/*
+* getCapturesDisponibles
+* Funcio auxiliar que busca les captures disponibles per una fitxa normal.
+* 
+* @param fitxa: Tipus Fitxa, es la fitxa que volem moure
+* @param movActual: Tipus Moviment, es el moviment actual que volem fer
+* @param pendents[]: Tipus Moviment, es l'array de moviments pendents
+* @param numPendents: int, es el numero de moviments pendents
+* @return void
+*/
 void Tauler::getCapturesDisponibles(const Fitxa& fitxa, const Moviment& movActual, Moviment pendents[], int& numPendents)
 {
     const int dirs[4][2] = { {1, 1}, {1, -1}, {-1, 1}, {-1, -1} };
@@ -376,11 +399,14 @@ bool Tauler::mouFitxa(const Posicio& origen, const Posicio& desti)
     return true;
 }
 
-
-
-
-//FALTA PONER COMENATARIO BIEN
-// Auxiliar: calcula tots els moviments (captures encadenades o simples) d'una fitxa
+/*
+* calculaMovimentsFitxa
+* Funcio que calcula els moviments possibles d'una fitxa.
+* 
+* @param fila: int, fila de la fitxa
+* @param col: int, columna de la fitxa
+* @return void
+*/
 void Tauler::calculaMovimentsFitxa(int fila, int col)
 {
     if (!esDinsTauler(fila, col)) return;
@@ -415,7 +441,7 @@ void Tauler::calculaMovimentsFitxa(int fila, int col)
         }
     }
 
-    // Para fichas normales, añadir movimientos simples si no hay capturas O SIEMPRE
+    // Para fichas normales
     if (fitxa.getTipus() == TIPUS_NORMAL)
     {
         int dir = (fitxa.getColor() == COLOR_BLANC) ? 1 : -1;
@@ -441,6 +467,15 @@ void Tauler::calculaMovimentsFitxa(int fila, int col)
             int nf = fila + df;
             int nc = col + dc;
 
+            // Movimientos simples de una casilla (incluyendo hacia atrás)
+            if (esDinsTauler(nf, nc) && m_tauler[nf][nc].getTipus() == TIPUS_EMPTY)
+            {
+                Moviment m(origen);
+                m.afegeixPosicio(Posicio(nf + 1, nc));
+                fitxa.afegeixMovimentValid(m);
+            }
+
+            // Movimientos múltiples
             while (esDinsTauler(nf, nc) && m_tauler[nf][nc].getTipus() == TIPUS_EMPTY)
             {
                 Moviment m(origen);

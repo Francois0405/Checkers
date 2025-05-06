@@ -14,6 +14,17 @@
 #include "posicio.hpp"
 const int MAX_POSICIONS = 20;
 
+/**
+* CLASS Moviment
+* Classe que representa un moviment d'una fitxa al tauler de dames.
+* 
+* Els seus atributs son:
+* - m_posicions: array de posicions que representa el moviment.
+* - m_numPosicions: numero de posicions del moviment.
+* - m_esCaptura: boolea que indica si el moviment es de captura.
+* - m_numCaptures: numero de captures del moviment.
+*/
+
 class Moviment {
 public:
     Moviment();
