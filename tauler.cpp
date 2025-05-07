@@ -210,8 +210,8 @@ void Tauler::getCapturesDama(const Fitxa& fitxa, const Moviment& movActual, Movi
 
         bool trobatEnemic = false;
         int filaEnemic = -1, colEnemic = -1;
-
-        while (esDinsTauler(f, c))
+        bool sortirbucle = false;
+        while (esDinsTauler(f, c) && !sortirbucle)
         {
             const Fitxa& actual = m_tauler[f][c];
 
@@ -224,7 +224,9 @@ void Tauler::getCapturesDama(const Fitxa& fitxa, const Moviment& movActual, Movi
                     colEnemic = c;
                 }
                 else if (actual.getTipus() != TIPUS_EMPTY)
-                    break;
+                {
+                    sortirbucle = true;
+                }
             }
             else
             {
@@ -246,11 +248,15 @@ void Tauler::getCapturesDama(const Fitxa& fitxa, const Moviment& movActual, Movi
                         pendents[numPendents++] = nou;
                 }
                 else
-                    break;
+                {
+                    sortirbucle = true;
+                }
             }
-
-            f += df;
-            c += dc;
+            if (!sortirbucle)
+            {
+				f += df;
+				c += dc;
+            }
         }
     }
 }
