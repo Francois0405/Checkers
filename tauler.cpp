@@ -256,7 +256,7 @@ void Tauler::getCapturesDama(const Fitxa& fitxa, const Moviment& movActual, Movi
                     m_tauler[filaEnemic][colEnemic] = original;
 
                     if (nou.getNumPosicions() > movActual.getNumPosicions())
-                        pendents[numPendents++] = nou;x
+                        pendents[numPendents++] = nou;
                 }
                 else
                 {
@@ -285,6 +285,7 @@ void Tauler::getCapturesDama(const Fitxa& fitxa, const Moviment& movActual, Movi
 */
 void Tauler::getCapturesDisponibles(const Fitxa& fitxa, const Moviment& movActual, Moviment pendents[], int& numPendents)
 {
+    //ERROR
     const int dirs[4][2] = { {1, 1}, {1, -1}, {-1, 1}, {-1, -1} };
     Posicio pos = movActual.getPosicioFinal();
     int fila = pos.getFila() - 1;
