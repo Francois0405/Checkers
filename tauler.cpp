@@ -18,9 +18,12 @@ using namespace std;
 * No hi ha cap fitxa en el tauler.
 */
 
-Tauler::Tauler() {
-    for (int i = 0; i < N_FILES; ++i) {
-        for (int j = 0; j < N_COLUMNES; ++j) {
+Tauler::Tauler() 
+{
+    for (int i = 0; i < N_FILES; ++i) 
+    {
+        for (int j = 0; j < N_COLUMNES; ++j) 
+        {
             m_tauler[i][j] = Fitxa(TIPUS_EMPTY, COLOR_BLANC, Posicio(i + 1, j));
         }
     }
@@ -236,7 +239,6 @@ void Tauler::getCapturesDama(const Fitxa& fitxa, const Moviment& movActual, Movi
                     nou.setEsMovimentDeCaptura(true);
                     nou.afegeixPosicio(Posicio(f + 1, c));
 
-                    // Temporarily remove the captured piece to continue simulating
                     Fitxa original = m_tauler[filaEnemic][colEnemic];
                     m_tauler[filaEnemic][colEnemic] = Fitxa();
 
@@ -279,18 +281,21 @@ void Tauler::getCapturesDisponibles(const Fitxa& fitxa, const Moviment& movActua
     int fila = pos.getFila() - 1;
     int col = pos.getColumna();
 
-    for (int i = 0; i < 4; ++i) {
+    for (int i = 0; i < 4; ++i) 
+    {
         int fmid = fila + dirs[i][0];
         int cmid = col + dirs[i][1];
         int fdest = fmid + dirs[i][0];
         int cdest = cmid + dirs[i][1];
 
-        if (esDinsTauler(fmid, cmid) && esDinsTauler(fdest, cdest)) {
+        if (esDinsTauler(fmid, cmid) && esDinsTauler(fdest, cdest)) 
+        {
             const Fitxa& interm = m_tauler[fmid][cmid];
             const Fitxa& desti = m_tauler[fdest][cdest];
-
-            if (interm.getTipus() != TIPUS_EMPTY && interm.getColor() != fitxa.getColor() && desti.getTipus() == TIPUS_EMPTY) {
-                if (numPendents < MAX_MOVIMENTS && movActual.getNumPosicions() < MAX_POSICIONS - 1) {
+            if (interm.getTipus() != TIPUS_EMPTY && interm.getColor() != fitxa.getColor() && desti.getTipus() == TIPUS_EMPTY) 
+            {
+                if (numPendents < MAX_MOVIMENTS && movActual.getNumPosicions() < MAX_POSICIONS - 1) 
+                {
                     Moviment nou = movActual;
                     nou.setEsMovimentDeCaptura(true);
                     nou.afegeixPosicio(Posicio(fdest + 1, cdest));
@@ -466,7 +471,13 @@ void Tauler::calculaMovimentsFitxa(int fila, int col)
     // Para fichas normales
     if (fitxa.getTipus() == TIPUS_NORMAL)
     {
-        int dir = (fitxa.getColor() == COLOR_BLANC) ? 1 : -1;
+        int dir;
+        if (fitxa.getColor() == COLOR_BLANC) {
+            dir = 1;
+        }
+        else {
+            dir = -1;
+        }
         for (int dc = -1; dc <= 1; dc += 2)
         {
             int nf = fila + dir;
