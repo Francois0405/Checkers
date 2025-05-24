@@ -474,7 +474,6 @@ float testMovimentFitxa(json& outputGeneral)
 int main()
 {
     float grade = 0.0;
-
     json output;
     ofstream jsonFile;
 

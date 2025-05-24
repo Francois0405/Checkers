@@ -454,7 +454,7 @@ bool Tauler::mouFitxa(const Posicio& origen, const Posicio& desti)
 */
 void Tauler::calculaMovimentsFitxa(int fila, int col)
 {
-     if (esDinsTauler(fila, col))
+    if (esDinsTauler(fila, col))
     {
         Fitxa& fitxa = m_tauler[fila][col];
         Posicio origen = fitxa.getPosicio();
