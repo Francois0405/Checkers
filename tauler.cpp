@@ -100,12 +100,16 @@ void Tauler::actualitzaMovimentsValids()
     {
         for (int j = 0; j < N_COLUMNES; ++j)
         {
-            Fitxa& fitxa = m_tauler[i][j];
+            // Se busca actualizar todas las piezas del juego, por lo tanto, cojemos cada fitxa.
+            Fitxa& fitxa = m_tauler[i][j]; 
+            // Setter de Posicio (atributo)
             fitxa.setPosicio(Posicio(i + 1, j));
 
+            // Solo calculamos los movimientos de fitxas, no casillas vacias
             if (fitxa.getTipus() != TIPUS_EMPTY)
             {
                 fitxa.resetMovimentsValids();
+                // Calculamos los movimientos de la ficha fil i, col j
                 calculaMovimentsFitxa(i, j);
             }
         }
@@ -180,7 +184,6 @@ void Tauler::getPosicionsPossibles(const Posicio& origen, int& nPosicions, Posic
     }       
 }
 
-
 /*
 * esDinsTauler
 * Funcio auxiliar que comprova si una posicio es valida dins del tauler.
@@ -206,74 +209,89 @@ bool Tauler::esDinsTauler(int fila, int col) const
 */
 void Tauler::getCapturesDama(const Fitxa& fitxa, const Moviment& movActual, Moviment pendents[], int& numPendents)
 {
-	// Direccions possibles per a la dama (diagonal)
-	// avall-dreta, avall-esquerra, amunt-dreta, amunt-esquerra
+    // Direcciones diagonales posibles para la dama:
+    // [0]: abajo-derecha (1,1)
+    // [1]: abajo-izquierda (1,-1)
+    // [2]: arriba-derecha (-1,1)
+    // [3]: arriba-izquierda (-1,-1)
     const int dirs[4][2] = { {1, 1}, {1, -1}, {-1, 1}, {-1, -1} };
-    Posicio pos = movActual.getPosicioFinal();
-    int fila = pos.getFila() - 1;
-    int col = pos.getColumna();
 
-	// Comprovar si hi ha captures possibles en cada direccio
+    // Obtenemos la posición final del movimiento actual
+    Posicio pos = movActual.getPosicioFinal();
+    int fila = pos.getFila() - 1;  // Convertimos a índice de array (0-7)
+    int col = pos.getColumna();     // Índice de columna (0-7)
+
+    // Exploramos las 4 direcciones posibles
     for (int d = 0; d < 4; ++d)
     {
-		// Direccio actual, delta fila, delta columna
+        // Delta fila y columna para la dirección actual
         int df = dirs[d][0];
         int dc = dirs[d][1];
 
-		// Comencem a buscar la primera fitxa enemiga
-        // Posicions d'exploracio
+        // Posición inicial para explorar en esta dirección
         int f = fila + df;
         int c = col + dc;
 
-        bool trobatEnemic = false;
-        int filaEnemic = -1, colEnemic = -1;
-        bool sortirbucle = false;
+        bool trobatEnemic = false;  // ¿Encontramos una ficha enemiga?
+        int filaEnemic = -1, colEnemic = -1;  // Posición del enemigo encontrado
+        bool sortirbucle = false;   // Flag para salir del bucle
 
-		// Busquem la primera fitxa enemiga
+        // Exploramos en la dirección actual hasta salir del tablero o encontrar obstáculo
         while (esDinsTauler(f, c) && !sortirbucle)
         {
             const Fitxa& actual = m_tauler[f][c];
 
+            // Fase 1: Buscando el primer enemigo en esta dirección
             if (!trobatEnemic)
             {
+                // Si encontramos una ficha enemiga | actual.getColor() != fitxa.getColor() compara si es de color distinto, (solo hay dos)
                 if (actual.getTipus() != TIPUS_EMPTY && actual.getColor() != fitxa.getColor())
                 {
                     trobatEnemic = true;
                     filaEnemic = f;
                     colEnemic = c;
                 }
+                // Si encontramos una ficha aliada, terminamos esta dirección
                 else if (actual.getTipus() != TIPUS_EMPTY)
                 {
                     sortirbucle = true;
                 }
             }
+            // Fase 2: Ya encontramos un enemigo, buscamos casilla vacía para saltar
             else
             {
                 if (actual.getTipus() == TIPUS_EMPTY)
                 {
+                    // Creamos un nuevo movimiento de captura
                     Moviment nou = movActual;
                     nou.setEsMovimentDeCaptura(true);
                     nou.afegeixPosicio(Posicio(f + 1, c));
 
+                    // Simulamos la captura (eliminamos temporalmente la ficha enemiga)
                     Fitxa original = m_tauler[filaEnemic][colEnemic];
                     m_tauler[filaEnemic][colEnemic] = Fitxa();
 
+                    // Llamada recursiva para buscar capturas múltiples
                     getCapturesDama(fitxa, nou, pendents, numPendents);
 
+                    // Restauramos la ficha enemiga
                     m_tauler[filaEnemic][colEnemic] = original;
 
+                    // Si el movimiento es válido (tiene más posiciones que el original)
                     if (nou.getNumPosicions() > movActual.getNumPosicions())
-                        pendents[numPendents++] = nou;
+                        pendents[numPendents++] = nou;  // Añadimos a pendents
                 }
                 else
                 {
-                    sortirbucle = true;
+                    sortirbucle = true;  // Casilla ocupada, terminamos esta dirección
                 }
             }
+
+            // Avanzamos en la dirección actual si no hemos terminado
             if (!sortirbucle)
             {
-				f += df;
-				c += dc;
+                f += df;
+                c += dc;
             }
         }
     }
@@ -292,16 +310,26 @@ void Tauler::getCapturesDama(const Fitxa& fitxa, const Moviment& movActual, Movi
 */
 void Tauler::getCapturesDisponibles(const Fitxa& fitxa, const Moviment& movActual, Moviment pendents[], int& numPendents)
 {
-    //ERROR
-    const int dirs[4][2] = { {1, 1}, {1, -1}, {-1, 1}, {-1, -1} };
+    int dir;
+    if (fitxa.getColor() == COLOR_BLANC)
+    {
+        dir = 1;
+    }
+    else
+    {
+        dir = -1;
+	}
+    const int dirs[2][2] = { {dir, 1}, {dir, -1}};
+
     Posicio pos = movActual.getPosicioFinal();
     int fila = pos.getFila() - 1;
     int col = pos.getColumna();
 
-    for (int i = 0; i < 4; ++i) 
+    for (int i = 0; i < 2; ++i) 
     {
         int fmid = fila + dirs[i][0];
         int cmid = col + dirs[i][1];
+
         int fdest = fmid + dirs[i][0];
         int cdest = cmid + dirs[i][1];
 
@@ -454,35 +482,48 @@ bool Tauler::mouFitxa(const Posicio& origen, const Posicio& desti)
 */
 void Tauler::calculaMovimentsFitxa(int fila, int col)
 {
-     if (esDinsTauler(fila, col))
+    if (esDinsTauler(fila, col))
     {
         Fitxa& fitxa = m_tauler[fila][col];
-        Posicio origen = fitxa.getPosicio();
+        Posicio origen = fitxa.getPosicio(); // Posicio de la fitxa
 
         Moviment pendents[MAX_MOVIMENTS];
         int numPendents = 0;
 
+        // Setteamos la posicion inicial del movimiento a origen
         if (numPendents < MAX_MOVIMENTS)
             pendents[numPendents++] = Moviment(origen);
-
-        bool hiHaCaptures = false;
+        
+        // Aqui numPendents deberia ser = a 1
 
         // Primero calculamos todas las capturas posibles
-        while (numPendents > 0)
-        {
-            Moviment actual = pendents[--numPendents];
+
+
+
+
+        // !!!!!
+        while (numPendents > 0) // Quitando este while aparecen MAS test mov fitxa
+        { 
+        // MALA GESTION de numPendents!!!
+        // !!!!!
+
+            Moviment actual = pendents[numPendents - 1];
             int anteriorNum = numPendents;
 
+            numPendents--;
+
             if (fitxa.getTipus() == TIPUS_DAMA)
+                // RARO: Con solo una iteracion ya nos dice los movimientos pendientes
                 getCapturesDama(fitxa, actual, pendents, numPendents);
             else
                 getCapturesDisponibles(fitxa, actual, pendents, numPendents);
 
-            if (numPendents == anteriorNum && actual.getNumPosicions() > 1)
+
+
+            if (numPendents == anteriorNum - 1 && actual.getNumPosicions() > 1)
             {
                 actual.setEsMovimentDeCaptura(true);
                 fitxa.afegeixMovimentValid(actual);
-                hiHaCaptures = true;
             }
         }
 
@@ -504,31 +545,32 @@ void Tauler::calculaMovimentsFitxa(int fila, int col)
                 {
                     Moviment m(origen);
                     m.afegeixPosicio(Posicio(nf + 1, nc));
-                    fitxa.afegeixMovimentValid(m);
+                        fitxa.afegeixMovimentValid(m);
                 }
             }
-        }
-        else if (fitxa.getTipus() == TIPUS_DAMA)
+        } 
+        else if (fitxa.getTipus() == TIPUS_DAMA) 
         {
+            // 4 direcciones posibles de la reina (moviendo solo 1 casilla)
             const int dirs[4][2] = { {1, 1}, {1, -1}, {-1, 1}, {-1, -1} };
-            for (int d = 0; d < 4; ++d)
-            {
-                int df = dirs[d][0];
-                int dc = dirs[d][1];
-                int nf = fila + df;
-                int nc = col + dc;
 
-                // Movimientos simples de una casilla (incluyendo hacia atrás)
-                if (esDinsTauler(nf, nc) && m_tauler[nf][nc].getTipus() == TIPUS_EMPTY)
-                {
+            for (int d = 0; d < 4; ++d) {
+				int df = dirs[d][0]; // Delta fila
+				int dc = dirs[d][1]; // Delta columna
+				int nf = fila + df; // Nueva fila
+				int nc = col + dc; // Nueva columna
+
+                // Movimientos simples (1 casilla)
+                if (esDinsTauler(nf, nc) && m_tauler[nf][nc].getTipus() == TIPUS_EMPTY) {
                     Moviment m(origen);
                     m.afegeixPosicio(Posicio(nf + 1, nc));
                     fitxa.afegeixMovimentValid(m);
                 }
 
-                // Movimientos múltiples
-                while (esDinsTauler(nf, nc) && m_tauler[nf][nc].getTipus() == TIPUS_EMPTY)
-                {
+                // Movimientos múltiples (varias casillas)
+                nf += df;
+                nc += dc;
+                while (esDinsTauler(nf, nc) && m_tauler[nf][nc].getTipus() == TIPUS_EMPTY) {
                     Moviment m(origen);
                     m.afegeixPosicio(Posicio(nf + 1, nc));
                     fitxa.afegeixMovimentValid(m);
