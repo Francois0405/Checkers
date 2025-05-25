@@ -225,21 +225,21 @@ void Tauler::getCapturesDama(const Fitxa& fitxa, const Moviment& movActual, Movi
     for (int d = 0; d < 4; ++d)
     {
         // Delta fila y columna para la dirección actual
-        int df = dirs[d][0];
-        int dc = dirs[d][1];
+        int fmid = dirs[d][0];
+        int cmid = dirs[d][1];
 
         // Posición inicial para explorar en esta dirección
-        int f = fila + df;
-        int c = col + dc;
+        int fdest = fila + fmid;
+        int cdest = col + cmid;
 
         bool trobatEnemic = false;  // ¿Encontramos una ficha enemiga?
         int filaEnemic = -1, colEnemic = -1;  // Posición del enemigo encontrado
         bool sortirbucle = false;   // Flag para salir del bucle
 
         // Exploramos en la dirección actual hasta salir del tablero o encontrar obstáculo
-        while (esDinsTauler(f, c) && !sortirbucle)
+        while (esDinsTauler(fdest, cdest) && !sortirbucle)
         {
-            const Fitxa& actual = m_tauler[f][c];
+            const Fitxa& actual = m_tauler[fdest][cdest];
 
             // Fase 1: Buscando el primer enemigo en esta dirección
             if (!trobatEnemic)
@@ -248,8 +248,8 @@ void Tauler::getCapturesDama(const Fitxa& fitxa, const Moviment& movActual, Movi
                 if (actual.getTipus() != TIPUS_EMPTY && actual.getColor() != fitxa.getColor())
                 {
                     trobatEnemic = true;
-                    filaEnemic = f;
-                    colEnemic = c;
+                    filaEnemic = fdest;
+                    colEnemic = cdest;
                 }
                 // Si encontramos una ficha aliada, terminamos esta dirección
                 else if (actual.getTipus() != TIPUS_EMPTY)
@@ -265,7 +265,7 @@ void Tauler::getCapturesDama(const Fitxa& fitxa, const Moviment& movActual, Movi
                     // Creamos un nuevo movimiento de captura
                     Moviment nou = movActual;
                     nou.setEsMovimentDeCaptura(true);
-                    nou.afegeixPosicio(Posicio(f + 1, c));
+                    nou.afegeixPosicio(Posicio(fdest + 1, cdest));
 
                     // Simulamos la captura (eliminamos temporalmente la ficha enemiga)
                     Fitxa original = m_tauler[filaEnemic][colEnemic];
@@ -290,8 +290,8 @@ void Tauler::getCapturesDama(const Fitxa& fitxa, const Moviment& movActual, Movi
             // Avanzamos en la dirección actual si no hemos terminado
             if (!sortirbucle)
             {
-                f += df;
-                c += dc;
+                fdest += fmid;
+                cdest += cmid;
             }
         }
     }
@@ -497,9 +497,6 @@ void Tauler::calculaMovimentsFitxa(int fila, int col)
         // Aqui numPendents deberia ser = a 1
 
         // Primero calculamos todas las capturas posibles
-
-
-
 
         // !!!!!
         while (numPendents > 0) // Quitando este while aparecen MAS test mov fitxa
