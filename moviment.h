@@ -5,14 +5,15 @@
 * AUTOR Jennifer Martinez | Francois Liraud
 * DATA 10/04/2025
 * VERSIO 1.0
-* Aquest    fitxer conte les funcions de la classe Moviment.h
+* Aquest fitxer conte les funcions de la classe Moviment.h
 */
 
 #ifndef MOVIMENT_H
 #define MOVIMENT_H
 
 #include "posicio.hpp"
-const int MAX_POSICIONS = 20;
+#include <vector>
+using namespace std;
 
 /**
 * CLASS Moviment
@@ -40,11 +41,11 @@ public:
     void setEsMovimentDeCaptura(bool esCaptura);
 
     void afegeixPosicio(const Posicio& posicio);
-    void estableixPosicions(const Posicio posicions[], int numPosicions);
+    void estableixPosicions(const vector<Posicio>& m_posicions);
     bool contePosicio(const Posicio& posicio) const;
 
 private:
-    Posicio m_posicions[MAX_POSICIONS];
+	vector<Posicio> m_posicions;
     int m_numPosicions;
     bool m_esCaptura;
     int m_numCaptures;

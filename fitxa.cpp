@@ -13,14 +13,14 @@
 * Constructor per defecte, inicialitza la fitxa a empty "de color blanc" (sense color).
 */
 
-Fitxa::Fitxa() : m_tipus(TIPUS_EMPTY), m_color(COLOR_BLANC), m_numMovimentsValids(0) {}
+Fitxa::Fitxa() : m_tipus(TIPUS_EMPTY), m_color(COLOR_BLANC) {}
 
 /*
 * Fitxa(TipusFitxa tipus, ColorFitxa color, const Posicio& posicio)
 * Constructor per parametres, inicialitza la fitxa amb el tipus, color i posicio especificats.
 */
 
-Fitxa::Fitxa(TipusFitxa tipus, ColorFitxa color, const Posicio& posicio) : m_tipus(tipus), m_color(color), m_posicio(posicio), m_numMovimentsValids(0) {}
+Fitxa::Fitxa(TipusFitxa tipus, ColorFitxa color, const Posicio& posicio) : m_tipus(tipus), m_color(color), m_posicio(posicio) {}
 
 /*
 * getTipus
@@ -95,7 +95,7 @@ char Fitxa::getLletra() const
 
 int Fitxa::getNumMovimentsValids() const
 {
-	return m_numMovimentsValids;
+	return m_movimentsValids.size();
 }
 
 /*
@@ -160,10 +160,7 @@ void Fitxa::setPosicio(const Posicio& posicio)
 
 void Fitxa::afegeixMovimentValid(const Moviment& moviment)
 {
-	if (m_numMovimentsValids < MAX_MOVIMENTS)
-	{
-		m_movimentsValids[m_numMovimentsValids++] = moviment;
-	}
+	m_movimentsValids.push_back(moviment);
 }
 
 /*
@@ -181,5 +178,5 @@ void Fitxa::convertirADama()
 
 void Fitxa::resetMovimentsValids()
 {
-	m_numMovimentsValids = 0;
+	m_movimentsValids.clear();
 }

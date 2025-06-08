@@ -14,16 +14,16 @@
 * Constructor per defecte, inicialitza el moviment a 0 posicions i captura a false.
 */
 
-Moviment::Moviment() : m_numPosicions(0), m_esCaptura(false), m_numCaptures(0) {}
+Moviment::Moviment() : m_numPosicions(0), m_esCaptura(false) {}
 
 /*
 * Moviment(const Posicio& posInicial)
 * Constructor amb parametre, la posicio inicial
 */
 
-Moviment::Moviment(const Posicio& posInicial) : m_numPosicions(1), m_esCaptura(false), m_numCaptures(0)
+Moviment::Moviment(const Posicio& posInicial) : m_esCaptura(false), m_numCaptures(0)
 {
-	m_posicions[0] = posInicial;
+	m_posicions.push_back(posInicial);
 }
 
 /*
@@ -35,7 +35,7 @@ Moviment::Moviment(const Posicio& posInicial) : m_numPosicions(1), m_esCaptura(f
 
 int Moviment::getNumPosicions() const //retorn del num de posicions que hi ha en el moviment
 {
-	return m_numPosicions;
+	return m_posicions.size();
 }
 
 /*
@@ -60,7 +60,7 @@ const Posicio& Moviment::getPosicio(int index) const
 
 Posicio Moviment::getPosicioInicial() const
 {
-	return m_posicions[0];
+	return m_posicions.front();
 }
 
 /*
@@ -72,7 +72,7 @@ Posicio Moviment::getPosicioInicial() const
 
 Posicio Moviment::getPosicioFinal() const
 {
-	return m_posicions[m_numPosicions - 1];
+	return m_posicions.back();
 }
 
 /*
@@ -110,6 +110,15 @@ int Moviment::getNumCaptures() const
 void Moviment::setEsMovimentDeCaptura(bool esCaptura)
 {
 	m_esCaptura = esCaptura;
+	if (esCaptura)
+	{
+		m_numCaptures = m_posicions.size() - 1;
+	}
+	else
+	{
+		m_numCaptures = 0;
+
+	}
 }
 
 /*
@@ -122,10 +131,7 @@ void Moviment::setEsMovimentDeCaptura(bool esCaptura)
 
 void Moviment::afegeixPosicio(const Posicio& posicio)
 {
-	if (m_numPosicions < MAX_POSICIONS)
-	{
-		m_posicions[m_numPosicions++] = posicio;
-	}
+	m_posicions.push_back(posicio);
 }
 
 /*
@@ -137,13 +143,9 @@ void Moviment::afegeixPosicio(const Posicio& posicio)
 * @return void
 */
 
-void Moviment::estableixPosicions(const Posicio posicions[], int numPosicions)
+void Moviment::estableixPosicions(const vector<Posicio>& posicions)
 {
-	m_numPosicions = numPosicions;
-	for (int i = 0; i < numPosicions; i++)
-	{
-		m_posicions[i] = posicions[i];
-	}
+	m_posicions = posicions;
 }
 
 /*
@@ -156,19 +158,13 @@ void Moviment::estableixPosicions(const Posicio posicions[], int numPosicions)
 
 bool Moviment::contePosicio(const Posicio& posicio) const
 {
-	int i = 0;
 	bool conte = false;
-	while (i < m_numPosicions && !conte) //busquem la posicio en el moviment
+	for (int i = 0; i < m_posicions.size(); ++i)
 	{
-		if (m_posicions[i] == posicio) //si la trobem retornem true
+		if (m_posicions[i] == posicio)
 		{
 			conte = true;
 		}
-		else
-		{
-			i++;
-		}
 	}
-
 	return conte;
 }

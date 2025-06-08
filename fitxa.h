@@ -13,6 +13,8 @@
 
 #include "posicio.hpp"
 #include "moviment.h"
+#include <vector>
+using namespace std;
 const int MAX_MOVIMENTS = 50;
 
 /*
@@ -66,7 +68,7 @@ public:
     ColorFitxa getColor() const;
     Posicio getPosicio() const;
     char getLletra() const;
-    int getNumMovimentsValids() const;
+	int getNumMovimentsValids() const;
     const Moviment& getMovimentValid(int index) const;
 
     void setTipus(TipusFitxa tipus);
@@ -82,8 +84,8 @@ private:
     ColorFitxa m_color;
     Posicio m_posicio;
 
-    Moviment m_movimentsValids[MAX_MOVIMENTS];
-    int m_numMovimentsValids;
+    vector<Moviment> m_movimentsValids;
+
 };
 
 #endif

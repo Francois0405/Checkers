@@ -11,6 +11,7 @@
 #include "fitxa.h"
 #include <iostream>
 #include <string>
+#include <vector>
 
 #ifndef TAULER_HPP
 #define TAULER_HPP
@@ -44,8 +45,7 @@ public:
 	void inicialitza(const string& nomFitxer);
 
 	void actualitzaMovimentsValids();
-	void getPosicionsPossibles(const Posicio& origen,
-		int& nPosicions, Posicio posicionsPossibles[]);
+	void getPosicionsPossibles(const Posicio& origen, vector<Posicio>& posicionsPossibles);
 	bool mouFitxa(const Posicio& origen, const Posicio& desti);
 	string toString() const;
 
@@ -54,11 +54,10 @@ private:
 	Fitxa m_tauler[N_FILES][N_COLUMNES];
 	// Auxiliars
 	bool esDinsTauler(int fila, int col) const;
-	void getCapturesDama(const Fitxa& fitxa, const Moviment& movActual,
-		Moviment pendents[], int& numPendents);
+	void getCapturesDama(const Fitxa& fitxa, const Moviment& movActual, vector<Moviment>& pendents);
 	void calculaMovimentsFitxa(int fila, int col);
 	void getCapturesDisponibles(const Fitxa& fitxa, const Moviment& movActual,
-		Moviment pendents[], int& numPendents);
+		vector<Moviment>& pendents);
 
 };
 
