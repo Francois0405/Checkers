@@ -13,7 +13,7 @@
 
 
 
-bool Joc::actualitza(int mousePosX, int mousePosY, bool mouseStatus) 
+bool Joc::actualitza(int mousePosX, int mousePosY, bool mouseStatus)
 {
 	//TODO 1: Interactuar amb la crida per dibuixar gràfics (sprites).
 	// 	      Dibuixar a pantalla el fons i el gràfic amb el tauler buit.
@@ -56,25 +56,25 @@ bool Joc::actualitza(int mousePosX, int mousePosY, bool mouseStatus)
 
 
 
-    //TODO 2.2: Dibuixar la fitxa blanca al tauler només si estem pressionant el botó del ratolí i el ratolí
-    // està dins del límits del tauler
-
- 
-
-    //TODO 2.3: Dibuixar la fitxa blanca al tauler només si estem pressionant el botó del ratolí i el ratolí
-    // està dins del límits del tauler. Dibuixa la fitxa a la casella on està el ratolí
+	//TODO 2.2: Dibuixar la fitxa blanca al tauler només si estem pressionant el botó del ratolí i el ratolí
+	// està dins del límits del tauler
 
 
 
-    //TODO 2.4: Dibuixar la fitxa blanca a la casella on cliquem al ratolí. La fitxa s'ha de mantenir dibuixada
-    // a la casella quan deixem de clicar amb el ratolí. Quan cliquem a una altra casella, la fitxa canvia de posició
-    // a la nova casella
+	//TODO 2.3: Dibuixar la fitxa blanca al tauler només si estem pressionant el botó del ratolí i el ratolí
+	// està dins del límits del tauler. Dibuixa la fitxa a la casella on està el ratolí
 
-        
-        
-    // TODO 3: Imprimir text per pantalla
-    //------------------------------------------
-    // TODO 3.1: Mostrar la posició actual del ratolí a sota del tauler
+
+
+	//TODO 2.4: Dibuixar la fitxa blanca a la casella on cliquem al ratolí. La fitxa s'ha de mantenir dibuixada
+	// a la casella quan deixem de clicar amb el ratolí. Quan cliquem a una altra casella, la fitxa canvia de posició
+	// a la nova casella
+
+
+
+	// TODO 3: Imprimir text per pantalla
+	//------------------------------------------
+	// TODO 3.1: Mostrar la posició actual del ratolí a sota del tauler
 
 
 

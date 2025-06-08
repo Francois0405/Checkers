@@ -19,7 +19,7 @@ const int NUM_FILES_TAULER = 8;
 const int TAMANY_PANTALLA_X = 750;
 const int TAMANY_PANTALLA_Y = 850;
 
-typedef enum 
+typedef enum
 {
     MODE_JOC_NORMAL,
     MODE_JOC_REPLAY,

@@ -23,7 +23,7 @@
     <ProjectGuid>{95EBFF15-EE8A-4B39-B29E-6E414EFC541A}</ProjectGuid>
     <RootNamespace>BatallaNaval</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>MP_Practica</ProjectName>
+    <ProjectName>Checkers</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
