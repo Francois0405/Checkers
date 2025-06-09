@@ -21,6 +21,7 @@ void Joc::inicialitza(ModeJoc mode, const string& nomFitxerTauler, const string&
 		// durant el desenvolupament de la partida
 
 		m_tauler.inicialitza(nomFitxerTauler);
+		m_tauler.actualitzaMovimentsValids();
 
 	}
 	else if (mode == MODE_JOC_REPLAY)
@@ -85,16 +86,54 @@ bool Joc::actualitza(int mousePosX, int mousePosY, bool mouseStatus)
 	GraphicManager::getInstance()->drawFont(FONT_WHITE_30, posTextX, posTextY, 0.8, msg);
 	GraphicManager::getInstance()->drawFont(FONT_GREEN_30, posTextX, posTextY + 25, 0.8, title2);
 	//GraphicManager::getInstance()->drawFont(FONT_WHITE_30, posTextX, posTextY + 50, 0.8, msg2);
-
+	
+	
 	//TODO 2.2: Dibuixar la fitxa blanca al tauler només si estem pressionant el botó del ratolí i el ratolí
 	// està dins del límits del tauler
+	if (mouseStatus &&
+		mousePosX >= POS_X_TAULER + CASELLA_INICIAL_X &&
+		mousePosY >= POS_Y_TAULER + CASELLA_INICIAL_Y &&
+		mousePosX < POS_X_TAULER + CASELLA_INICIAL_X + NUM_COLS_TAULER * AMPLADA_CASELLA &&
+		mousePosY < POS_Y_TAULER + CASELLA_INICIAL_Y + NUM_FILES_TAULER * ALCADA_CASELLA)
+	{
+		int col = (mousePosX - (POS_X_TAULER + CASELLA_INICIAL_X)) / AMPLADA_CASELLA;
+		int fila = (mousePosY - (POS_Y_TAULER + CASELLA_INICIAL_Y)) / ALCADA_CASELLA;
 
+		const Fitxa& fitxa = m_tauler.getFitxa(Posicio(fila + 1, col));
+
+		if (fitxa.getTipus() != TIPUS_EMPTY)
+		{
+			m_filaSeleccionada = fila;
+			m_colSeleccionada = col;
+			m_fitxaSeleccionada = true;
+		}
+	}
 
 
 	//TODO 2.3: Dibuixar la fitxa blanca al tauler només si estem pressionant el botó del ratolí i el ratolí
 	// està dins del límits del tauler. Dibuixa la fitxa a la casella on està el ratolí
 
+	if (m_fitxaSeleccionada)
+    {
+        const Fitxa& fitxa = m_tauler.getFitxa(Posicio(m_filaSeleccionada + 1, m_colSeleccionada));
 
+        int posX = POS_X_TAULER + CASELLA_INICIAL_X + m_colSeleccionada * AMPLADA_CASELLA;
+        int posY = POS_Y_TAULER + CASELLA_INICIAL_Y + m_filaSeleccionada * ALCADA_CASELLA;
+
+        if (fitxa.getColor() == COLOR_NEGRE)
+            GraphicManager::getInstance()->drawSprite(GRAFIC_FITXA_NEGRA, posX, posY);
+        else if (fitxa.getColor() == COLOR_BLANC)
+            GraphicManager::getInstance()->drawSprite(GRAFIC_FITXA_BLANCA, posX, posY);
+
+        // Dibuixar les caselles on pot anar
+        for (int i = 0; i < fitxa.getNumMovimentsValids(); ++i)
+        {
+            Posicio desti = fitxa.getMovimentValid(i).getPosicioFinal();
+            int x = POS_X_TAULER + CASELLA_INICIAL_X + desti.getColumna() * AMPLADA_CASELLA;
+            int y = POS_Y_TAULER + CASELLA_INICIAL_Y + (desti.getFila() - 1) * ALCADA_CASELLA;
+            GraphicManager::getInstance()->drawSprite(GRAFIC_POSICIO_VALIDA, x, y);
+        }
+    }
 
 	//TODO 2.4: Dibuixar la fitxa blanca a la casella on cliquem al ratolí. La fitxa s'ha de mantenir dibuixada
 	// a la casella quan deixem de clicar amb el ratolí. Quan cliquem a una altra casella, la fitxa canvia de posició

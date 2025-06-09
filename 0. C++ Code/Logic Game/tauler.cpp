@@ -615,3 +615,13 @@ void Tauler::visualitza() const
         }
     }
 }
+
+
+
+const Fitxa& Tauler::getFitxa(const Posicio& pos) const
+{
+    int fila = pos.getFila() - 1;
+    int col = pos.getColumna();
+    return m_tauler[fila][col];
+}
+

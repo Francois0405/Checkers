@@ -50,6 +50,8 @@ public:
 	string toString() const;
 	void visualitza() const;
 
+	const Fitxa& getFitxa(const Posicio& pos) const;
+
 private:
 	Fitxa m_tauler[N_FILES][N_COLUMNES];
 	// Auxiliars

@@ -16,6 +16,9 @@ public:
     void finalitza();
 private:
     Tauler m_tauler;
+    bool m_fitxaSeleccionada = false;
+    int m_filaSeleccionada = -1;
+    int m_colSeleccionada = -1;
 };
 
 #endif 
