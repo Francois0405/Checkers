@@ -21,11 +21,11 @@ using namespace std;
 * No hi ha cap fitxa en el tauler.
 */
 
-Tauler::Tauler() 
+Tauler::Tauler()
 {
-    for (int i = 0; i < N_FILES; ++i) 
+    for (int i = 0; i < N_FILES; ++i)
     {
-        for (int j = 0; j < N_COLUMNES; ++j) 
+        for (int j = 0; j < N_COLUMNES; ++j)
         {
             m_tauler[i][j] = Fitxa(TIPUS_EMPTY, COLOR_BLANC, Posicio(i + 1, j));
         }
@@ -43,16 +43,28 @@ Tauler::Tauler()
 
 void Tauler::inicialitza(const string& nomFitxer)
 {
+    cout << "[DEBUG] Intentant obrir fitxer: " << nomFitxer << endl;
     ifstream fitxer(nomFitxer);
+
+    string linia;
+    cout << "[DEBUG] Contingut del fitxer:" << endl;
+    while (getline(fitxer, linia)) {
+        cout << linia << endl;
+    }
+    fitxer.clear();                 // Reseteja flags (EOF, failbit)
+    fitxer.seekg(0, ios::beg);
+
     if (fitxer.is_open())
     {
         char tipus;
         string posicioStr;
         while (fitxer >> tipus >> posicioStr)
         {
+
             Posicio posicio(posicioStr);
             int fila = posicio.getFila() - 1;
             int col = posicio.getColumna();
+            cout << "Inicialitzant fitxa a (" << fila << ", " << col << ") amb lletra " << tipus << endl; //QUITAR DESPUES
 
             TipusFitxa tipusFitxa;
             ColorFitxa color;
@@ -87,7 +99,7 @@ void Tauler::inicialitza(const string& nomFitxer)
     else
     {
         // Llança un error que atura l'execucio
-		throw runtime_error("ERROR: Fitxer no trobat");
+        throw runtime_error("ERROR: Fitxer no trobat");
     }
 }
 
@@ -105,7 +117,7 @@ void Tauler::actualitzaMovimentsValids()
         for (int j = 0; j < N_COLUMNES; ++j)
         {
             // Se busca actualizar todas las piezas del juego, por lo tanto, cojemos cada fitxa.
-            Fitxa& fitxa = m_tauler[i][j]; 
+            Fitxa& fitxa = m_tauler[i][j];
             // Setter de Posicio (atributo)
             fitxa.setPosicio(Posicio(i + 1, j));
 
@@ -198,7 +210,7 @@ void Tauler::getPosicionsPossibles(const Posicio& origen, vector<Posicio>& posic
 /*
 * esDinsTauler
 * Funcio auxiliar que comprova si una posicio es valida dins del tauler.
-*  
+*
 * @param fila: int, fila de la posicio
 * @param col: int, columna de la posicio
 * @return bool: retorna si la posicio es valida o no.
@@ -211,7 +223,7 @@ bool Tauler::esDinsTauler(int fila, int col) const
 /**
 * getCapturesDama
 * Funcio auxiliar que busca les captures disponibles per una dama.
-* 
+*
 * @param fitxa: Tipus Fitxa, es la fitxa que volem moure
 * @param movActual: Tipus Moviment, es el moviment actual que volem fer
 * @param pendents[]: Tipus Moviment, es l'array de moviments pendents
@@ -230,11 +242,11 @@ void Tauler::getCapturesDama(const Fitxa& fitxa, const Moviment& movActual, vect
     // Obtenemos la posición final del movimiento actual
     Posicio pos = movActual.getPosicioFinal();
 
-	// Exploramos las 4 direcciones posibles si hay capturas disponibles
+    // Exploramos las 4 direcciones posibles si hay capturas disponibles
     for (int d = 0; d < 4; ++d)
     {
         int f = pos.getFila();
-		int c = pos.getColumna();
+        int c = pos.getColumna();
 
         bool trobatEnemic = false;  // ¿Encontramos una ficha enemiga?
         Posicio posicioEnemic;  // Posición del enemigo encontrado
@@ -243,8 +255,8 @@ void Tauler::getCapturesDama(const Fitxa& fitxa, const Moviment& movActual, vect
         // Exploramos en la dirección actual hasta salir del tablero o encontrar obstáculo
         while (!sortirbucle)
         {
-			f += dirs[d][0]; // Avanzamos en la dirección de fila
-			c += dirs[d][1]; // Avanzamos en la dirección de columna
+            f += dirs[d][0]; // Avanzamos en la dirección de fila
+            c += dirs[d][1]; // Avanzamos en la dirección de columna
 
             if (esDinsTauler(f, c))
             {
@@ -282,7 +294,7 @@ void Tauler::getCapturesDama(const Fitxa& fitxa, const Moviment& movActual, vect
             }
             else
             {
-				sortirbucle = true; // Salimos del bucle si nos salimos del tablero
+                sortirbucle = true; // Salimos del bucle si nos salimos del tablero
             }
         }
     }
@@ -292,7 +304,7 @@ void Tauler::getCapturesDama(const Fitxa& fitxa, const Moviment& movActual, vect
 /*
 * getCapturesDisponibles
 * Funcio auxiliar que busca les captures disponibles per una fitxa normal.
-* 
+*
 * @param fitxa: Tipus Fitxa, es la fitxa que volem moure
 * @param movActual: Tipus Moviment, es el moviment actual que volem fer
 * @param pendents[]: Tipus Moviment, es l'array de moviments pendents
@@ -330,13 +342,13 @@ void Tauler::getCapturesDisponibles(const Fitxa& fitxa, const Moviment& movActua
             m_tauler[fila1][col1].getColor() != fitxa.getColor() &&
             m_tauler[fila2][col2].getTipus() == TIPUS_EMPTY)
         {
-			Moviment nouMov = movActual;
-			nouMov.afegeixPosicio(Posicio(fila2, col2));
-			nouMov.setEsMovimentDeCaptura(true);
+            Moviment nouMov = movActual;
+            nouMov.afegeixPosicio(Posicio(fila2, col2));
+            nouMov.setEsMovimentDeCaptura(true);
             pendents.push_back(nouMov);
 
-			// Volvemos a llamar a la funcion recursivamente para buscar más capturas
-			getCapturesDisponibles(fitxa, nouMov, pendents);
+            // Volvemos a llamar a la funcion recursivamente para buscar más capturas
+            getCapturesDisponibles(fitxa, nouMov, pendents);
         }
     }
 }
@@ -356,7 +368,7 @@ bool Tauler::mouFitxa(const Posicio& origen, const Posicio& desti)
 {
     int filaOrig = origen.getFila() - 1;
     int colOrig = origen.getColumna();
-	bool valid = true;
+    bool valid = true;
 
     if (!esDinsTauler(filaOrig, colOrig))
     {
@@ -452,11 +464,11 @@ bool Tauler::mouFitxa(const Posicio& origen, const Posicio& desti)
                     {
                         m_tauler[filaDest][colDest].convertirADama();
                     }
-					// Actualizar movimientos válidos de la ficha que se ha movido
+                    // Actualizar movimientos válidos de la ficha que se ha movido
                     // Si arriba fins a aqui, valid = true, el moviment sera valid
                 }
             }
-        }      
+        }
     }
     return valid;
 }
@@ -464,7 +476,7 @@ bool Tauler::mouFitxa(const Posicio& origen, const Posicio& desti)
 /*
 * calculaMovimentsFitxa
 * Funcio que calcula els moviments possibles d'una fitxa.
-* 
+*
 * @param fila: int, fila de la fitxa
 * @param col: int, columna de la fitxa
 * @return void
@@ -481,7 +493,7 @@ void Tauler::calculaMovimentsFitxa(int fila, int col)
         vector<Moviment> pendents;
         pendents.push_back(Moviment(origen));
 
-		bool hiHaCaptura = false;
+        bool hiHaCaptura = false;
 
         while (!pendents.empty())
         {

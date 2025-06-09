@@ -1,6 +1,9 @@
 #include "fitxa.h"
 #include "GraphicManager.h"
 #include "info_joc.hpp"
+#include <iostream>
+using namespace std;
+
 /**
 * FITXER fitxa.cpp
 * AUTOR Jennifer Martinez | Francois Liraud
@@ -207,6 +210,5 @@ void Fitxa::visualitza() const
 		else
 			grafic = GRAFIC_FITXA_NEGRA;
 	}
-
 	GraphicManager::getInstance()->drawSprite(grafic, posX, posY);
 }
