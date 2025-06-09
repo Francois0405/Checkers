@@ -78,6 +78,7 @@ public:
     void afegeixMovimentValid(const Moviment& moviment);
     void convertirADama();
     void resetMovimentsValids();
+    void visualitza() const;
 
 private:
     TipusFitxa m_tipus;

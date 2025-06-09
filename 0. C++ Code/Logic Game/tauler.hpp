@@ -48,7 +48,7 @@ public:
 	void getPosicionsPossibles(const Posicio& origen, vector<Posicio>& posicionsPossibles);
 	bool mouFitxa(const Posicio& origen, const Posicio& desti);
 	string toString() const;
-
+	void visualitza() const;
 
 private:
 	Fitxa m_tauler[N_FILES][N_COLUMNES];

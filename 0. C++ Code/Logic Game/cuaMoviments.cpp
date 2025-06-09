@@ -2,29 +2,45 @@
 
 CuaMoviment::~CuaMoviment() 
 {
-	if (!empty)
+	while (!empty())
 	{
-		while ()
-		{
-
-		}
+		pop();
 	}
+	m_front = nullptr;
+	m_back = nullptr;
+	m_size = 0;
 }
 
-void CuaMoviment::push(Moviment m)
+void CuaMoviment::push(Moviment moviment)
 {
-	if (!empty)
-	{
+	NodeMoviment* nouNode = new NodeMoviment(moviment);
 
-		
-		m_size++;
+	if (empty()) { //si la cua esta buida, nouNode es el primer i el ultim
+		m_front = nouNode;
+		m_back = nouNode;
 	}
+	else { //si no esta buida, ho afegim al final de la cua
+		m_back->setNext(nouNode); 
+		m_back = nouNode;
+	}
+	m_size++;
 }
 
 void CuaMoviment::pop()
 {
+	if (!empty())
+	{
+		NodeMoviment* nodeAEliminar = m_front;
+		m_front = m_front->getNext(); //avancem el node al davant
+		delete nodeAEliminar; //alliberem node
 
-	m_size--;
+		if (m_front == nullptr)
+		{
+			m_back = nullptr;
+		}
+
+		m_size--;
+	}
 }
 
 Moviment CuaMoviment::getMovFront()

@@ -13,24 +13,24 @@ class CuaMoviment
 public:
 	CuaMoviment() : m_front(nullptr), m_back(nullptr), m_size(0) {} // Constructor
 	~CuaMoviment(); // Destructor
-	void push(const Moviment m); // Add a movement to the queue
-	void pop(); // Remove the front movement from the queue
+	void push(const Moviment moviment); // afegeix moviment a la cua 
+	void pop(); // elimina el primer element de la cua 
 
-	Moviment getMovFront(); // Get the front movement without removing it
-	Moviment getMovBack(); // get the back movement
+	Moviment getMovFront(); // retorna front moviments sebse eliminarlos
+	Moviment getMovBack(); // retonra back moviments
 
-	// Getters and Setters for front and back nodes
+	// Getters and Setters dels nodes front i back
 	NodeMoviment* getFront() { return m_front; }
 	NodeMoviment* getBack() { return m_back; }
 	void setFront(NodeMoviment* front) { m_front = front; }
 	void setBack(NodeMoviment* back) { m_back = back; }
-	int getSize() {	return m_size;} // Get the number of movements in the queue
+	int getSize() {	return m_size;} // retorna num de moviments en la cua 
 	
-	bool empty(); // Check if the queue is empty
+	bool empty(); // crompova si esta empty
 private:
-	NodeMoviment* m_front; // Front of the queue
-	NodeMoviment* m_back;  // Rear of the queue
-	int m_size; // size of the queue
+	NodeMoviment* m_front; // Front cua
+	NodeMoviment* m_back;  // Rear cua
+	int m_size; // mida cua
 };
 
 #endif

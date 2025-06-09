@@ -1,5 +1,6 @@
 #include "fitxa.h"
-
+#include "GraphicManager.h"
+#include "info_joc.hpp"
 /**
 * FITXER fitxa.cpp
 * AUTOR Jennifer Martinez | Francois Liraud
@@ -179,4 +180,33 @@ void Fitxa::convertirADama()
 void Fitxa::resetMovimentsValids()
 {
 	m_movimentsValids.clear();
+}
+
+
+void Fitxa::visualitza() const
+{
+	if (m_tipus == TIPUS_EMPTY)
+		return;
+
+	int col = m_posicio.getColumna();
+	int fila = m_posicio.getFila() - 1;
+
+	int posX = POS_X_TAULER + CASELLA_INICIAL_X + (col * AMPLADA_CASELLA);
+	int posY = POS_Y_TAULER + CASELLA_INICIAL_Y + (fila * ALCADA_CASELLA);
+
+	IMAGE_NAME grafic;
+	if (m_color == COLOR_BLANC) {
+		if (m_tipus == TIPUS_DAMA)
+			grafic = GRAFIC_DAMA_BLANCA;
+		else
+			grafic = GRAFIC_FITXA_BLANCA;
+	}
+	else {
+		if (m_tipus == TIPUS_DAMA)
+			grafic = GRAFIC_DAMA_NEGRA;
+		else
+			grafic = GRAFIC_FITXA_NEGRA;
+	}
+
+	GraphicManager::getInstance()->drawSprite(grafic, posX, posY);
 }

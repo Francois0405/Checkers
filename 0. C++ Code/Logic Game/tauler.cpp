@@ -2,6 +2,9 @@
 
 #include <fstream>
 #include <iostream>
+#include "GraphicManager.h"
+#include "info_joc.hpp"
+
 
 using namespace std;
 /**
@@ -584,4 +587,19 @@ string Tauler::toString() const
     }
     taulerString += "   a b c d e f g h";
     return taulerString;
+}
+
+
+void Tauler::visualitza() const
+{
+    // Dibuixa el tauler (fons i gràfic)
+    GraphicManager::getInstance()->drawSprite(GRAFIC_TAULER, POS_X_TAULER, POS_Y_TAULER);
+
+    for (int i = 0; i < N_FILES; ++i)
+    {
+        for (int j = 0; j < N_COLUMNES; ++j)
+        {
+            m_tauler[i][j].visualitza(); // Cada fitxa dibuixa si no és buida
+        }
+    }
 }

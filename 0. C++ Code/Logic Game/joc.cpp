@@ -45,7 +45,8 @@ bool Joc::actualitza(int mousePosX, int mousePosY, bool mouseStatus)
 
 	// Important Primer mostrar el fons sino el fons tapara tauler.
 	GraphicManager::getInstance()->drawSprite(GRAFIC_FONS, 0, 0);
-	GraphicManager::getInstance()->drawSprite(GRAFIC_TAULER, POS_X_TAULER, POS_Y_TAULER);
+	//GraphicManager::getInstance()->drawSprite(GRAFIC_TAULER, POS_X_TAULER, POS_Y_TAULER); --> ELIMINAR
+	m_tauler.visualitza();
 
 	//TODO 1.3: Dibuixar a pantalla el gràfic amb el tauler i una fitxa blanca a la posició (fila, columna ) del tauler =DONE
 	
