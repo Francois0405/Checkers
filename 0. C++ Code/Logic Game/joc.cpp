@@ -109,6 +109,25 @@ bool Joc::actualitza(int mousePosX, int mousePosY, bool mouseStatus)
 		}
 	}
 
+	else if (m_fitxaSeleccionada &&
+		mousePosX >= POS_X_TAULER + CASELLA_INICIAL_X &&
+		mousePosY >= POS_Y_TAULER + CASELLA_INICIAL_Y &&
+		mousePosX < POS_X_TAULER + CASELLA_INICIAL_X + NUM_COLS_TAULER * AMPLADA_CASELLA &&
+		mousePosY < POS_Y_TAULER + CASELLA_INICIAL_Y + NUM_FILES_TAULER * ALCADA_CASELLA)
+	{
+		int col = (mousePosX - (POS_X_TAULER + CASELLA_INICIAL_X)) / AMPLADA_CASELLA;
+		int fila = (mousePosY - (POS_Y_TAULER + CASELLA_INICIAL_Y)) / ALCADA_CASELLA;
+
+		Posicio origen(m_filaSeleccionada + 1, m_colSeleccionada);
+		Posicio desti(fila + 1, col);
+
+		if (m_tauler.mouFitxa(origen, desti))
+		{
+			m_fitxaSeleccionada = false;
+			m_tauler.actualitzaMovimentsValids();
+		}
+	}
+
 
 	//TODO 2.3: Dibuixar la fitxa blanca al tauler només si estem pressionant el botó del ratolí i el ratolí
 	// està dins del límits del tauler. Dibuixa la fitxa a la casella on està el ratolí
