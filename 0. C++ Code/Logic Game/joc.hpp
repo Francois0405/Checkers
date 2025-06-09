@@ -2,22 +2,20 @@
 #define JOC_H
 
 #include <stdio.h>
+#include <queue>
 #include "info_joc.hpp"
+#include "tauler.hpp"
 
 using namespace std;
 
-
 class Joc
 {
-
 public:
-    Joc() : m_fila(0), m_columna(0) {};
-
+    void inicialitza(ModeJoc mode, const string& nomFitxerTauler, const string& nomFitxerMoviments);
     bool actualitza(int mousePosX, int mousePosY, bool mouseStatus);
-
-
+    void finalitza();
 private:
-    int m_fila, m_columna;
+    Tauler m_tauler;
 };
 
 #endif 

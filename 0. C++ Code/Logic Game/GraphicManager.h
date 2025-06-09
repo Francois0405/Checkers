@@ -16,12 +16,11 @@
 #include <map>
 using namespace std;
 
-
 typedef enum
 {
     GRAFIC_FONS = 0,
     GRAFIC_TAULER,
-    GRAFIC_POSICIO_VALIDA,
+    GRAFIC_POSICIO_VALIDA, // Quadrat verd per indicar que la posicio es valida
     GRAFIC_FITXA_BLANCA,
     GRAFIC_DAMA_BLANCA,
     GRAFIC_FITXA_NEGRA,
@@ -38,17 +37,14 @@ typedef enum
     FONT_NUM_MAX
 } FONT_NAME;
 
-
 class GraphicManager
 {
 public:
-
-    void            drawSprite(IMAGE_NAME name, float posX, float posY);
+    void drawSprite(IMAGE_NAME name, float posX, float posY);
     //size: [0-1]
-    NFont::Rectf    drawFont(FONT_NAME name, float posX,
+    NFont::Rectf drawFont(FONT_NAME name, float posX,
         float posY, float size,
         const string& msg);
-
 
     static GraphicManager* getInstance()
     {
@@ -56,7 +52,6 @@ public:
             instance = new GraphicManager();
         return instance;
     }
-
 
 protected:
     GraphicManager();

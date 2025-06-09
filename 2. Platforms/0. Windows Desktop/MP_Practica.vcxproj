@@ -158,9 +158,14 @@
     <ClCompile Include="..\..\0. C++ Code\Graphic Lib\sprites.cpp" />
     <ClCompile Include="..\..\0. C++ Code\Graphic Lib\stb_vorbis.cpp" />
     <ClCompile Include="..\..\0. C++ Code\Graphic Lib\video.cpp" />
+    <ClCompile Include="..\..\0. C++ Code\Logic Game\cuaMoviments.cpp" />
+    <ClCompile Include="..\..\0. C++ Code\Logic Game\fitxa.cpp" />
     <ClCompile Include="..\..\0. C++ Code\Logic Game\GraphicManager.cpp" />
     <ClCompile Include="..\..\0. C++ Code\Logic Game\joc.cpp" />
     <ClCompile Include="..\..\0. C++ Code\Logic Game\main.cpp" />
+    <ClCompile Include="..\..\0. C++ Code\Logic Game\moviment.cpp" />
+    <ClCompile Include="..\..\0. C++ Code\Logic Game\posicio.cpp" />
+    <ClCompile Include="..\..\0. C++ Code\Logic Game\tauler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\0. C++ Code\Graphic Lib\debug.h" />
@@ -177,9 +182,15 @@
     <ClInclude Include="..\..\0. C++ Code\Graphic Lib\sprites.h" />
     <ClInclude Include="..\..\0. C++ Code\Graphic Lib\stb_vorbis.h" />
     <ClInclude Include="..\..\0. C++ Code\Graphic Lib\video.h" />
+    <ClInclude Include="..\..\0. C++ Code\Logic Game\cuaMoviments.h" />
+    <ClInclude Include="..\..\0. C++ Code\Logic Game\fitxa.h" />
     <ClInclude Include="..\..\0. C++ Code\Logic Game\GraphicManager.h" />
     <ClInclude Include="..\..\0. C++ Code\Logic Game\info_joc.hpp" />
     <ClInclude Include="..\..\0. C++ Code\Logic Game\joc.hpp" />
+    <ClInclude Include="..\..\0. C++ Code\Logic Game\moviment.h" />
+    <ClInclude Include="..\..\0. C++ Code\Logic Game\node_moviment.h" />
+    <ClInclude Include="..\..\0. C++ Code\Logic Game\posicio.hpp" />
+    <ClInclude Include="..\..\0. C++ Code\Logic Game\tauler.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

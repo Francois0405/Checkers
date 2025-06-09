@@ -104,4 +104,3 @@ string GraphicManager::getFontPath(FONT_NAME name){
     
     return path;
 }
-
