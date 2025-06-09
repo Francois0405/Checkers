@@ -42,7 +42,7 @@ int main(int argc, const char* argv[])
     pantalla.show();
 
     Joc joc;
-    joc.inicialitza(MODE_JOC_NORMAL, "C:\\Users\\Lenovo\\source\\repos\\Checkers\\taulerInicial.txt", "moviments.txt");
+    joc.inicialitza(MODE_JOC_NORMAL, "..\\taulerInicial.txt", "moviments.txt");
 
     do
     {
