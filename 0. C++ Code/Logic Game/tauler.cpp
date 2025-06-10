@@ -459,11 +459,14 @@ bool Tauler::mouFitxa(const Posicio& origen, const Posicio& desti)
                     m_tauler[filaOrig][colOrig] = Fitxa(TIPUS_EMPTY, COLOR_BLANC, origen);
 
                     // Promoción si corresponde
-                    if ((m_tauler[filaDest][colDest].getColor() == COLOR_BLANC && filaDest == 7) ||
-                        (m_tauler[filaDest][colDest].getColor() == COLOR_NEGRE && filaDest == 0))
+                    if (m_tauler[filaDest][colDest].getTipus() == TIPUS_NORMAL &&
+                        ((m_tauler[filaDest][colDest].getColor() == COLOR_BLANC && filaDest == 7) ||
+                            (m_tauler[filaDest][colDest].getColor() == COLOR_NEGRE && filaDest == 0)))
                     {
                         m_tauler[filaDest][colDest].convertirADama();
+                        calculaMovimentsFitxa(filaDest, colDest);
                     }
+                    actualitzaMovimentsValids();
                     // Actualizar movimientos válidos de la ficha que se ha movido
                     // Si arriba fins a aqui, valid = true, el moviment sera valid
                 }
@@ -483,56 +486,53 @@ bool Tauler::mouFitxa(const Posicio& origen, const Posicio& desti)
 */
 void Tauler::calculaMovimentsFitxa(int fila, int col)
 {
-    if (esDinsTauler(fila, col))
+    if (!esDinsTauler(fila, col))
+        return;
+
+    Fitxa& fitxa = m_tauler[fila][col];
+    Posicio origen = fitxa.getPosicio(); // Posición actual
+    fitxa.resetMovimentsValids();
+
+    vector<Moviment> pendents;
+    pendents.push_back(Moviment(origen));
+    bool hiHaCaptura = false;
+
+    while (!pendents.empty())
     {
-        Fitxa& fitxa = m_tauler[fila][col];
-        Posicio origen = fitxa.getPosicio(); // Posicio de la fitxa
+        Moviment actual = pendents.back();
+        pendents.pop_back();
 
-        fitxa.resetMovimentsValids();
+        size_t tamAnt = pendents.size();
 
-        vector<Moviment> pendents;
-        pendents.push_back(Moviment(origen));
+        if (fitxa.getTipus() == TIPUS_DAMA)
+            getCapturesDama(fitxa, actual, pendents);
+        else
+            getCapturesDisponibles(fitxa, actual, pendents);
 
-        bool hiHaCaptura = false;
-
-        while (!pendents.empty())
+        // Si no se han generado más captures desde este moviment
+        if (pendents.size() == tamAnt && actual.getNumPosicions() > 1)
         {
-            Moviment actual = pendents.back();
-            pendents.pop_back();
-
-            //
-            size_t anteriorTam = pendents.size();
-
-            if (fitxa.getTipus() == TIPUS_DAMA)
-                getCapturesDama(fitxa, actual, pendents);
-            else
-                getCapturesDisponibles(fitxa, actual, pendents);
-
-            // Si no se han generado más captures desde este moviment
-            if (pendents.size() == anteriorTam && actual.getNumPosicions() > 1)
-            {
-                actual.setEsMovimentDeCaptura(true);
-                fitxa.afegeixMovimentValid(actual);
-                hiHaCaptura = true;
-            }
+            actual.setEsMovimentDeCaptura(true);
+            fitxa.afegeixMovimentValid(actual);
+            hiHaCaptura = true;
         }
+    }
 
-        // Para movimientos simples
-        if (!hiHaCaptura)
+    // Si no hay captures, generamos movimientos simples
+    if (!hiHaCaptura)
+    {
+        if (fitxa.getTipus() == TIPUS_NORMAL)
         {
-            if (fitxa.getTipus() == TIPUS_NORMAL)
+            int dir = (fitxa.getColor() == COLOR_BLANC) ? 1 : -1;
+            for (int dc = -1; dc <= 1; dc += 2)
             {
-                int dir = (fitxa.getColor() == COLOR_BLANC) ? 1 : -1;
-                for (int dc = -1; dc <= 1; dc += 2)
+                int nf = fila + dir;
+                int nc = col + dc;
+                if (esDinsTauler(nf, nc) && m_tauler[nf][nc].getTipus() == TIPUS_EMPTY)
                 {
-                    int nf = fila + dir;
-                    int nc = col + dc;
-                    if (esDinsTauler(nf, nc) && m_tauler[nf][nc].getTipus() == TIPUS_EMPTY)
-                    {
-                        Moviment m(origen);
-                        m.afegeixPosicio(Posicio(nf + 1, nc));
-                        fitxa.afegeixMovimentValid(m);
-                    }
+                    Moviment m(origen);
+                    m.afegeixPosicio(Posicio(nf + 1, nc));
+                    fitxa.afegeixMovimentValid(m);
                 }
             }
         }
@@ -547,7 +547,7 @@ void Tauler::calculaMovimentsFitxa(int fila, int col)
                 while (esDinsTauler(f, c) && m_tauler[f][c].getTipus() == TIPUS_EMPTY)
                 {
                     Moviment mov(origen);
-                    mov.afegeixPosicio(Posicio(f + 1, c)); // Recorda sumar +1 a fila si cal
+                    mov.afegeixPosicio(Posicio(f + 1, c));
                     fitxa.afegeixMovimentValid(mov);
 
                     f += dirs[d][0];
@@ -557,6 +557,7 @@ void Tauler::calculaMovimentsFitxa(int fila, int col)
         }
     }
 }
+
 
 
 /*
