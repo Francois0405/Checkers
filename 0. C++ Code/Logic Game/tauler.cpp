@@ -232,73 +232,64 @@ bool Tauler::esDinsTauler(int fila, int col) const
 */
 void Tauler::getCapturesDama(const Fitxa& fitxa, const Moviment& movActual, vector<Moviment>& pendents)
 {
-    // Direcciones diagonales posibles para la dama:
-    // [0]: abajo-derecha (1,1)
-    // [1]: abajo-izquierda (1,-1)
-    // [2]: arriba-derecha (-1,1)
-    // [3]: arriba-izquierda (-1,-1)
     const int dirs[4][2] = { {1, 1}, {1, -1}, {-1, 1}, {-1, -1} };
-
-    // Obtenemos la posición final del movimiento actual
     Posicio pos = movActual.getPosicioFinal();
 
-    // Exploramos las 4 direcciones posibles si hay capturas disponibles
     for (int d = 0; d < 4; ++d)
     {
         int f = pos.getFila();
         int c = pos.getColumna();
+        bool trobatEnemic = false;
+        int filaEnemic = -1, colEnemic = -1;
 
-        bool trobatEnemic = false;  // ¿Encontramos una ficha enemiga?
-        Posicio posicioEnemic;  // Posición del enemigo encontrado
-        bool sortirbucle = false;   // Flag para salir del bucle
-
-        // Exploramos en la dirección actual hasta salir del tablero o encontrar obstáculo
-        while (!sortirbucle)
+        while (true)
         {
-            f += dirs[d][0]; // Avanzamos en la dirección de fila
-            c += dirs[d][1]; // Avanzamos en la dirección de columna
+            f += dirs[d][0];
+            c += dirs[d][1];
 
-            if (esDinsTauler(f, c))
+            if (!esDinsTauler(f - 1, c)) break;
+
+            const Fitxa& actual = m_tauler[f - 1][c];
+
+            if (actual.getTipus() == TIPUS_EMPTY)
             {
-                const Fitxa& actual = m_tauler[f][c];
+                if (trobatEnemic)
+                {
+                    Moviment nouMov = movActual;
+                    nouMov.afegeixPosicio(Posicio(f, c));
+                    nouMov.setEsMovimentDeCaptura(true);
+                    pendents.push_back(nouMov);
 
-                if (actual.getTipus() == TIPUS_EMPTY)
-                {
-                    if (trobatEnemic)
-                    {
-                        Moviment nouMov = movActual;
-                        nouMov.afegeixPosicio(Posicio(f, c));
-                        nouMov.setEsMovimentDeCaptura(true);
-                        pendents.push_back(nouMov);
-
-                        getCapturesDama(fitxa, nouMov, pendents);
-                    }
-                    // Si no hay enemigo, sigue buscando más lejos
+                    getCapturesDama(fitxa, nouMov, pendents);
                 }
-                else if (actual.getColor() != fitxa.getColor())
+                else
                 {
-                    if (!trobatEnemic)
-                    {
-                        trobatEnemic = true;
-                        posicioEnemic = Posicio(f, c);
-                    }
-                    else
-                    {
-                        sortirbucle = true; // hay más de un enemigo seguido: no válido
-                    }
+                    continue;
                 }
-                else // hay una ficha del mismo color
+            }
+            else if (actual.getColor() != fitxa.getColor())
+            {
+                if (!trobatEnemic)
                 {
-                    sortirbucle = true;
+                    trobatEnemic = true;
+                    filaEnemic = f - 1;
+                    colEnemic = c;
+                }
+                else
+                {
+                    break;
                 }
             }
             else
             {
-                sortirbucle = true; // Salimos del bucle si nos salimos del tablero
+                break;
             }
         }
     }
 }
+
+
+
 
 
 /*
@@ -385,10 +376,10 @@ bool Tauler::mouFitxa(const Posicio& origen, const Posicio& desti)
         }
         else
         {
-            // Actualizamos movimientos
+            // Actualizar todos los movimientos válidos del tablero
             actualitzaMovimentsValids();
 
-            // Buscar movimiento válido para esta ficha
+            // Buscar si existe un movimiento válido para esa ficha
             const Fitxa& fitxa = m_tauler[filaOrig][colOrig];
             int indexMov = -1;
 
@@ -397,10 +388,10 @@ bool Tauler::mouFitxa(const Posicio& origen, const Posicio& desti)
                 if (fitxa.getMovimentValid(i).getPosicioFinal() == desti)
                 {
                     indexMov = i;
+                    break;
                 }
             }
 
-            // No es movimiento válido
             if (indexMov == -1)
             {
                 valid = false;
@@ -409,7 +400,7 @@ bool Tauler::mouFitxa(const Posicio& origen, const Posicio& desti)
             {
                 const Moviment& mov = fitxa.getMovimentValid(indexMov);
 
-                // Verificamos si hay capturas posibles globalmente
+                // Verificar si existe alguna captura en TODO el tablero
                 bool hiHaCaptura = false;
                 for (int i = 0; i < N_FILES; ++i)
                 {
@@ -427,15 +418,31 @@ bool Tauler::mouFitxa(const Posicio& origen, const Posicio& desti)
                     }
                 }
 
-                // Si hay capturas posibles y no es de captura => BUFAR
                 if (hiHaCaptura && !mov.getEsMovimentDeCaptura())
                 {
-                    m_tauler[filaOrig][colOrig] = Fitxa(TIPUS_EMPTY, COLOR_BLANC, origen);
-                    valid = true;
+                    bool laFitxaTeniaCaptura = false;
+                    for (int i = 0; i < fitxaOrig.getNumMovimentsValids(); ++i)
+                    {
+                        if (fitxaOrig.getMovimentValid(i).getEsMovimentDeCaptura())
+                        {
+                            laFitxaTeniaCaptura = true;
+                            break;
+                        }
+                    }
+
+                    if (laFitxaTeniaCaptura)
+                    {
+                        m_tauler[filaOrig][colOrig] = Fitxa(TIPUS_EMPTY, COLOR_BLANC, origen); // Bufar
+                        valid = true;
+                    }
+                    else
+                    {
+                        valid = false; // No tenía captura, pero intentó mover cuando otras sí podían
+                    }
                 }
                 else
                 {
-                    // Ejecutar captura
+                    // Ejecutar captura (elimina las piezas comidas)
                     if (mov.getEsMovimentDeCaptura())
                     {
                         for (int i = 1; i < mov.getNumPosicions(); ++i)
@@ -455,27 +462,29 @@ bool Tauler::mouFitxa(const Posicio& origen, const Posicio& desti)
                     // Mover la ficha
                     int filaDest = desti.getFila() - 1;
                     int colDest = desti.getColumna();
+
                     m_tauler[filaDest][colDest] = fitxaOrig;
                     m_tauler[filaDest][colDest].setPosicio(desti);
                     m_tauler[filaOrig][colOrig] = Fitxa(TIPUS_EMPTY, COLOR_BLANC, origen);
 
-                    // Promoción si corresponde
-                    if (m_tauler[filaDest][colDest].getTipus() == TIPUS_NORMAL &&
+                    // Promocionar si ha llegado al final del tablero
+                    if ((m_tauler[filaDest][colDest].getTipus() == TIPUS_NORMAL) &&
                         ((m_tauler[filaDest][colDest].getColor() == COLOR_BLANC && filaDest == 7) ||
                             (m_tauler[filaDest][colDest].getColor() == COLOR_NEGRE && filaDest == 0)))
                     {
                         m_tauler[filaDest][colDest].convertirADama();
-                        calculaMovimentsFitxa(filaDest, colDest);
+                        calculaMovimentsFitxa(filaDest, colDest); // Recalcular movimientos de dama
                     }
-                    actualitzaMovimentsValids();
-                    // Actualizar movimientos válidos de la ficha que se ha movido
-                    // Si arriba fins a aqui, valid = true, el moviment sera valid
                 }
             }
         }
     }
+
+    actualitzaMovimentsValids(); // Siempre actualizar al final
     return valid;
 }
+
+
 
 /*
 * calculaMovimentsFitxa
