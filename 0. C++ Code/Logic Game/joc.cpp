@@ -104,7 +104,7 @@ bool Joc::actualitza(int mousePosX, int mousePosY, bool mouseStatus)
 
 		const Fitxa& fitxaClicada = m_tauler.getFitxa(posicioClicada);
 
-		if (fitxaClicada.getTipus() != TIPUS_EMPTY)
+		if (fitxaClicada.getTipus() != TIPUS_EMPTY && fitxaClicada.getColor() == m_tornActual)
 		{
 			m_filaSeleccionada = fila;
 			m_colSeleccionada = col;
@@ -121,6 +121,10 @@ bool Joc::actualitza(int mousePosX, int mousePosY, bool mouseStatus)
 			{
 				m_fitxaSeleccionada = false;
 				m_tauler.actualitzaMovimentsValids();
+				if (m_tornActual == COLOR_BLANC)
+					m_tornActual = COLOR_NEGRE;
+				else
+					m_tornActual = COLOR_BLANC;
 			}
 		}
 	}

@@ -19,6 +19,7 @@ private:
     bool m_fitxaSeleccionada = false;
     int m_filaSeleccionada = -1;
     int m_colSeleccionada = -1;
+    ColorFitxa m_tornActual = COLOR_BLANC;
 };
 
 #endif 
