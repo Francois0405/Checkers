@@ -117,14 +117,24 @@ bool Joc::actualitza(int mousePosX, int mousePosY, bool mouseStatus)
 			Posicio origen(m_filaSeleccionada + 1, m_colSeleccionada);
 			Posicio desti(fila + 1, col);
 
+			bool hiHaCaptura = m_tauler.hiHaCapturaGlobal(m_tornActual);
+
+			bool esCaptura = m_tauler.esMovimentDeCaptura(origen, desti);
+
 			if (m_tauler.mouFitxa(origen, desti))
 			{
+				if (hiHaCaptura && !esCaptura)
+					m_tauler.bufaFitxa(origen);  // BUFAR si debías capturar y no lo hiciste
+
 				m_fitxaSeleccionada = false;
 				m_tauler.actualitzaMovimentsValids();
+
+				// Cambiar turno
 				if (m_tornActual == COLOR_BLANC)
 					m_tornActual = COLOR_NEGRE;
 				else
 					m_tornActual = COLOR_BLANC;
+
 			}
 		}
 	}

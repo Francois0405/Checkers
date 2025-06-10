@@ -51,6 +51,10 @@ public:
 	void visualitza() const;
 
 	const Fitxa& getFitxa(const Posicio& pos) const;
+	bool hiHaCapturaGlobal(ColorFitxa color);
+	bool esMovimentDeCaptura(const Posicio& origen, const Posicio& desti) const;
+	void bufaFitxa(const Posicio& pos);
+
 
 private:
 	Fitxa m_tauler[N_FILES][N_COLUMNES];

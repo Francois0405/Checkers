@@ -237,18 +237,19 @@ void Tauler::getCapturesDama(const Fitxa& fitxa, const Moviment& movActual, vect
 
     for (int d = 0; d < 4; ++d)
     {
+        int df = dirs[d][0];
+        int dc = dirs[d][1];
         int f = pos.getFila();
         int c = pos.getColumna();
+
         bool trobatEnemic = false;
         int filaEnemic = -1, colEnemic = -1;
 
-        while (true)
+        f += df;
+        c += dc;
+
+        while (esDinsTauler(f - 1, c))
         {
-            f += dirs[d][0];
-            c += dirs[d][1];
-
-            if (!esDinsTauler(f - 1, c)) break;
-
             const Fitxa& actual = m_tauler[f - 1][c];
 
             if (actual.getTipus() == TIPUS_EMPTY)
@@ -261,11 +262,11 @@ void Tauler::getCapturesDama(const Fitxa& fitxa, const Moviment& movActual, vect
                     pendents.push_back(nouMov);
 
                     getCapturesDama(fitxa, nouMov, pendents);
+                    break;
                 }
-                else
-                {
-                    continue;
-                }
+
+                f += df;
+                c += dc;
             }
             else if (actual.getColor() != fitxa.getColor())
             {
@@ -274,19 +275,23 @@ void Tauler::getCapturesDama(const Fitxa& fitxa, const Moviment& movActual, vect
                     trobatEnemic = true;
                     filaEnemic = f - 1;
                     colEnemic = c;
+
+                    f += df;
+                    c += dc;
                 }
                 else
                 {
-                    break;
+                    break; // ya se encontró un enemigo, no puede haber otro seguido
                 }
             }
             else
             {
-                break;
+                break; // ficha del mismo color
             }
         }
     }
 }
+
 
 
 
@@ -633,3 +638,57 @@ const Fitxa& Tauler::getFitxa(const Posicio& pos) const
     return m_tauler[fila][col];
 }
 
+
+bool Tauler::hiHaCapturaGlobal(ColorFitxa color)
+{
+    bool hiHaCapturaGlobal = false;
+    for (int i = 0; i < N_FILES; i++)
+    {
+        for (int j = 0; j < N_COLUMNES; j++)
+        {
+            const Fitxa& f = m_tauler[i][j];
+            if (f.getTipus() != TIPUS_EMPTY && f.getColor() == color)
+            {
+                for (int k = 0; k < f.getNumMovimentsValids(); ++k)
+                {
+                    if (f.getMovimentValid(k).getEsMovimentDeCaptura())
+                        hiHaCapturaGlobal = true;
+                }
+            }
+        }
+    }
+    return hiHaCapturaGlobal;
+}
+
+
+bool Tauler::esMovimentDeCaptura(const Posicio& origen, const Posicio& desti) const
+{
+    bool esMovCaptura = false;
+    int fila = origen.getFila() - 1;
+    int col = origen.getColumna();
+
+    if (esDinsTauler(fila, col))
+    {
+        const Fitxa& fitxa = m_tauler[fila][col];
+        for (int i = 0; i < fitxa.getNumMovimentsValids(); ++i)
+        {
+            const Moviment& m = fitxa.getMovimentValid(i);
+            if (m.getPosicioFinal() == desti && m.getEsMovimentDeCaptura())
+            {
+                esMovCaptura = true;
+                break;
+            }
+        }
+    }
+    return esMovCaptura;
+}
+
+
+void Tauler::bufaFitxa(const Posicio& pos)
+{
+    int fila = pos.getFila() - 1;
+    int col = pos.getColumna();
+
+    if (esDinsTauler(fila, col))
+        m_tauler[fila][col] = Fitxa(TIPUS_EMPTY, COLOR_BLANC, pos);
+}
