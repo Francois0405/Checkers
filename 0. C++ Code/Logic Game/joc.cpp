@@ -35,46 +35,10 @@ void Joc::inicialitza(ModeJoc mode, const string& nomFitxerTauler, const string&
 
 bool Joc::actualitza(int mousePosX, int mousePosY, bool mouseStatus)
 {
-	//TODO 1: Interactuar amb la crida per dibuixar gràfics (sprites). =DONE
-	// 	      Dibuixar a pantalla el fons i el gràfic amb el tauler buit. =DONE
-	//------------------------------------------------------------------
-
-	//TODO 1.1 Afegir l'include de GraphicManager --> #include "GraphicManager.h" =DONE
-	//TODO 1.2 Fer la crida de dibuixar un sprite --> GraphicManager::getInstance()->drawSprite(image, posX, posY); =DONE
-	//	    Per començar podem cridar el drawSprite amb els params --> 
-	//          (GRAFIC_FONS,0,0) i 
-	//          (GRAFIC_TAULER, POS_X_TAULER, POS_Y_TAULER)
-
 	// Important Primer mostrar el fons sino el fons tapara tauler.
 	GraphicManager::getInstance()->drawSprite(GRAFIC_FONS, 0, 0);
 	GraphicManager::getInstance()->drawSprite(GRAFIC_TAULER, POS_X_TAULER, POS_Y_TAULER);
 	m_tauler.visualitza();
-
-	//TODO 1.3: Dibuixar a pantalla el gràfic amb el tauler i una fitxa blanca a la posició (fila, columna ) del tauler =DONE
-
-	/*
-	m_columna = ((POS_X_TAULER + CASELLA_INICIAL_X)) / AMPLADA_CASELLA;
-	m_fila = ((POS_Y_TAULER + CASELLA_INICIAL_Y)) / ALCADA_CASELLA;
-
-	int posX1 = POS_X_TAULER + CASELLA_INICIAL_X + (m_columna * AMPLADA_CASELLA);
-	int posY1 = POS_Y_TAULER + CASELLA_INICIAL_Y + (m_fila * ALCADA_CASELLA);
-	GraphicManager::getInstance()->drawSprite(GRAFIC_FITXA_BLANCA, posX1, posY1);
-	*/
-
-	//TODO 2: Interactuar amb el ratolí.
-	//------------------------------------------------------------------
-	//TODO 2.1: Dibuixar la fitxa blanca al tauler només si estem pressionant el botó del ratolí
-	/*if (mouseStatus && (mousePosX >= (POS_X_TAULER + CASELLA_INICIAL_X)) &&
-		(mousePosY >= POS_Y_TAULER + CASELLA_INICIAL_Y) &&
-		(mousePosX <= (POS_X_TAULER + CASELLA_INICIAL_X + AMPLADA_CASELLA * NUM_COLS_TAULER)) &&
-		(mousePosY <= (POS_Y_TAULER + CASELLA_INICIAL_Y + ALCADA_CASELLA * NUM_FILES_TAULER)))
-	{
-		m_columna = (mousePosX - (POS_X_TAULER + CASELLA_INICIAL_X)) / AMPLADA_CASELLA;
-		m_fila = (mousePosY - (POS_Y_TAULER + CASELLA_INICIAL_Y)) / ALCADA_CASELLA;
-	}
-	int posX = POS_X_TAULER + CASELLA_INICIAL_X + (m_columna * AMPLADA_CASELLA);
-	int posY = POS_Y_TAULER + CASELLA_INICIAL_Y + (m_fila * ALCADA_CASELLA);
-	GraphicManager::getInstance()->drawSprite(GRAFIC_FITXA_BLANCA, posX, posY);*/
 
 	int posTextX = POS_X_TAULER;
 	int posTextY = POS_Y_TAULER + (ALCADA_CASELLA * NUM_FILES_TAULER) + 130;

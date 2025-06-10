@@ -42,7 +42,9 @@ int main(int argc, const char* argv[])
     pantalla.show();
 
     Joc joc;
+    // PAS 1. INICIALITZEM EL JOC
     joc.inicialitza(MODE_JOC_NORMAL, "..\\taulerInicial.txt", "moviments.txt");
+    bool final = false;
 
     do
     {
@@ -52,13 +54,20 @@ int main(int argc, const char* argv[])
         bool mouseStatus = Mouse_getBtnLeft();
         int mousePosX = Mouse_getX();
         int mousePosY = Mouse_getY();
-        bool final = joc.actualitza(mousePosX, mousePosY, mouseStatus);
+        
+        // PAS 2. ACTUALITZEM SI NO S'HA ACABAT I RETORNA EL BOOL (GUANYAT)
+        final = joc.actualitza(mousePosX, mousePosY, mouseStatus);
 
         // Actualitza la pantalla
         pantalla.update();
+    } while (!Keyboard_GetKeyTrg(KEYBOARD_ESCAPE) && !final);
+    // Sortim del bucle si pressionem ESC o quan s'acaba
 
-    } while (!Keyboard_GetKeyTrg(KEYBOARD_ESCAPE));
-    // Sortim del bucle si pressionem ESC
+    if (final)
+    {
+        // PAS 3. FINALITZEM EL JOC
+        joc.finalitza();
+    }
 
     //Instruccio necesaria per alliberar els recursos de la llibreria 
     SDL_Quit();
