@@ -316,39 +316,40 @@ void Tauler::getCapturesDisponibles(const Fitxa& fitxa, const Moviment& movActua
     int dirs[2][2];
     if (fitxa.getColor() == COLOR_NEGRE)
     {
-        // fila (1)        columna
-        dirs[0][0] = 1, dirs[0][1] = -1; // avall esquerra
-        dirs[1][0] = 1, dirs[1][1] = 1; // avall dreta
+        dirs[0][0] = -1; dirs[0][1] = -1; // arriba izquierda
+        dirs[1][0] = -1; dirs[1][1] = 1;  // arriba derecha
     }
     else
     {
-        // fila (-1)        columna
-        dirs[0][0] = -1, dirs[0][1] = -1; // amunt esquerra
-        dirs[1][0] = -1, dirs[1][1] = 1; // amunt dreta
+        dirs[0][0] = 1; dirs[0][1] = -1; // abajo izquierda
+        dirs[1][0] = 1; dirs[1][1] = 1;  // abajo derecha
     }
 
     Posicio pos = movActual.getPosicioFinal();
 
     for (int i = 0; i < 2; ++i)
     {
-        int fila1 = pos.getFila() + dirs[i][0];
-        int col1 = pos.getColumna() + dirs[i][1];
+        int fila1 = pos.getFila() - 1 + dirs[i][0]; // fila enemigo
+        int col1 = pos.getColumna() + dirs[i][1];   // col enemigo
 
-        int fila2 = pos.getFila() + 2 * dirs[i][0];
-        int col2 = pos.getColumna() + 2 * dirs[i][1];
+        int fila2 = fila1 + dirs[i][0];
+        int col2 = col1 + dirs[i][1];
 
-        if (esDinsTauler(fila2, col2) &&
-            m_tauler[fila1][col1].getTipus() != TIPUS_EMPTY &&
-            m_tauler[fila1][col1].getColor() != fitxa.getColor() &&
-            m_tauler[fila2][col2].getTipus() == TIPUS_EMPTY)
+        if (esDinsTauler(fila1, col1) && esDinsTauler(fila2, col2))
         {
-            Moviment nouMov = movActual;
-            nouMov.afegeixPosicio(Posicio(fila2, col2));
-            nouMov.setEsMovimentDeCaptura(true);
-            pendents.push_back(nouMov);
+            const Fitxa& enemic = m_tauler[fila1][col1];
+            const Fitxa& desti = m_tauler[fila2][col2];
 
-            // Volvemos a llamar a la funcion recursivamente para buscar más capturas
-            getCapturesDisponibles(fitxa, nouMov, pendents);
+            if (enemic.getTipus() != TIPUS_EMPTY && enemic.getColor() != fitxa.getColor() && desti.getTipus() == TIPUS_EMPTY)
+            {
+                Moviment nouMov = movActual;
+                nouMov.afegeixPosicio(Posicio(fila2 + 1, col2)); // Recorda que fila comenca en 1
+                nouMov.setEsMovimentDeCaptura(true);
+                pendents.push_back(nouMov);
+
+                // Buscar captures en cadena
+                getCapturesDisponibles(fitxa, nouMov, pendents);
+            }
         }
     }
 }
@@ -490,35 +491,31 @@ void Tauler::calculaMovimentsFitxa(int fila, int col)
         return;
 
     Fitxa& fitxa = m_tauler[fila][col];
-    Posicio origen = fitxa.getPosicio(); // Posición actual
+    Posicio origen = fitxa.getPosicio();
     fitxa.resetMovimentsValids();
 
     vector<Moviment> pendents;
-    pendents.push_back(Moviment(origen));
     bool hiHaCaptura = false;
 
-    while (!pendents.empty())
+    // Inicializamos las capturas desde la posición inicial
+    Moviment inici(origen);
+    if (fitxa.getTipus() == TIPUS_DAMA)
+        getCapturesDama(fitxa, inici, pendents);
+    else
+        getCapturesDisponibles(fitxa, inici, pendents);
+
+    // Añadimos todas las capturas encontradas
+    for (auto& m : pendents)
     {
-        Moviment actual = pendents.back();
-        pendents.pop_back();
-
-        size_t tamAnt = pendents.size();
-
-        if (fitxa.getTipus() == TIPUS_DAMA)
-            getCapturesDama(fitxa, actual, pendents);
-        else
-            getCapturesDisponibles(fitxa, actual, pendents);
-
-        // Si no se han generado más captures desde este moviment
-        if (pendents.size() == tamAnt && actual.getNumPosicions() > 1)
+        if (m.getNumPosicions() > 1)
         {
-            actual.setEsMovimentDeCaptura(true);
-            fitxa.afegeixMovimentValid(actual);
+            m.setEsMovimentDeCaptura(true);
+            fitxa.afegeixMovimentValid(m);
             hiHaCaptura = true;
         }
     }
 
-    // Si no hay captures, generamos movimientos simples
+    // Si no hay capturas, generamos movimientos simples
     if (!hiHaCaptura)
     {
         if (fitxa.getTipus() == TIPUS_NORMAL)
@@ -549,7 +546,6 @@ void Tauler::calculaMovimentsFitxa(int fila, int col)
                     Moviment mov(origen);
                     mov.afegeixPosicio(Posicio(f + 1, c));
                     fitxa.afegeixMovimentValid(mov);
-
                     f += dirs[d][0];
                     c += dirs[d][1];
                 }
@@ -557,6 +553,8 @@ void Tauler::calculaMovimentsFitxa(int fila, int col)
         }
     }
 }
+
+
 
 
 

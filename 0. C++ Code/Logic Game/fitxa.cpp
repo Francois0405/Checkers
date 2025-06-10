@@ -164,6 +164,13 @@ void Fitxa::setPosicio(const Posicio& posicio)
 
 void Fitxa::afegeixMovimentValid(const Moviment& moviment)
 {
+	if (moviment.getEsMovimentDeCaptura())
+	{
+		Posicio desti = moviment.getPosicioFinal();
+		cout << "[DEBUG] Afegit moviment de captura per a fitxa " << getLletra()
+			<< " cap a (" << desti.getFila() << ", " << desti.getColumna() << ")" << endl;
+	} //QUITAR DPS
+
 	m_movimentsValids.push_back(moviment);
 }
 
