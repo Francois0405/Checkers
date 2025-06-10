@@ -40,20 +40,23 @@ bool Joc::actualitza(int mousePosX, int mousePosY, bool mouseStatus)
 	GraphicManager::getInstance()->drawSprite(GRAFIC_TAULER, POS_X_TAULER, POS_Y_TAULER);
 	m_tauler.visualitza();
 
+	// Implementat indicador posMouse
 	int posTextX = POS_X_TAULER;
 	int posTextY = POS_Y_TAULER + (ALCADA_CASELLA * NUM_FILES_TAULER) + 130;
 	string title = "Mouse Cursor";
 	string msg = "PosX: " + to_string(mousePosX) + ", PosY: " + to_string(mousePosY);
-	string title2 = "Checkers";
-	//string msg2 = "PosX: " + to_string(posX) + ", PosY: " + to_string(posY);
 	GraphicManager::getInstance()->drawFont(FONT_GREEN_30, posTextX, posTextY - 20, 0.8, title);
-	GraphicManager::getInstance()->drawFont(FONT_WHITE_30, posTextX, posTextY, 0.8, msg);
-	GraphicManager::getInstance()->drawFont(FONT_GREEN_30, posTextX, posTextY + 25, 0.8, title2);
-	//GraphicManager::getInstance()->drawFont(FONT_WHITE_30, posTextX, posTextY + 50, 0.8, msg2);
+	GraphicManager::getInstance()->drawFont(FONT_WHITE_30, posTextX, posTextY + 5, 0.8, msg);
+
+	// Implementat indicador torn
+	string torn;
+	if (m_tornActual == COLOR_BLANC)
+		torn = "Torn: BLANQUES";
+	else
+		torn = "Torn: NEGRES";
+	GraphicManager::getInstance()->drawFont(FONT_GREEN_30, posTextX, posTextY + 40, 0.8, torn);
 
 
-	//TODO 2.2: Dibuixar la fitxa blanca al tauler només si estem pressionant el botó del ratolí i el ratolí
-	// està dins del límits del tauler
 	bool dinsTauler = mousePosX >= POS_X_TAULER + CASELLA_INICIAL_X &&
 		mousePosY >= POS_Y_TAULER + CASELLA_INICIAL_Y &&
 		mousePosX < POS_X_TAULER + CASELLA_INICIAL_X + NUM_COLS_TAULER * AMPLADA_CASELLA &&
@@ -148,19 +151,6 @@ bool Joc::actualitza(int mousePosX, int mousePosY, bool mouseStatus)
 			}
 		}
 	}
-
-	//TODO 2.4: Dibuixar la fitxa blanca a la casella on cliquem al ratolí. La fitxa s'ha de mantenir dibuixada
-	// a la casella quan deixem de clicar amb el ratolí. Quan cliquem a una altra casella, la fitxa canvia de posició
-	// a la nova casella
-
-
-
-	// TODO 3: Imprimir text per pantalla
-	//------------------------------------------
-	// TODO 3.1: Mostrar la posició actual del ratolí a sota del tauler
-
-
-
 	return false;
 }
 

@@ -30,7 +30,7 @@ Tauler::Tauler()
             m_tauler[i][j] = Fitxa(TIPUS_EMPTY, COLOR_BLANC, Posicio(i + 1, j));
         }
     }
-    cout << endl << "Tauler() Correcte" << endl;
+    cout << endl << "[DEBUG] Tauler() Correcte" << endl;
 }
 
 /*
@@ -93,12 +93,13 @@ void Tauler::inicialitza(const string& nomFitxer)
             }
             m_tauler[fila][col] = Fitxa(tipusFitxa, color, posicio);
         }
-        cout << endl << "inicialitza() Correcte" << endl;
+        cout << endl << "[DEBUG] inicialitza() Correcte" << endl;
         fitxer.close();
     }
     else
     {
         // Llança un error que atura l'execucio
+        cout << "[ERROR] inicialitza()      Fitxer no trobat";
         throw runtime_error("ERROR: Fitxer no trobat");
     }
 }
@@ -130,7 +131,7 @@ void Tauler::actualitzaMovimentsValids()
             }
         }
     }
-    cout << endl << "actualitzaMovimentsValids() Correcte" << endl;
+    cout << endl << "[DEBUG] actualitzaMovimentsValids() Correcte" << endl;
 }
 
 
