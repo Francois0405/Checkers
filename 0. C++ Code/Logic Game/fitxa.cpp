@@ -195,27 +195,27 @@ void Fitxa::resetMovimentsValids()
 
 void Fitxa::visualitza() const
 {
-	if (m_tipus == TIPUS_EMPTY)
-		return;
+	if (m_tipus != TIPUS_EMPTY)
+	{
+		int col = m_posicio.getColumna();
+		int fila = 7 - m_posicio.getFila();
 
-	int col = m_posicio.getColumna();
-	int fila = m_posicio.getFila() - 1;
+		int posX = POS_X_TAULER + CASELLA_INICIAL_X + (col * AMPLADA_CASELLA);
+		int posY = POS_Y_TAULER + CASELLA_INICIAL_Y + (fila * ALCADA_CASELLA);
 
-	int posX = POS_X_TAULER + CASELLA_INICIAL_X + (col * AMPLADA_CASELLA);
-	int posY = POS_Y_TAULER + CASELLA_INICIAL_Y + (fila * ALCADA_CASELLA);
-
-	IMAGE_NAME grafic;
-	if (m_color == COLOR_BLANC) {
-		if (m_tipus == TIPUS_DAMA)
-			grafic = GRAFIC_DAMA_BLANCA;
-		else
-			grafic = GRAFIC_FITXA_BLANCA;
+		IMAGE_NAME grafic;
+		if (m_color == COLOR_BLANC) {
+			if (m_tipus == TIPUS_DAMA)
+				grafic = GRAFIC_DAMA_BLANCA;
+			else
+				grafic = GRAFIC_FITXA_BLANCA;
+		}
+		else {
+			if (m_tipus == TIPUS_DAMA)
+				grafic = GRAFIC_DAMA_NEGRA;
+			else
+				grafic = GRAFIC_FITXA_NEGRA;
+		}
+		GraphicManager::getInstance()->drawSprite(grafic, posX, posY);
 	}
-	else {
-		if (m_tipus == TIPUS_DAMA)
-			grafic = GRAFIC_DAMA_NEGRA;
-		else
-			grafic = GRAFIC_FITXA_NEGRA;
-	}
-	GraphicManager::getInstance()->drawSprite(grafic, posX, posY);
 }

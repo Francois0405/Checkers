@@ -27,10 +27,10 @@ Posicio::Posicio() : m_fila(0), m_columna('a') {}
 Posicio::Posicio(const string& posicio)
 {
 	m_columna = posicio[0];  // 'a' a 'h'
-	m_fila = posicio[1] - '0'; // 1 a 8
+	m_fila = 8 - (posicio[1] - '0'); // Invertim la logica a1 = [0][7]
 
 	// Validació (opcional)
-	if (m_fila < 1 || m_fila > 8) m_fila = 1;
+	if (m_fila < 0 || m_fila > N_FILES) m_fila = 1;
 	if (m_columna < 'a' || m_columna > 'h') m_columna = 'a';
 }
 
@@ -41,7 +41,7 @@ Posicio::Posicio(const string& posicio)
 
 Posicio::Posicio(int fila, int columna)
 {
-	m_fila = fila;
+	m_fila = N_FILES - fila; // Logica inversa
 	m_columna = 'a' + columna;
 }
 
@@ -144,7 +144,7 @@ bool Posicio::operator!=(const Posicio& posicio) const
 void Posicio::stringToPosicio(const string& posicio, int& fila, int& columna)
 {
 	columna = posicio[0] - 'a'; // Resta en codigo ASCII
-	fila = (N_FILES - 1) - (posicio[1] - '0'); // Convertimos a int restandole el caracter 0.
+	fila = N_FILES - (posicio[1] - '0'); // !!! Invertimos la fila para que quede bien con a1...
 }
 
 /**

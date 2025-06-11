@@ -44,6 +44,30 @@ int main(int argc, const char* argv[])
     string nomFitxerMoviments = "N/A";
     Joc joc;
     ModeJoc mode = joc.menu(nomFitxerMoviments);
+
+    string modeString;
+    switch (mode)
+    {
+    case 0:
+        modeString = "NORMAL";
+        break;
+    case 1:
+        modeString = "REPLAY";
+        break;
+    case 2:
+        modeString = "ORDINADOR";
+        break;
+    case 3:
+        modeString = "NONE";
+        break;
+    default:
+        throw runtime_error("[ERROR] UNKNOWN MODE");
+        break;
+    }
+
+    cout << "[DEBUG] MODE: " << modeString << endl;
+    cout << "[DEBUG] FitxerMov: " << nomFitxerMoviments << endl;
+
     // PAS 1. INICIALITZEM EL JOC
     joc.inicialitza(mode, "..\\taulerInicial.txt", nomFitxerMoviments);
     bool final = false;
@@ -63,14 +87,17 @@ int main(int argc, const char* argv[])
         // Actualitza la pantalla
         pantalla.update();
     } while (!Keyboard_GetKeyTrg(KEYBOARD_ESCAPE) && !final);
-    // Sortim del bucle si pressionem ESC o quan s'acaba
+        // Sortim del bucle si pressionem ESC o quan s'acaba
 
     if (final)
     {
         // PAS 3. FINALITZEM EL JOC
         joc.finalitza();
+        cout << "[DEBUG] JOC FINALITZAT" << endl;
     }
-
+    else
+        cout << "[DEBUG] ESC pressionat" << endl;
+    system("pause");
     //Instruccio necesaria per alliberar els recursos de la llibreria 
     SDL_Quit();
     return 0;

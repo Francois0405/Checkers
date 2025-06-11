@@ -132,6 +132,7 @@ void Joc::inicialitza(ModeJoc mode, const string& nomFitxerTauler, const string&
 
 bool Joc::actualitza(int mousePosX, int mousePosY, bool mouseStatus)
 {
+	bool primeraVegada = false;
 	// Important Primer mostrar el fons sino el fons tapara tauler.
 	GraphicManager::getInstance()->drawSprite(GRAFIC_FONS, 0, 0);
 	GraphicManager::getInstance()->drawSprite(GRAFIC_TAULER, POS_X_TAULER, POS_Y_TAULER);
@@ -154,15 +155,18 @@ bool Joc::actualitza(int mousePosX, int mousePosY, bool mouseStatus)
 	GraphicManager::getInstance()->drawFont(FONT_GREEN_30, posTextX, posTextY + 40, 0.8, torn);
 
 
-	bool dinsTauler = mousePosX >= POS_X_TAULER + CASELLA_INICIAL_X &&
+	bool dinsTauler = (mousePosX >= POS_X_TAULER + CASELLA_INICIAL_X &&
 		mousePosY >= POS_Y_TAULER + CASELLA_INICIAL_Y &&
 		mousePosX < POS_X_TAULER + CASELLA_INICIAL_X + NUM_COLS_TAULER * AMPLADA_CASELLA &&
-		mousePosY < POS_Y_TAULER + CASELLA_INICIAL_Y + NUM_FILES_TAULER * ALCADA_CASELLA;
+		mousePosY < POS_Y_TAULER + CASELLA_INICIAL_Y + NUM_FILES_TAULER * ALCADA_CASELLA);
 
+	// mouseStatus = click
 	if (mouseStatus && dinsTauler)
 	{
 		int col = (mousePosX - (POS_X_TAULER + CASELLA_INICIAL_X)) / AMPLADA_CASELLA;
 		int fila = (mousePosY - (POS_Y_TAULER + CASELLA_INICIAL_Y)) / ALCADA_CASELLA;
+
+		fila = fila;
 
 		Posicio posicioClicada(fila + 1, col);
 
@@ -170,6 +174,12 @@ bool Joc::actualitza(int mousePosX, int mousePosY, bool mouseStatus)
 
 		if (fitxaClicada.getTipus() != TIPUS_EMPTY && fitxaClicada.getColor() == m_tornActual)
 		{
+			m_fitxaSeleccionada = false;
+			if (m_fitxaSeleccionada == false)
+			{
+				cout << "[DEBUG] Heu seleccionat una fitxa (" << endl;
+				primeraVegada = true;
+			}
 			m_filaSeleccionada = fila;
 			m_colSeleccionada = col;
 			m_fitxaSeleccionada = true;
@@ -188,7 +198,12 @@ bool Joc::actualitza(int mousePosX, int mousePosY, bool mouseStatus)
 			if (m_tauler.mouFitxa(origen, desti))
 			{
 				if (hiHaCaptura && !esCaptura)
+				{
 					m_tauler.bufaFitxa(origen);  // BUFAR si debías capturar y no lo hiciste
+					cout << "[DEBUG] Fitxa bufada" << endl;
+				}					
+				else if (hiHaCaptura && esCaptura)
+					cout << "[DEBUG] Us heu menjat una fitxa, quina gana!" << endl;
 
 				m_fitxaSeleccionada = false;
 				m_tauler.actualitzaMovimentsValids();
@@ -207,7 +222,6 @@ bool Joc::actualitza(int mousePosX, int mousePosY, bool mouseStatus)
 
 	//TODO 2.3: Dibuixar la fitxa blanca al tauler només si estem pressionant el botó del ratolí i el ratolí
 	// està dins del límits del tauler. Dibuixa la fitxa a la casella on està el ratolí
-
 	if (m_fitxaSeleccionada)
 	{
 		Posicio posActual(m_filaSeleccionada + 1, m_colSeleccionada);
@@ -217,6 +231,7 @@ bool Joc::actualitza(int mousePosX, int mousePosY, bool mouseStatus)
 		if (fitxa.getTipus() == TIPUS_EMPTY)
 		{
 			m_fitxaSeleccionada = false;
+			primeraVegada = true;
 		}
 		else
 		{
@@ -239,8 +254,27 @@ bool Joc::actualitza(int mousePosX, int mousePosY, bool mouseStatus)
 			}
 
 			// Mostrar moviments valids
-			for (int i = 0; i < fitxa.getNumMovimentsValids(); ++i)
+			if (primeraVegada)
 			{
+				string strPos = "N/A";
+				Moviment mov;
+				cout << "[DEBUG] Moviments valids: [";
+				for (int i = 0; i < fitxa.getNumMovimentsValids(); ++i)
+				{
+					mov = fitxa.getMovimentValid(i);
+
+					for (int j = 0; j < mov.getNumPosicions(); j++)
+					{
+						mov.getPosicio(j).posicioToString(strPos);
+						cout << strPos << ", ";
+					}
+				}
+				cout << "]" << endl;
+				primeraVegada = false;
+			}
+
+			for (int i = 0; i < fitxa.getNumMovimentsValids(); ++i)
+			{		
 				Posicio desti = fitxa.getMovimentValid(i).getPosicioFinal();
 				int x = POS_X_TAULER + CASELLA_INICIAL_X + desti.getColumna() * AMPLADA_CASELLA;
 				int y = POS_Y_TAULER + CASELLA_INICIAL_Y + (desti.getFila() - 1) * ALCADA_CASELLA;
