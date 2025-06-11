@@ -168,3 +168,13 @@ bool Moviment::contePosicio(const Posicio& posicio) const
 	}
 	return conte;
 }
+
+void Moviment::printPosicions() const
+{
+	cout << "Moviment: ";
+	for (int i = 0; i < m_posicions.size(); i++)
+	{
+		cout << m_posicions[i].toString() << " ";
+	}
+	cout << endl;
+}

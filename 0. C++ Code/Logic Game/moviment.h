@@ -44,6 +44,7 @@ public:
     void estableixPosicions(const vector<Posicio>& m_posicions);
     bool contePosicio(const Posicio& posicio) const;
 
+	void printPosicions() const;
 private:
 	vector<Posicio> m_posicions;
     int m_numPosicions;

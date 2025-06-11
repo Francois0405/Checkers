@@ -162,6 +162,13 @@ void Posicio::posicioToString(string& posicio) const
 	posicio += to_string(m_fila);
 }
 
+string Posicio::toString() const
+{
+	string posicio;
+	posicioToString(posicio);
+	return posicio;
+}
+
 /**
 * operator<<
 * Operador que imprimeix la posicio en format string.

@@ -219,3 +219,28 @@ void Fitxa::visualitza() const
 		GraphicManager::getInstance()->drawSprite(grafic, posX, posY);
 	}
 }
+
+void Fitxa::printMovimentsValids() const
+{
+	if (m_movimentsValids.empty())
+	{
+		cout << "No hi ha moviments valids per a la fitxa " << getLletra() << endl;
+		return;
+	}
+	string posStr;
+	m_posicio.posicioToString(posStr);
+	cout << "[DEBUG] Mov valids (" << posStr << "): " << endl;
+	cout << "[";
+	for (int i = 0; i < m_movimentsValids.size(); ++i)
+	{
+		if (i > 0) 
+			cout << ", ";
+
+		const Moviment& mov = m_movimentsValids[i];
+		cout << "(" << mov.getPosicioInicial().getFila() << ", " << mov.getPosicioInicial().getColumna() << ") -> ("
+			<< mov.getPosicioFinal().getFila() << ", " << mov.getPosicioFinal().getColumna() << ")";
+		if (mov.getEsMovimentDeCaptura())
+			cout << " [captura]";
+	}
+	cout << "]" << endl;
+}

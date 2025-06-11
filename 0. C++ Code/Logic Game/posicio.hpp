@@ -52,7 +52,7 @@ public:
 
     void stringToPosicio(const string& posicio, int& fila, int& columna);
     void posicioToString(string& posicio) const;
-
+	string toString() const;
 private:
     int m_fila;    
     char m_columna; 

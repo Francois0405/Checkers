@@ -80,6 +80,7 @@ public:
     void resetMovimentsValids();
     void visualitza() const;
 
+	void printMovimentsValids() const;
 private:
     TipusFitxa m_tipus;
     ColorFitxa m_color;
