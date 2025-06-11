@@ -41,9 +41,11 @@ int main(int argc, const char* argv[])
     //Mostrem la finestra grafica
     pantalla.show();
 
+    string nomFitxerMoviments = "N/A";
     Joc joc;
+    ModeJoc mode = joc.menu(nomFitxerMoviments);
     // PAS 1. INICIALITZEM EL JOC
-    joc.inicialitza(MODE_JOC_NORMAL, "..\\taulerInicial.txt", "moviments.txt");
+    joc.inicialitza(mode, "..\\taulerInicial.txt", nomFitxerMoviments);
     bool final = false;
 
     do

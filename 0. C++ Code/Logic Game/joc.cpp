@@ -12,9 +12,106 @@
 #include "GraphicManager.h"
 
 
+ModeJoc Joc::menu(string& nomFitxerMoviments)
+{
+	cout << "    ___             ______      ______                          " << endl
+		<< "   |_  |            |  _  \\     |  _  \\                         " << endl
+		<< "     | | ___   ___  | | | |___  | | | |__ _ _ __ ___   ___  ___ " << endl
+		<< "     | |/ _ \\ / __| | | | / _ \\ | | | / _` | '_ ` _ \\ / _ \\/ __|" << endl
+		<< "/ \\__/ / (_) | (__  | |/ /  __/ | |/ / (_| | | | | | |  __/\\__ \\ " << endl
+		<< " \\____/ \\___/ \\___| |___/ \\___| |___/ \\__,_|_| |_| |_|\\___||___/" << endl << endl;
+
+	cout << endl << "==============================================================" << endl << endl;
+	cout << "1. Jugar contra un adversari" << endl
+		<< "2. Visualitzar una partida (Replay)" << endl
+		<< "3. Jugar contra un ordinador" << endl;
+	cout << endl << "Trieu una opcio: ";
+	int opcio;
+	cin >> opcio;
+	ModeJoc mode;
+	switch (opcio)
+	{
+	case 1:
+		mode = MODE_JOC_NORMAL;
+		break;
+	case 2: 
+		mode = MODE_JOC_REPLAY;
+		break;
+	case 3:
+		mode = MODE_JOC_ORDINADOR;
+		break;
+	default:
+		mode = MODE_JOC_NONE;
+		throw runtime_error("[ERROR] MODE JOC NO VALID");
+		break;
+	}
+	while (opcio > 5 || opcio < 1)
+	{
+		cout << "ERROR: Trieu una opcio valida: ";
+		cin >> opcio;
+	}
+	system("CLS");
+	if (mode == MODE_JOC_NORMAL || mode == MODE_JOC_ORDINADOR)
+	{
+		cout << "=== COM JUGAR A LES DAMES ===" << endl << endl;
+		cout << "1. TORNS:" << endl;
+		cout << "   - Blanques (O) comencen, despres negres (X)." << endl << endl;
+
+		cout << "2. MOVIMENTS:" << endl;
+		cout << "   - Fitxes normals: Diagonal endavant." << endl;
+		cout << "   - Dames (D/R): Qualsevol diagonal pot saltar varies caselles." << endl;
+		cout << "   - Caselles verdes: Moviments possibles." << endl << endl;
+
+		cout << "3. CAPTURES OBLIGATORIES:" << endl;
+		cout << "   - Has de menjar si pots, sino se't bufa la fitxa (eliminacio)." << endl;
+		cout << "   - Tria la captura que mengi MES fitxes." << endl << endl;
+
+		cout << "4. DAMES:" << endl;
+		cout << "   - Arriba al final del tauler per convertir-te en dama." << endl << endl;
+
+		cout << "5. VICTORIA:" << endl;
+		cout << "   - Menja totes les fitxes rivals o bloqueja-les." << endl << endl;
+
+		cout << "CONTROLS:" << endl;
+		cout << "   - [CLIC]: Selecciona i mou." << endl;
+		cout << "   - [ESC]: Surt del joc." << endl << endl;
+
+		cout << "Que comenci el joc!" << endl;
+		system("pause");
+		system("CLS");
+	}
+	else if (mode == MODE_JOC_REPLAY)
+	{
+		cout << "=== MODO REPLAY DE DAMES ===" << endl << endl;
+		cout << "Aquest mode reprodueix una partida guardada anteriorment." << endl;
+		cout << "Cada clic avancara un moviment de la partida." << endl << endl;
+
+		cout << "COM FUNCIONA:" << endl;
+		cout << "1. CARREGA LA PARTIDA:" << endl;
+		cout << "   - Introdueix el nom o ruta de l'arxiu guardat." << endl;
+		cout << "   - El sistema llegira els moviments i els mostrara pas a pas." << endl << endl;
+
+		cout << "2. REPRODUCCIO:" << endl;
+		cout << "   - Fes clic per veure cada moviment consecutiu." << endl;
+		cout << "   - Les fitxes es mouran automaticament segons la partida original." << endl;
+
+		cout << "3. CONTROLS:" << endl;
+		cout << "   - [CLIC]: Avancar al seguent moviment." << endl;
+		cout << "   - [ESC]: Sortir del mode replay." << endl << endl;
+
+		cout << "Introdueix el nom o ruta de l'arxiu que vols reproduir:" << endl;
+		cout << "> ";
+		cin >> nomFitxerMoviments;
+		system("pause");
+		system("CLS");
+	}
+
+	return mode;
+}
+
 void Joc::inicialitza(ModeJoc mode, const string& nomFitxerTauler, const string& nomFitxerMoviments)
 {
-	if (mode == MODE_JOC_NORMAL)
+	if (mode == MODE_JOC_NORMAL || mode == MODE_JOC_ORDINADOR)
 	{
 		// El fitxer indicat al paràmetre nomFitxerMoviments s’haurà d’utilitzar
 		// per guardar, al final de la partida, tots els moviments que s’hagin fet
