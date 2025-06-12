@@ -60,7 +60,6 @@ void Tauler::inicialitza(const string& nomFitxer)
         string posicioStr;
         while (fitxer >> tipus >> posicioStr)
         {
-
             Posicio posicio(posicioStr);
             int fila = posicio.getFila();
             int col = posicio.getColumna();
@@ -292,11 +291,6 @@ void Tauler::getCapturesDama(const Fitxa& fitxa, const Moviment& movActual, vect
         }
     }
 }
-
-
-
-
-
 
 /*
 * getCapturesDisponibles
@@ -621,15 +615,15 @@ void Tauler::visualitza() const
     // Dibuixa el tauler (fons i gràfic)
     GraphicManager::getInstance()->drawSprite(GRAFIC_TAULER, POS_X_TAULER, POS_Y_TAULER);
 
-    //cout << "[DEBUG] Board View:" << endl;
+    cout << "[DEBUG] Board View:" << endl;
     for (int i = 0; i < N_FILES; ++i)
     {
         for (int j = 0; j < N_COLUMNES; ++j)
         {
             m_tauler[i][j].visualitza(); // Cada fitxa dibuixa si no és buida
-            //cout << "[" << m_tauler[i][j].getLletra() << "]";
+            cout << "[" << m_tauler[i][j].getLletra() << "]";
         }
-        //cout << endl;
+        cout << endl;
     }
 }
 

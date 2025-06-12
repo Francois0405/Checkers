@@ -58,7 +58,7 @@ Posicio::Posicio(int fila, char columna)
 
 int Posicio::getFila() const
 {
-	return m_fila;
+	return N_FILES - m_fila ;
 }
 
 /**
