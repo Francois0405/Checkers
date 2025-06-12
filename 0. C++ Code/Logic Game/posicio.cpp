@@ -27,11 +27,7 @@ Posicio::Posicio() : m_fila(0), m_columna('a') {}
 Posicio::Posicio(const string& posicio)
 {
 	m_columna = posicio[0];  // 'a' a 'h'
-	m_fila = 8 - (posicio[1] - '0'); // Invertim la logica a1 = [0][7]
-
-	// Validació (opcional)
-	if (m_fila < 0 || m_fila > N_FILES) m_fila = 1;
-	if (m_columna < 'a' || m_columna > 'h') m_columna = 'a';
+	m_fila = posicio[1] - '1' + 1; // -'1' because it's string so that way it's int and +1 to not be 0
 }
 
 /**
@@ -39,10 +35,18 @@ Posicio::Posicio(const string& posicio)
 * Constructor que inicialitza la posicio a partir d'una fila i columna.
 */
 
+// Viene de formato indices
 Posicio::Posicio(int fila, int columna)
 {
-	m_fila = N_FILES - fila; // Logica inversa
+	m_fila = fila - 1;
 	m_columna = 'a' + columna;
+}
+
+// Formato notacion
+Posicio::Posicio(int fila, char columna)
+{
+	m_fila = fila;
+	m_columna = m_columna;
 }
 
 /**
@@ -141,10 +145,11 @@ bool Posicio::operator!=(const Posicio& posicio) const
 * @return void
 */
 
-void Posicio::stringToPosicio(const string& posicio, int& fila, int& columna)
+// not en not
+void Posicio::stringToPosicio(const string& posicio)
 {
-	columna = posicio[0] - 'a'; // Resta en codigo ASCII
-	fila = N_FILES - (posicio[1] - '0'); // !!! Invertimos la fila para que quede bien con a1...
+	m_columna = posicio[0]; // Resta en codigo ASCII
+	m_fila = posicio[1]; // !!! Invertimos la fila para que quede bien con a1...
 }
 
 /**
@@ -162,7 +167,12 @@ void Posicio::posicioToString(string& posicio) const
 	posicio += to_string(m_fila);
 }
 
-string Posicio::toString() const
+/*
+* toString
+* Lo mismo que posicioToString per este lo devuelve
+*/
+
+string Posicio::posicioToString() const
 {
 	string posicio;
 	posicioToString(posicio);
@@ -184,4 +194,10 @@ ostream& operator<<(ostream& out, const Posicio& pos)
 	pos.posicioToString(posicio);
 	out << posicio;
 	return out;
+}
+
+void notToInd(int& fila, char col1, int& col2)
+{
+	fila = 8 - fila;
+	col2 = col1 - 'a';
 }

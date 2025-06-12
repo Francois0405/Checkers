@@ -154,6 +154,8 @@ bool Joc::actualitza(int mousePosX, int mousePosY, bool mouseStatus)
 		torn = "Torn: NEGRES";
 	GraphicManager::getInstance()->drawFont(FONT_GREEN_30, posTextX, posTextY + 40, 0.8, torn);
 
+	/*Fitxa a(TIPUS_DAMA, COLOR_NEGRE, Posicio(7, 7));
+	a.visualitza();*/
 
 	bool dinsTauler = (mousePosX >= POS_X_TAULER + CASELLA_INICIAL_X &&
 		mousePosY >= POS_Y_TAULER + CASELLA_INICIAL_Y &&

@@ -14,7 +14,7 @@
 * Constructor per defecte, inicialitza el moviment a 0 posicions i captura a false.
 */
 
-Moviment::Moviment() : m_numPosicions(0), m_esCaptura(false) {}
+Moviment::Moviment() : m_esCaptura(false), m_numCaptures(0) { m_posicions.clear(); }
 
 /*
 * Moviment(const Posicio& posInicial)
@@ -112,6 +112,7 @@ void Moviment::setEsMovimentDeCaptura(bool esCaptura)
 	m_esCaptura = esCaptura;
 	if (esCaptura)
 	{
+		// Si hay captura pues es el numero de posiciones menos la inicial
 		m_numCaptures = m_posicions.size() - 1;
 	}
 	else
@@ -159,7 +160,7 @@ void Moviment::estableixPosicions(const vector<Posicio>& posicions)
 bool Moviment::contePosicio(const Posicio& posicio) const
 {
 	bool conte = false;
-	for (int i = 0; i < m_posicions.size(); ++i)
+	for (int i = 0; (i < m_posicions.size() && !conte); ++i)
 	{
 		if (m_posicions[i] == posicio)
 		{
@@ -174,7 +175,7 @@ void Moviment::printPosicions() const
 	cout << "Moviment: ";
 	for (int i = 0; i < m_posicions.size(); i++)
 	{
-		cout << m_posicions[i].toString() << " ";
+		cout << m_posicions[i].posicioToString() << " ";
 	}
 	cout << endl;
 }

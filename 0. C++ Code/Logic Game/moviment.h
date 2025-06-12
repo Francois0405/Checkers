@@ -47,7 +47,6 @@ public:
 	void printPosicions() const;
 private:
 	vector<Posicio> m_posicions;
-    int m_numPosicions;
     bool m_esCaptura;
     int m_numCaptures;
 };

@@ -65,7 +65,7 @@ void Tauler::inicialitza(const string& nomFitxer)
             int fila = posicio.getFila();
             int col = posicio.getColumna();
             cout << " - Inicialitzant a (row:" << fila << ", col:" << col
-                << ") per la posicio: " << posicioStr << endl;
+                << ") ("<< tipus << ") per la posicio : " << posicioStr << endl;
             TipusFitxa tipusFitxa;
             ColorFitxa color;
 
@@ -148,7 +148,7 @@ void Tauler::actualitzaMovimentsValids()
 void Tauler::getPosicionsPossibles(const Posicio& origen, vector<Posicio>& posicionsPossibles)
 {
     posicionsPossibles.clear(); // Limpia el vector de posiciones posibles
-    int fila = origen.getFila();
+    int fila = origen.getFila() - 1;
     int col = origen.getColumna();
 
     if (esDinsTauler(fila, col))
@@ -177,7 +177,7 @@ void Tauler::getPosicionsPossibles(const Posicio& origen, vector<Posicio>& posic
 
                         if (esDinsTauler(f, c) && m_tauler[f][c].getTipus() == TIPUS_EMPTY)
                         {
-                            posicionsPossibles.push_back(Posicio(f, c));
+                            posicionsPossibles.push_back(Posicio(f + 1, c));
                         }
                     }
                 }
@@ -192,7 +192,7 @@ void Tauler::getPosicionsPossibles(const Posicio& origen, vector<Posicio>& posic
                     {
                         if (m_tauler[f][c].getTipus() == TIPUS_EMPTY)
                         {
-                            posicionsPossibles.push_back(Posicio(f, c));
+                            posicionsPossibles.push_back(Posicio(f +1, c));
                         }
                         else
                         {
@@ -621,15 +621,15 @@ void Tauler::visualitza() const
     // Dibuixa el tauler (fons i gràfic)
     GraphicManager::getInstance()->drawSprite(GRAFIC_TAULER, POS_X_TAULER, POS_Y_TAULER);
 
-    cout << "[DEBUG] Board View:" << endl;
+    //cout << "[DEBUG] Board View:" << endl;
     for (int i = 0; i < N_FILES; ++i)
     {
         for (int j = 0; j < N_COLUMNES; ++j)
         {
             m_tauler[i][j].visualitza(); // Cada fitxa dibuixa si no és buida
-            cout << "[" << m_tauler[i][j].getLletra() << "]";
+            //cout << "[" << m_tauler[i][j].getLletra() << "]";
         }
-        cout << endl;
+        //cout << endl;
     }
 }
 
@@ -686,7 +686,6 @@ bool Tauler::esMovimentDeCaptura(const Posicio& origen, const Posicio& desti) co
     }
     return esMovCaptura;
 }
-
 
 void Tauler::bufaFitxa(const Posicio& pos)
 {

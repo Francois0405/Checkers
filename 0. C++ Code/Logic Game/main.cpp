@@ -67,7 +67,6 @@ int main(int argc, const char* argv[])
 
     cout << "[DEBUG] MODE: " << modeString << endl;
     cout << "[DEBUG] FitxerMov: " << nomFitxerMoviments << endl;
-
     // PAS 1. INICIALITZEM EL JOC
     joc.inicialitza(mode, "..\\taulerInicial.txt", nomFitxerMoviments);
     bool final = false;

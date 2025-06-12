@@ -40,6 +40,7 @@ public:
     Posicio();
     Posicio(const string& posicio);
     Posicio(int fila, int columna);
+    Posicio(int fila, char columna);
 
     int getFila() const;
     int getColumna() const;
@@ -50,14 +51,17 @@ public:
     bool operator==(const Posicio& posicio) const;
     bool operator!=(const Posicio& posicio) const;
 
-    void stringToPosicio(const string& posicio, int& fila, int& columna);
+
+    void stringToPosicio(const string& posicio);
     void posicioToString(string& posicio) const;
-	string toString() const;
+	string posicioToString() const;
 private:
     int m_fila;    
     char m_columna; 
 };
 
 ostream& operator<<(ostream& out, const Posicio& pos);
+void notToInd(int& fila, char col1, int& col2);
+
 
 #endif

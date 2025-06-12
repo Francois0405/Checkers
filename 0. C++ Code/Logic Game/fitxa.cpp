@@ -17,14 +17,14 @@ using namespace std;
 * Constructor per defecte, inicialitza la fitxa a empty "de color blanc" (sense color).
 */
 
-Fitxa::Fitxa() : m_tipus(TIPUS_EMPTY), m_color(COLOR_BLANC) {}
+Fitxa::Fitxa() : m_tipus(TIPUS_EMPTY), m_color(COLOR_BLANC), m_posicio() { m_movimentsValids.clear(); }
 
 /*
 * Fitxa(TipusFitxa tipus, ColorFitxa color, const Posicio& posicio)
 * Constructor per parametres, inicialitza la fitxa amb el tipus, color i posicio especificats.
 */
 
-Fitxa::Fitxa(TipusFitxa tipus, ColorFitxa color, const Posicio& posicio) : m_tipus(tipus), m_color(color), m_posicio(posicio) {}
+Fitxa::Fitxa(TipusFitxa tipus, ColorFitxa color, const Posicio& posicio) : m_tipus(tipus), m_color(color), m_posicio(posicio) { m_movimentsValids.clear(); }
 
 /*
 * getTipus
@@ -169,7 +169,7 @@ void Fitxa::afegeixMovimentValid(const Moviment& moviment)
 		Posicio desti = moviment.getPosicioFinal();
 		cout << "[DEBUG] Afegit moviment de captura per a fitxa " << getLletra()
 			<< " cap a (" << desti.getFila() << ", " << desti.getColumna() << ")" << endl;
-	} //QUITAR DPS
+	} // Puro debugging
 
 	m_movimentsValids.push_back(moviment);
 }
@@ -192,13 +192,13 @@ void Fitxa::resetMovimentsValids()
 	m_movimentsValids.clear();
 }
 
-
+// HASTA AQ1UI	
 void Fitxa::visualitza() const
 {
 	if (m_tipus != TIPUS_EMPTY)
 	{
 		int col = m_posicio.getColumna();
-		int fila = 7 - m_posicio.getFila();
+		int fila = m_posicio.getFila();
 
 		int posX = POS_X_TAULER + CASELLA_INICIAL_X + (col * AMPLADA_CASELLA);
 		int posY = POS_Y_TAULER + CASELLA_INICIAL_Y + (fila * ALCADA_CASELLA);
@@ -219,6 +219,7 @@ void Fitxa::visualitza() const
 		GraphicManager::getInstance()->drawSprite(grafic, posX, posY);
 	}
 }
+
 
 void Fitxa::printMovimentsValids() const
 {
