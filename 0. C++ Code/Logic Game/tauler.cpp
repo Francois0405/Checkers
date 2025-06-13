@@ -307,13 +307,13 @@ void Tauler::getCapturesDisponibles(const Fitxa& fitxa, const Moviment& movActua
     int dirs[2][2];
     if (fitxa.getColor() == COLOR_NEGRE)
     {
-        dirs[0][0] = -1; dirs[0][1] = -1; // arriba izquierda
-        dirs[1][0] = -1; dirs[1][1] = 1;  // arriba derecha
+        dirs[0][0] = 1; dirs[0][1] = -1;  // Negro: captura hacia abajo
+        dirs[1][0] = 1; dirs[1][1] = 1;
     }
     else
     {
-        dirs[0][0] = 1; dirs[0][1] = -1; // abajo izquierda
-        dirs[1][0] = 1; dirs[1][1] = 1;  // abajo derecha
+        dirs[0][0] = -1; dirs[0][1] = -1; // Blanco: captura hacia arriba
+        dirs[1][0] = -1; dirs[1][1] = 1;
     }
 
     Posicio pos = movActual.getPosicioFinal();
@@ -469,11 +469,11 @@ bool Tauler::mouFitxa(const Posicio& origen, const Posicio& desti)
 
                     // Promocionar si ha llegado al final del tablero
                     if ((m_tauler[filaDest][colDest].getTipus() == TIPUS_NORMAL) &&
-                        ((m_tauler[filaDest][colDest].getColor() == COLOR_BLANC && filaDest == 7) ||
-                            (m_tauler[filaDest][colDest].getColor() == COLOR_NEGRE && filaDest == 0)))
+                        ((m_tauler[filaDest][colDest].getColor() == COLOR_BLANC && filaDest == 0) || // Blanco llega a fila 0 (arriba)
+                            (m_tauler[filaDest][colDest].getColor() == COLOR_NEGRE && filaDest == 7)))   // Negro llega a fila 7 (abajo)
                     {
                         m_tauler[filaDest][colDest].convertirADama();
-                        calculaMovimentsFitxa(filaDest, colDest); // Recalcular movimientos de dama
+                        calculaMovimentsFitxa(filaDest, colDest);
                     }
                 }
             }
@@ -529,7 +529,7 @@ void Tauler::calculaMovimentsFitxa(int fila, int col)
     {
         if (fitxa.getTipus() == TIPUS_NORMAL)
         {
-            int dir = (fitxa.getColor() == COLOR_BLANC) ? 1 : -1;
+            int dir = (fitxa.getColor() == COLOR_BLANC) ? -1 : 1;
             for (int dc = -1; dc <= 1; dc += 2)
             {
                 int nf = fila + dir;
