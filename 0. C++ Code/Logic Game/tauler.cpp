@@ -165,13 +165,10 @@ void Tauler::getPosicionsPossibles(const Posicio& origen, vector<Posicio>& posic
                 // Si es una ficha normal, solo se mueve adelante
                 if (fitxa.getTipus() == TIPUS_NORMAL)
                 {
-                    // ¿Es una accion no permitida? Si no lo es, entra en el if
-                    if (!(fitxa.getColor() == COLOR_NEGRE && df == -1) ||
-                        (fitxa.getColor() == COLOR_BLANC && df == 1))
+                    int dir = (fitxa.getColor() == COLOR_BLANC) ? -1 : 1;
+                    for (int dc = -1; dc <= 1; dc += 2)
                     {
-                        // Tambien se podria haber usado un continue aquí
-                        // ! el continue sirve para saltar a la siguiente iteracion
-                        int f = fila + df;
+                        int f = fila + dir;
                         int c = col + dc;
 
                         if (esDinsTauler(f, c) && m_tauler[f][c].getTipus() == TIPUS_EMPTY)
