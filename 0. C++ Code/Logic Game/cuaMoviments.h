@@ -27,6 +27,7 @@ public:
 	int getSize() {	return m_size;} // retorna num de moviments en la cua 
 	
 	bool empty(); // crompova si esta empty
+	void print(); // imprimeix la cua de moviments
 private:
 	NodeMoviment* m_front; // Front cua
 	NodeMoviment* m_back;  // Rear cua

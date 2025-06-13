@@ -217,6 +217,9 @@ bool Joc::actualitza(int mousePosX, int mousePosY, bool mouseStatus)
 	{
 		string missatge = "GUANYADOR: " + m_guanyador;
 		GraphicManager::getInstance()->drawFont(FONT_GREEN_30, POS_X_TAULER + 50, POS_Y_TAULER + 500, 1.2, missatge);
+		m_cuaMoviments.print();
+		cout << "[DEBUG] PARTIDA ACABADA GUANYADOR: " + m_guanyador << endl;
+		system("pause");
 		return true; // Detener la partida
 	}
 
@@ -257,9 +260,7 @@ bool Joc::actualitza(int mousePosX, int mousePosY, bool mouseStatus)
 			m_colSeleccionada = col;
 			m_fitxaSeleccionada = true;
 		}
-	
-
-		else if (m_fitxaSeleccionada)
+		else if (m_fitxaSeleccionada) // Si ja la tenim seleccionada
 		{
 			Posicio origen(m_filaSeleccionada + 1, m_colSeleccionada);
 			Posicio desti(fila + 1, col);
@@ -283,7 +284,7 @@ bool Joc::actualitza(int mousePosX, int mousePosY, bool mouseStatus)
 					m_tornActual = COLOR_BLANC;
 
 				comprovaFinalPartida();
-
+				m_cuaMoviments.push(Moviment(origen, desti));
 			}
 		}
 	}

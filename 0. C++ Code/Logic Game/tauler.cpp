@@ -295,11 +295,6 @@ void Tauler::getCapturesDama(const Fitxa& fitxa, const Moviment& movActual, vect
     }
 }
 
-
-
-
-
-
 /*
 * getCapturesDisponibles
 * Funcio auxiliar que busca les captures disponibles per una fitxa normal.

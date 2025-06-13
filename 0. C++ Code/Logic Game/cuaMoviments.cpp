@@ -74,3 +74,19 @@ bool CuaMoviment::empty()
 {
 	return (m_front == nullptr || m_back == nullptr);
 }
+
+void CuaMoviment::print()
+{
+	if (empty())
+	{
+		cout << "[DEBUG] printCuaMoviments(): Cua buida" << endl;
+		return;
+	}
+	NodeMoviment* nodeActual = m_front;
+	while (nodeActual != nullptr)
+	{
+		cout << nodeActual->getMoviment() << endl;
+		nodeActual = nodeActual->getNext();
+	}
+	cout << "[DEBUG] printCuaMoviments(): Cua impresa correctament" << endl;
+}

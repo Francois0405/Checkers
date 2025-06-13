@@ -5,6 +5,7 @@
 #include <queue>
 #include "info_joc.hpp"
 #include "tauler.hpp"
+#include "cuaMoviments.h"
 
 using namespace std;
 
@@ -28,6 +29,7 @@ private:
     ColorFitxa m_tornActual = COLOR_BLANC;
     string m_guanyador = "";
     bool m_partidaAcabada = false;
+	CuaMoviment m_cuaMoviments;
 };
 
 struct MovimentPossible {

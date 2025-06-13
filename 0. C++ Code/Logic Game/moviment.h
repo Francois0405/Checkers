@@ -30,6 +30,7 @@ class Moviment {
 public:
     Moviment();
     Moviment(const Posicio& posInicial);
+	Moviment(const Posicio& posInicial, const Posicio& posFinal);
 
     int getNumPosicions() const;
     const Posicio& getPosicio(int index) const;
@@ -50,5 +51,8 @@ private:
     bool m_esCaptura;
     int m_numCaptures;
 };
+
+ostream& operator<<(ostream& out, const Moviment& mov);
+
 
 #endif

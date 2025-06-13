@@ -26,6 +26,13 @@ Moviment::Moviment(const Posicio& posInicial) : m_esCaptura(false), m_numCapture
 	m_posicions.push_back(posInicial);
 }
 
+Moviment::Moviment(const Posicio& posInicial, const Posicio& posFinal)
+{
+	m_numPosicions = 2;
+	m_posicions.push_back(posInicial);
+	m_posicions.push_back(posFinal);
+}
+
 /*
 * getNumPosicions
 * Getter que retorna el numero de posicions del moviment.
@@ -167,4 +174,17 @@ bool Moviment::contePosicio(const Posicio& posicio) const
 		}
 	}
 	return conte;
+}
+
+ostream& operator<<(ostream& out, const Moviment& mov)
+{
+	out << "Moviment: ";
+	out << mov.getPosicioInicial();
+	out << " -> ";
+	out << mov.getPosicioFinal();
+	if (mov.getEsMovimentDeCaptura())
+	{
+		out << " (C)" << endl;
+	}
+	return out;
 }
