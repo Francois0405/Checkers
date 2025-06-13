@@ -198,7 +198,7 @@ void Fitxa::visualitza() const
 	if (m_tipus != TIPUS_EMPTY)
 	{
 		int col = m_posicio.getColumna();
-		int fila = 7 - m_posicio.getFila();
+		int fila = m_posicio.getFila();
 
 		int posX = POS_X_TAULER + CASELLA_INICIAL_X + (col * AMPLADA_CASELLA);
 		int posY = POS_Y_TAULER + CASELLA_INICIAL_Y + (fila * ALCADA_CASELLA);

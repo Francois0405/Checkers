@@ -47,9 +47,7 @@ public:
 	void actualitzaMovimentsValids();
 	void getPosicionsPossibles(const Posicio& origen, vector<Posicio>& posicionsPossibles);
 	bool mouFitxa(const Posicio& origen, const Posicio& desti);
-	string toString() const;
 	void visualitza() const;
-
 	const Fitxa& getFitxa(const Posicio& pos) const;
 	bool hiHaCapturaGlobal(ColorFitxa color);
 	bool esMovimentDeCaptura(const Posicio& origen, const Posicio& desti) const;

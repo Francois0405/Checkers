@@ -166,9 +166,7 @@ bool Joc::actualitza(int mousePosX, int mousePosY, bool mouseStatus)
 		int col = (mousePosX - (POS_X_TAULER + CASELLA_INICIAL_X)) / AMPLADA_CASELLA;
 		int fila = (mousePosY - (POS_Y_TAULER + CASELLA_INICIAL_Y)) / ALCADA_CASELLA;
 
-		fila = fila;
-
-		Posicio posicioClicada(fila + 1, col);
+		Posicio posicioClicada(fila, col);
 
 		const Fitxa& fitxaClicada = m_tauler.getFitxa(posicioClicada);
 
@@ -177,16 +175,14 @@ bool Joc::actualitza(int mousePosX, int mousePosY, bool mouseStatus)
 			m_fitxaSeleccionada = false;
 			if (m_fitxaSeleccionada == false)
 			{
-				cout << "[DEBUG] Heu seleccionat una fitxa (" << endl;
+				cout << "[DEBUG] Heu seleccionat una fitxa (" << fitxaClicada.getLletra() << ") ("<< fila << ", " << col << ")" << endl;
 				primeraVegada = true;
 			}
 			m_filaSeleccionada = fila;
 			m_colSeleccionada = col;
 			m_fitxaSeleccionada = true;
 		}
-	
-
-		else if (m_fitxaSeleccionada)
+		else if (m_fitxaSeleccionada) // Si la ficha ya esta seleccionada miramos a cual apreta (destino)
 		{
 			Posicio origen(m_filaSeleccionada + 1, m_colSeleccionada);
 			Posicio desti(fila + 1, col);
@@ -218,13 +214,9 @@ bool Joc::actualitza(int mousePosX, int mousePosY, bool mouseStatus)
 		}
 	}
 
-
-
-	//TODO 2.3: Dibuixar la fitxa blanca al tauler només si estem pressionant el botó del ratolí i el ratolí
-	// està dins del límits del tauler. Dibuixa la fitxa a la casella on està el ratolí
 	if (m_fitxaSeleccionada)
 	{
-		Posicio posActual(m_filaSeleccionada + 1, m_colSeleccionada);
+		Posicio posActual(m_filaSeleccionada, m_colSeleccionada);
 		const Fitxa& fitxa = m_tauler.getFitxa(posActual);
 
 		// Si la ficha ya no existe (ha sido comida), cancelar selección
@@ -253,12 +245,14 @@ bool Joc::actualitza(int mousePosX, int mousePosY, bool mouseStatus)
 					GraphicManager::getInstance()->drawSprite(GRAFIC_FITXA_BLANCA, posX, posY);
 			}
 
+			m_tauler.actualitzaMovimentsValids();
 			// Mostrar moviments valids
 			if (primeraVegada)
 			{
 				string strPos = "N/A";
 				Moviment mov;
 				cout << "[DEBUG] Moviments valids: [";
+				
 				for (int i = 0; i < fitxa.getNumMovimentsValids(); ++i)
 				{
 					mov = fitxa.getMovimentValid(i);

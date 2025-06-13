@@ -13,25 +13,14 @@ const int N_FILES = 8;
 const int N_COLUMNES = 8;
 
 /**
-* Posicio()
-* Constructor per defecte, inicialitza la posicio a (0, 'a').
-*/
-
-Posicio::Posicio() : m_fila(0), m_columna('a') {}
-
-/**
 * Posicio(const string& posicio)
 * Constructor que inicialitza la posicio a partir d'una posicio en forma de string.
 */
 
 Posicio::Posicio(const string& posicio)
 {
-	m_columna = posicio[0];  // 'a' a 'h'
+	m_columna = posicio[0] - 'a';  // 'a' a 'h'
 	m_fila = 8 - (posicio[1] - '0'); // Invertim la logica a1 = [0][7]
-
-	// Validació (opcional)
-	if (m_fila < 0 || m_fila > N_FILES) m_fila = 1;
-	if (m_columna < 'a' || m_columna > 'h') m_columna = 'a';
 }
 
 /**
@@ -39,61 +28,7 @@ Posicio::Posicio(const string& posicio)
 * Constructor que inicialitza la posicio a partir d'una fila i columna.
 */
 
-Posicio::Posicio(int fila, int columna)
-{
-	m_fila = N_FILES - fila; // Logica inversa
-	m_columna = 'a' + columna;
-}
-
-/**
-* getFila
-* Getter que retorna la fila de la posicio.
-* 
-* @return int: fila de la posicio.
-*/
-
-int Posicio::getFila() const
-{
-	return m_fila;
-}
-
-/**
-* getColumna
-* Getter que retorna la columna de la posicio.
-* 
-* @return int: columna de la posicio.
-*/
-
-int Posicio::getColumna() const
-{
-	return m_columna - 'a';
-}
-
-/**
-* setFila
-* Setter que estableix la fila de la posicio.
-* 
-* @param fila: fila de la posicio.
-* @return void
-*/
-
-void Posicio::setFila(int fila)
-{
-	m_fila = fila;
-}
-
-/**
-* setColumna
-* Setter que estableix la columna de la posicio.
-* 
-* @param columna: columna de la posicio.
-* @return void
-*/
-
-void Posicio::setColumna(int columna)
-{
-	m_columna = 'a' + columna;
-}
+Posicio::Posicio(int fila, int columna) : m_fila(fila), m_columna(columna) {}
 
 /**
 * operator==
@@ -131,21 +66,6 @@ bool Posicio::operator!=(const Posicio& posicio) const
 	return diferent;
 }
 
-/**
-* stringToPosicio
-* Funcio que converteix una posicio en forma de string a una fila i columna.
-* 
-* @param posicio: string que representa la posicio.
-* @param fila: referencia a la fila on es guardara el resultat.
-* @param columna: referencia a la columna on es guardara el resultat.
-* @return void
-*/
-
-void Posicio::stringToPosicio(const string& posicio, int& fila, int& columna)
-{
-	columna = posicio[0] - 'a'; // Resta en codigo ASCII
-	fila = N_FILES - (posicio[1] - '0'); // !!! Invertimos la fila para que quede bien con a1...
-}
 
 /**
 * posicioToString

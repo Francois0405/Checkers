@@ -1,10 +1,8 @@
 #include "tauler.hpp"
-
 #include <fstream>
 #include <iostream>
 #include "GraphicManager.h"
 #include "info_joc.hpp"
-
 
 using namespace std;
 /**
@@ -117,10 +115,10 @@ void Tauler::actualitzaMovimentsValids()
     {
         for (int j = 0; j < N_COLUMNES; ++j)
         {
-            // Se busca actualizar todas las piezas del juego, por lo tanto, cojemos cada fitxa.
+            // Se busca actualizar todasx las piezas del juego, por lo tanto, cojemos cada fitxa.
             Fitxa& fitxa = m_tauler[i][j];
             // Setter de Posicio (atributo)
-            fitxa.setPosicio(Posicio(i + 1, j));
+            fitxa.setPosicio(Posicio(i, j));
 
             // Solo calculamos los movimientos de fitxas, no casillas vacias
             if (fitxa.getTipus() != TIPUS_EMPTY)
@@ -145,62 +143,52 @@ void Tauler::actualitzaMovimentsValids()
 * @return void
 */
 
-void Tauler::getPosicionsPossibles(const Posicio& origen, vector<Posicio>& posicionsPossibles)
-{
-    posicionsPossibles.clear(); // Limpia el vector de posiciones posibles
-    int fila = origen.getFila();
-    int col = origen.getColumna();
+void Tauler::getPosicionsPossibles(const Posicio& origen, vector<Posicio>& posicionsPossibles) {
+    posicionsPossibles.clear();
+    int fila = origen.getFila();  // 0-7
+    int col = origen.getColumna(); // 0-7
 
-    if (esDinsTauler(fila, col))
-    {
-        const Fitxa& fitxa = m_tauler[fila][col]; // Obtenemos la ficha en la posición origen
+    if (esDinsTauler(fila, col)) {
+        const Fitxa& fitxa = m_tauler[fila][col];
 
-        if (fitxa.getTipus() != TIPUS_EMPTY)
-        {
-            int dirs[4][2] = { {1, 1}, {1, -1}, {-1, 1}, {-1, -1} }; // as las direcciones posibles para una dama
-            for (int d = 0; d < 4; ++d)
-            {
-                int df = dirs[d][0]; // Delta fila
-                int dc = dirs[d][1]; // Delta columna
+        if (fitxa.getTipus() != TIPUS_EMPTY) {
+            // Directions: [df, dc]
+            int dirsDama[4][2] = { {-1, 1}, {-1, -1}, {1, 1}, {1, -1} }; // All 4 diagonals for damas
 
-                // Si es una ficha normal, solo se mueve adelante
-                if (fitxa.getTipus() == TIPUS_NORMAL)
-                {
-                    // ¿Es una accion no permitida? Si no lo es, entra en el if
-                    if (!(fitxa.getColor() == COLOR_NEGRE && df == -1) ||
-                        (fitxa.getColor() == COLOR_BLANC && df == 1))
+            if (fitxa.getTipus() == TIPUS_NORMAL) {
+                // For normal pieces, only 2 possible directions (forward diagonals)
+                int dir = (fitxa.getColor() == COLOR_BLANC) ? -1 : 1; // White up (-1), black down (+1)
+                int dirsNormal[2][2] = { {dir, 1}, {dir, -1} };
+
+                for (int d = 0; d < 2; ++d) {
+                    int f = fila + dirsNormal[d][0];
+                    int c = col + dirsNormal[d][1];
+
+                    if (esDinsTauler(f, c))
                     {
-                        // Tambien se podria haber usado un continue aquí
-                        // ! el continue sirve para saltar a la siguiente iteracion
-                        int f = fila + df;
-                        int c = col + dc;
-
-                        if (esDinsTauler(f, c) && m_tauler[f][c].getTipus() == TIPUS_EMPTY)
+                        if (m_tauler[f][c].getTipus() == TIPUS_EMPTY) 
                         {
                             posicionsPossibles.push_back(Posicio(f, c));
                         }
                     }
                 }
-                else if (fitxa.getTipus() == TIPUS_DAMA)
-                {
-                    // Las damas pueden avanzar en la dirección hasta chocar con algo
-                    int f = fila + df;
-                    int c = col + dc;
+            }
+            else if (fitxa.getTipus() == TIPUS_DAMA) {
+                // Dama movement (all 4 diagonals until obstacle)
+                for (int d = 0; d < 4; ++d) {
+                    int f = fila + dirsDama[d][0];
+                    int c = col + dirsDama[d][1];
                     bool trobatObstacle = false;
 
-                    while (esDinsTauler(f, c) && !trobatObstacle)
-                    {
-                        if (m_tauler[f][c].getTipus() == TIPUS_EMPTY)
-                        {
+                    while (esDinsTauler(f, c) && !trobatObstacle) {
+                        if (m_tauler[f][c].getTipus() == TIPUS_EMPTY) {
                             posicionsPossibles.push_back(Posicio(f, c));
+                            f += dirsDama[d][0];
+                            c += dirsDama[d][1];
                         }
-                        else
-                        {
-                            // Si encontramos una ficha, no podemos seguir avanzando en esta dirección
+                        else {
                             trobatObstacle = true;
                         }
-                        f += df;
-                        c += dc;
                     }
                 }
             }
@@ -249,9 +237,9 @@ void Tauler::getCapturesDama(const Fitxa& fitxa, const Moviment& movActual, vect
         f += df;
         c += dc;
 
-        while (esDinsTauler(f - 1, c))
+        while (esDinsTauler(f, c))
         {
-            const Fitxa& actual = m_tauler[f - 1][c];
+            const Fitxa& actual = m_tauler[f][c];
 
             if (actual.getTipus() == TIPUS_EMPTY)
             {
@@ -274,7 +262,7 @@ void Tauler::getCapturesDama(const Fitxa& fitxa, const Moviment& movActual, vect
                 if (!trobatEnemic)
                 {
                     trobatEnemic = true;
-                    filaEnemic = f - 1;
+                    filaEnemic = f;
                     colEnemic = c;
 
                     f += df;
@@ -292,11 +280,6 @@ void Tauler::getCapturesDama(const Fitxa& fitxa, const Moviment& movActual, vect
         }
     }
 }
-
-
-
-
-
 
 /*
 * getCapturesDisponibles
@@ -500,67 +483,70 @@ bool Tauler::mouFitxa(const Posicio& origen, const Posicio& desti)
 * @param col: int, columna de la fitxa
 * @return void
 */
-void Tauler::calculaMovimentsFitxa(int fila, int col)
+void Tauler::calculaMovimentsFitxa(int fila, int col) 
 {
     if (!esDinsTauler(fila, col))
         return;
 
     Fitxa& fitxa = m_tauler[fila][col];
-    Posicio origen = fitxa.getPosicio();
+    Posicio origen(fila, col);  // Use direct matrix indices
     fitxa.resetMovimentsValids();
 
     vector<Moviment> pendents;
     bool hiHaCaptura = false;
 
-    // Inicializamos las capturas desde la posición inicial
+    // Check for captures first (mandatory moves)
     Moviment inici(origen);
-    if (fitxa.getTipus() == TIPUS_DAMA)
+    if (fitxa.getTipus() == TIPUS_DAMA) {
         getCapturesDama(fitxa, inici, pendents);
-    else
+    }
+    else {
         getCapturesDisponibles(fitxa, inici, pendents);
+    }
 
-    // Añadimos todas las capturas encontradas
-    for (auto& m : pendents)
-    {
-        if (m.getNumPosicions() > 1)
-        {
+    // Add all found captures
+    for (auto& m : pendents) {
+        if (m.getNumPosicions() > 1) {
             m.setEsMovimentDeCaptura(true);
             fitxa.afegeixMovimentValid(m);
             hiHaCaptura = true;
         }
     }
 
-    // Si no hay capturas, generamos movimientos simples
-    if (!hiHaCaptura)
-    {
-        if (fitxa.getTipus() == TIPUS_NORMAL)
-        {
-            int dir = (fitxa.getColor() == COLOR_BLANC) ? 1 : -1;
-            for (int dc = -1; dc <= 1; dc += 2)
-            {
+    // If no captures, generate simple moves
+    if (!hiHaCaptura) {
+        if (fitxa.getTipus() == TIPUS_NORMAL) {
+            int dir = (fitxa.getColor() == COLOR_BLANC) ? -1 : 1;  // White moves up (-1), black down (+1)
+
+            // Check both diagonal directions
+            for (int dc = -1; dc <= 1; dc += 2) {
                 int nf = fila + dir;
                 int nc = col + dc;
-                if (esDinsTauler(nf, nc) && m_tauler[nf][nc].getTipus() == TIPUS_EMPTY)
-                {
+
+                if (esDinsTauler(nf, nc) && m_tauler[nf][nc].getTipus() == TIPUS_EMPTY) {
                     Moviment m(origen);
-                    m.afegeixPosicio(Posicio(nf + 1, nc));
+                    m.afegeixPosicio(Posicio(nf, nc));
                     fitxa.afegeixMovimentValid(m);
                 }
             }
         }
-        else if (fitxa.getTipus() == TIPUS_DAMA)
-        {
+        else if (fitxa.getTipus() == TIPUS_DAMA) {
+            // Queen moves in all 4 diagonals
             int dirs[4][2] = { {1, 1}, {1, -1}, {-1, 1}, {-1, -1} };
-            for (int d = 0; d < 4; ++d)
-            {
+
+            for (int d = 0; d < 4; ++d) {
                 int f = fila + dirs[d][0];
                 int c = col + dirs[d][1];
 
-                while (esDinsTauler(f, c) && m_tauler[f][c].getTipus() == TIPUS_EMPTY)
-                {
-                    Moviment mov(origen);
-                    mov.afegeixPosicio(Posicio(f + 1, c));
-                    fitxa.afegeixMovimentValid(mov);
+                while (esDinsTauler(f, c)) {
+                    if (m_tauler[f][c].getTipus() == TIPUS_EMPTY) {
+                        Moviment mov(origen);
+                        mov.afegeixPosicio(Posicio(f, c));
+                        fitxa.afegeixMovimentValid(mov);
+                    }
+                    else {
+                        break;  // Blocked by another piece
+                    }
                     f += dirs[d][0];
                     c += dirs[d][1];
                 }
@@ -569,75 +555,24 @@ void Tauler::calculaMovimentsFitxa(int fila, int col)
     }
 }
 
-
-
-
-
-/*
-* toString
-* Genera un string amb l estat actual del tauler de joc. Cerquem extreure m_tauler a
-* '-' Casella buida
-* 'O' Normal Blanca
-* 'X' Normal Negra
-* 'D' Dama Blanca
-* 'R' Reina Negra
-*
-* EXEMPLE:
-    8: _ X _ D _ _ _ X
-    7: _ _ _ _ _ _ X _
-    6: _ _ _ _ _ _ _ _
-    5: R _ _ _ _ _ _ _
-    4: _ _ _ _ _ _ _ O
-    3: _ _ O _ _ _ O _
-    2: _ O _ _ _ _ _ X
-    1: O _ O _ D _ _ _
-       A B C D E F G H
-*
-* @return string: Estat actual del tauler.
-*/
-string Tauler::toString() const
-{
-    string taulerString;
-    int fila = 8;
-    for (int i = N_FILES - 1; i >= 0; i--) // Files (numeros)
-    {
-        taulerString += to_string(fila);
-        taulerString += ": ";
-        for (int j = 0; j < N_COLUMNES; j++) // Columnes (lletres)
-        {
-            taulerString += m_tauler[i][j].getLletra();
-            taulerString += " ";
-        }
-        taulerString += "\n";
-        fila--;
-    }
-    taulerString += "   a b c d e f g h";
-    return taulerString;
-}
-
-
 void Tauler::visualitza() const
 {
     // Dibuixa el tauler (fons i gràfic)
     GraphicManager::getInstance()->drawSprite(GRAFIC_TAULER, POS_X_TAULER, POS_Y_TAULER);
 
-    cout << "[DEBUG] Board View:" << endl;
     for (int i = 0; i < N_FILES; ++i)
     {
         for (int j = 0; j < N_COLUMNES; ++j)
         {
             m_tauler[i][j].visualitza(); // Cada fitxa dibuixa si no és buida
-            cout << "[" << m_tauler[i][j].getLletra() << "]";
         }
-        cout << endl;
     }
 }
 
 
-
 const Fitxa& Tauler::getFitxa(const Posicio& pos) const
 {
-    int fila = pos.getFila() - 1;
+    int fila = pos.getFila();
     int col = pos.getColumna();
     return m_tauler[fila][col];
 }

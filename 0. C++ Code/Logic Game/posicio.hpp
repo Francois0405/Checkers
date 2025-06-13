@@ -37,25 +37,23 @@ using namespace std;
 class Posicio 
 {
 public:
-    Posicio();
+    Posicio() : m_fila(0), m_columna(0) {};
     Posicio(const string& posicio);
     Posicio(int fila, int columna);
 
-    int getFila() const;
-    int getColumna() const;
+    int getFila() const { return m_fila; }
+	int getColumna() const { return m_columna; }
 
-    void setFila(int fila);
-    void setColumna(int columna);
+    void setFila(int fila) { m_fila = fila; }
+    void setColumna(int columna) { m_columna = columna; }
 
     bool operator==(const Posicio& posicio) const;
     bool operator!=(const Posicio& posicio) const;
 
-    void stringToPosicio(const string& posicio, int& fila, int& columna);
     void posicioToString(string& posicio) const;
-
 private:
-    int m_fila;    
-    char m_columna; 
+    int m_fila;    // 0 - 7
+    int m_columna; // 0 - 7
 };
 
 ostream& operator<<(ostream& out, const Posicio& pos);
