@@ -262,8 +262,10 @@ void Tauler::getCapturesDama(const Fitxa& fitxa, const Moviment& movActual, vect
                     nouMov.setEsMovimentDeCaptura(true);
                     pendents.push_back(nouMov);
 
-                    getCapturesDama(fitxa, nouMov, pendents);
-                    break;
+                    if (!nouMov.contePosicio(Posicio(f, c))) // evita bucles infinitos
+                    {
+                        getCapturesDama(fitxa, nouMov, pendents);
+                    }
                 }
 
                 f += df;
@@ -479,7 +481,7 @@ bool Tauler::mouFitxa(const Posicio& origen, const Posicio& desti)
                             (m_tauler[filaDest][colDest].getColor() == COLOR_NEGRE && filaDest == 0)))
                     {
                         m_tauler[filaDest][colDest].convertirADama();
-                        calculaMovimentsFitxa(filaDest, colDest); // Recalcular movimientos de dama
+                        //calculaMovimentsFitxa(filaDest, colDest); // Recalcular movimientos de dama
                     }
                 }
             }
