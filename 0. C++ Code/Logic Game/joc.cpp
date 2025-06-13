@@ -166,11 +166,11 @@ bool Joc::actualitza(int mousePosX, int mousePosY, bool mouseStatus)
 	if (mouseStatus && dinsTauler)
 	{
 		int col = (mousePosX - (POS_X_TAULER + CASELLA_INICIAL_X)) / AMPLADA_CASELLA;
-		int fila = (mousePosY - (POS_Y_TAULER + CASELLA_INICIAL_Y)) / ALCADA_CASELLA;
-
-		fila = fila;
-
-		Posicio posicioClicada(fila + 1, col);
+		int filaPantalla = (mousePosY - (POS_Y_TAULER + CASELLA_INICIAL_Y)) / ALCADA_CASELLA;
+		
+		int filaLogica = 7 - filaPantalla;
+		
+		Posicio posicioClicada(filaLogica + 1, col);
 
 		const Fitxa& fitxaClicada = m_tauler.getFitxa(posicioClicada);
 
@@ -182,7 +182,7 @@ bool Joc::actualitza(int mousePosX, int mousePosY, bool mouseStatus)
 				cout << "[DEBUG] Heu seleccionat una fitxa (" << endl;
 				primeraVegada = true;
 			}
-			m_filaSeleccionada = fila;
+			m_filaSeleccionada = filaLogica;
 			m_colSeleccionada = col;
 			m_fitxaSeleccionada = true;
 		}
@@ -191,7 +191,7 @@ bool Joc::actualitza(int mousePosX, int mousePosY, bool mouseStatus)
 		else if (m_fitxaSeleccionada)
 		{
 			Posicio origen(m_filaSeleccionada + 1, m_colSeleccionada);
-			Posicio desti(fila + 1, col);
+			Posicio desti(filaLogica + 1, col);
 
 			bool hiHaCaptura = m_tauler.hiHaCapturaGlobal(m_tornActual);
 
