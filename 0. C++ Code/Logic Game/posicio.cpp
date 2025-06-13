@@ -178,3 +178,11 @@ ostream& operator<<(ostream& out, const Posicio& pos)
 	out << posicio;
 	return out;
 }
+
+istream& operator>>(istream& in, Posicio& pos)
+{
+	string posStr;
+	in >> posStr;  
+	pos = Posicio(posStr); 
+	return in;
+}

@@ -60,7 +60,6 @@ void Tauler::inicialitza(const string& nomFitxer)
         string posicioStr;
         while (fitxer >> tipus >> posicioStr)
         {
-
             Posicio posicio(posicioStr);
             int fila = posicio.getFila() - 1;
             int col = posicio.getColumna();

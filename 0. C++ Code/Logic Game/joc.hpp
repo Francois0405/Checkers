@@ -12,11 +12,11 @@ using namespace std;
 class Joc
 {
 public:
-    ModeJoc menu(string& nomFitxerMoviments);
+    ModeJoc menu();
     void mouMaquina();
     void inicialitza(ModeJoc mode, const string& nomFitxerTauler, const string& nomFitxerMoviments);
-    bool actualitza(int mousePosX, int mousePosY, bool mouseStatus);
-    void finalitza();
+    bool actualitza(int mousePosX, int mousePosY, bool mouseStatus, ModeJoc mode);
+    void finalitza(const string& nomFitxer, ModeJoc mode);
     ColorFitxa getTornActual() const { return m_tornActual; }
     bool comprovaFinalPartida();
 

@@ -59,5 +59,5 @@ private:
 };
 
 ostream& operator<<(ostream& out, const Posicio& pos);
-
+istream& operator>>(istream& in, Posicio& pos);
 #endif

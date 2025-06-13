@@ -12,9 +12,9 @@
 #include "GraphicManager.h"
 #include <thread>
 #include <chrono>
+#include <windows.h>
 
-
-ModeJoc Joc::menu(string& nomFitxerMoviments)
+ModeJoc Joc::menu()
 {
 	cout << "    ___             ______      ______                          " << endl
 		<< "   |_  |            |  _  \\     |  _  \\                         " << endl
@@ -101,9 +101,6 @@ ModeJoc Joc::menu(string& nomFitxerMoviments)
 		cout << "   - [CLIC]: Avancar al seguent moviment." << endl;
 		cout << "   - [ESC]: Sortir del mode replay." << endl << endl;
 
-		cout << "Introdueix el nom o ruta de l'arxiu que vols reproduir:" << endl;
-		cout << "> ";
-		cin >> nomFitxerMoviments;
 		system("pause");
 		system("CLS");
 	}
@@ -113,22 +110,17 @@ ModeJoc Joc::menu(string& nomFitxerMoviments)
 
 void Joc::inicialitza(ModeJoc mode, const string& nomFitxerTauler, const string& nomFitxerMoviments)
 {
-	if (mode == MODE_JOC_NORMAL || mode == MODE_JOC_ORDINADOR)
-	{
-		// El fitxer indicat al paràmetre nomFitxerMoviments s’haurà d’utilitzar
-		// per guardar, al final de la partida, tots els moviments que s’hagin fet
-		// durant el desenvolupament de la partida
+	// El fitxer indicat al paràmetre nomFitxerMoviments s’haurà d’utilitzar
+	// per guardar, al final de la partida, tots els moviments que s’hagin fet
+	// durant el desenvolupament de la partida
 
-		m_tauler.inicialitza(nomFitxerTauler);
-		m_tauler.actualitzaMovimentsValids();
-
-	}
-	else if (mode == MODE_JOC_REPLAY)
+	m_tauler.inicialitza(nomFitxerTauler);
+	m_tauler.actualitzaMovimentsValids();
+	if (mode == MODE_JOC_REPLAY)
 	{
 		// S’haurà d’inicialitzar la cua de moviments a reproduir amb la 
 		// informació del fitxer indicat al paràmetre nomFitxerMoviments
-			
-		nomFitxerMoviments;
+		m_cuaMoviments.loadCua(nomFitxerMoviments);
 	}
 }
 
@@ -136,7 +128,7 @@ void Joc::inicialitza(ModeJoc mode, const string& nomFitxerTauler, const string&
 void Joc::mouMaquina()
 {
 	//la linia serveix per poder tenir temps a veure el moviment de la maquina
-	this_thread::sleep_for(std::chrono::milliseconds(2000));
+	this_thread::sleep_for(std::chrono::milliseconds(20000));
 
 
 	ColorFitxa colorMaquina = COLOR_BLANC; // La máquina juega como blancas
@@ -182,7 +174,6 @@ void Joc::mouMaquina()
 	m_tornActual = COLOR_NEGRE;
 }
 
-
 bool Joc::comprovaFinalPartida()
 {
 	bool blancPotJugar = m_tauler.jugadorPotJugar(COLOR_BLANC);
@@ -205,8 +196,7 @@ bool Joc::comprovaFinalPartida()
 	return m_partidaAcabada;
 }
 
-
-bool Joc::actualitza(int mousePosX, int mousePosY, bool mouseStatus)
+bool Joc::actualitza(int mousePosX, int mousePosY, bool mouseStatus, ModeJoc mode)
 {
 	// Important Primer mostrar el fons sino el fons tapara tauler.
 	GraphicManager::getInstance()->drawSprite(GRAFIC_FONS, 0, 0);
@@ -245,49 +235,91 @@ bool Joc::actualitza(int mousePosX, int mousePosY, bool mouseStatus)
 		mousePosX < POS_X_TAULER + CASELLA_INICIAL_X + NUM_COLS_TAULER * AMPLADA_CASELLA &&
 		mousePosY < POS_Y_TAULER + CASELLA_INICIAL_Y + NUM_FILES_TAULER * ALCADA_CASELLA;
 
-	if (mouseStatus && dinsTauler)
+	bool flagClick = false;
+	if (mode == MODE_JOC_NORMAL)
 	{
-		int col = (mousePosX - (POS_X_TAULER + CASELLA_INICIAL_X)) / AMPLADA_CASELLA;
-		int fila = (mousePosY - (POS_Y_TAULER + CASELLA_INICIAL_Y)) / ALCADA_CASELLA;
-
-		Posicio posicioClicada(fila + 1, col);
-
-		const Fitxa& fitxaClicada = m_tauler.getFitxa(posicioClicada);
-
-		if (fitxaClicada.getTipus() != TIPUS_EMPTY && fitxaClicada.getColor() == m_tornActual)
+		if (mouseStatus && dinsTauler)
 		{
-			m_filaSeleccionada = fila;
-			m_colSeleccionada = col;
-			m_fitxaSeleccionada = true;
-		}
-		else if (m_fitxaSeleccionada) // Si ja la tenim seleccionada
-		{
-			Posicio origen(m_filaSeleccionada + 1, m_colSeleccionada);
-			Posicio desti(fila + 1, col);
-
-			bool hiHaCaptura = m_tauler.hiHaCapturaGlobal(m_tornActual);
-
-			bool esCaptura = m_tauler.esMovimentDeCaptura(origen, desti);
-
-			if (m_tauler.mouFitxa(origen, desti))
+			int col = (mousePosX - (POS_X_TAULER + CASELLA_INICIAL_X)) / AMPLADA_CASELLA;
+			int fila = (mousePosY - (POS_Y_TAULER + CASELLA_INICIAL_Y)) / ALCADA_CASELLA;
+			Posicio posicioClicada(fila + 1, col);
+			
+			const Fitxa& fitxaClicada = m_tauler.getFitxa(posicioClicada);
+			
+			if (fitxaClicada.getTipus() != TIPUS_EMPTY && fitxaClicada.getColor() == m_tornActual)
 			{
-				if (hiHaCaptura && !esCaptura)
-					m_tauler.bufaFitxa(origen);  // BUFAR si debías capturar y no lo hiciste
+				m_filaSeleccionada = fila;
+				m_colSeleccionada = col;
+				m_fitxaSeleccionada = true;
+			}
+			else if (m_fitxaSeleccionada) // Si ja la tenim seleccionada
+			{
+				Posicio origen(m_filaSeleccionada + 1, m_colSeleccionada);
+				Posicio desti(fila + 1, col);
+				bool hiHaCaptura = m_tauler.hiHaCapturaGlobal(m_tornActual);
+				bool esCaptura = m_tauler.esMovimentDeCaptura(origen, desti);
+				
+				if (m_tauler.mouFitxa(origen, desti))
+				{
+					if (hiHaCaptura && !esCaptura)
+						m_tauler.bufaFitxa(origen);  // BUFAR si debías capturar y no lo hiciste
+					
+					m_fitxaSeleccionada = false;
+					m_tauler.actualitzaMovimentsValids();
 
-				m_fitxaSeleccionada = false;
-				m_tauler.actualitzaMovimentsValids();
+					// Cambiar turno
+					if (m_tornActual == COLOR_BLANC)
+						m_tornActual = COLOR_NEGRE;
+					else
+						m_tornActual = COLOR_BLANC;
 
-				// Cambiar turno
-				if (m_tornActual == COLOR_BLANC)
-					m_tornActual = COLOR_NEGRE;
-				else
-					m_tornActual = COLOR_BLANC;
-
-				comprovaFinalPartida();
-				m_cuaMoviments.push(Moviment(origen, desti));
+					comprovaFinalPartida();
+					m_cuaMoviments.push(Moviment(origen, desti));
+				}
 			}
 		}
 	}
+	else if (mode == MODE_JOC_REPLAY)
+	{
+		if (mouseStatus && flagClick == false)
+		{
+			flagClick = true;
+			if (!m_cuaMoviments.empty())
+			{
+				Moviment mov = m_cuaMoviments.getFront()->getMoviment();
+				Posicio ini = mov.getPosicioInicial();
+				Posicio fin = mov.getPosicioFinal();
+
+				if (m_tauler.mouFitxa(ini, fin))
+				{
+					// Change turn after successful move
+					m_tornActual = (m_tornActual == COLOR_BLANC) ? COLOR_NEGRE : COLOR_BLANC;
+
+					// Check if game ended
+					if (comprovaFinalPartida())
+					{
+						string missatge = "FI DE REPRODUCCIO - GUANYADOR: " + m_guanyador;
+						GraphicManager::getInstance()->drawFont(FONT_GREEN_30, POS_X_TAULER + 50, POS_Y_TAULER + 500, 1.2, missatge);
+						return true;
+					}
+
+					m_cuaMoviments.pop();
+				}
+			}
+			else
+			{
+				string missatge = "FI DE REPRODUCCIO, ESC PER SORTIR";
+				GraphicManager::getInstance()->drawFont(FONT_GREEN_30, POS_X_TAULER + 50, POS_Y_TAULER + 500, 1.2, missatge);
+				return true;
+			}
+		}
+		else
+		{
+			flagClick = false;
+		}
+		Sleep(200);
+	}
+	
 
 
 
@@ -338,7 +370,15 @@ bool Joc::actualitza(int mousePosX, int mousePosY, bool mouseStatus)
 }
 
 
-void Joc::finalitza()
+void Joc::finalitza(const string& nomFitxer, ModeJoc mode)
 {
-
+	if (mode == MODE_JOC_REPLAY)
+	{
+		cout << "[DEBUG] Joc::finalitza() - Mode Replay, no s'ha de guardar res." << endl;
+		return; // No guardar res en modo replay
+	}
+	else
+	{
+		m_cuaMoviments.storeCua(nomFitxer);
+	}
 }

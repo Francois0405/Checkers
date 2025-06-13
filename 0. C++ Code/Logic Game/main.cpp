@@ -41,11 +41,10 @@ int main(int argc, const char* argv[])
     //Mostrem la finestra grafica
     pantalla.show();
 
-    string nomFitxerMoviments = "N/A";
     Joc joc;
-    ModeJoc mode = joc.menu(nomFitxerMoviments);
+    ModeJoc mode = joc.menu();
     // PAS 1. INICIALITZEM EL JOC
-    joc.inicialitza(mode, "..\\taulerInicial.txt", nomFitxerMoviments);
+    joc.inicialitza(mode, "..\\taulerInicial.txt", "..\\taulerGuardat.txt");
     bool final = false;
 
     do
@@ -65,7 +64,7 @@ int main(int argc, const char* argv[])
         }
         else
         {
-            final = joc.actualitza(mousePosX, mousePosY, mouseStatus);
+            final = joc.actualitza(mousePosX, mousePosY, mouseStatus, mode);
         }
 
         // Actualitza la pantalla
@@ -76,7 +75,7 @@ int main(int argc, const char* argv[])
     if (final)
     {
         // PAS 3. FINALITZEM EL JOC
-        joc.finalitza();
+        joc.finalitza("..\\taulerGuardat.txt", mode);
     }
 
     //Instruccio necesaria per alliberar els recursos de la llibreria 

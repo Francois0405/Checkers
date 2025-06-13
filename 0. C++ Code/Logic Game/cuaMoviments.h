@@ -28,6 +28,9 @@ public:
 	
 	bool empty(); // crompova si esta empty
 	void print(); // imprimeix la cua de moviments
+
+	void storeCua(const string& nomFitxer); // guarda la cua en un fitxer
+	void loadCua(const string& nomFitxer); // carrega la cua des d'un fitxer
 private:
 	NodeMoviment* m_front; // Front cua
 	NodeMoviment* m_back;  // Rear cua

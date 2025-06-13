@@ -1,5 +1,8 @@
 #include "CuaMoviments.h"
+#include <fstream>
 #include <iostream>
+#include <sstream>
+#include <string>
 
 using namespace std;
 
@@ -89,4 +92,61 @@ void CuaMoviment::print()
 		nodeActual = nodeActual->getNext();
 	}
 	cout << "[DEBUG] printCuaMoviments(): Cua impresa correctament" << endl;
+}
+
+void CuaMoviment::storeCua(const string& nomFitxer) 
+{
+	ofstream fitxer(nomFitxer);
+	if (!fitxer.is_open()) {
+		cerr << "[ERROR] storeCua(): No s'ha pogut obrir el fitxer " << nomFitxer << endl;
+		return;
+	}
+
+	if (m_front == nullptr) {
+		cout << "[WARNING] storeCua(): Cua buida, no s'ha guardat res" << endl;
+		fitxer.close();
+		return;
+	}
+
+	NodeMoviment* nodeActual = m_front;
+	while (nodeActual != nullptr) {
+		const Moviment& mov = nodeActual->getMoviment();
+		if (mov.getNumPosicions() >= 2) {  // Ensure valid move
+			fitxer << mov.getPosicioInicial() << " "
+				<< mov.getPosicioFinal() << endl;
+		}
+		nodeActual = nodeActual->getNext();
+	}
+	fitxer.close();
+	cout << "[DEBUG] storeCua(): " << m_size << " moviments emmagatzemats a "
+		<< nomFitxer << endl;
+}
+
+
+void CuaMoviment::loadCua(const string& nomFitxer)
+{
+	ifstream fitxer(nomFitxer);
+	if (!fitxer.is_open()) {
+		cerr << "[ERROR] loadCua(): No s'ha pogut obrir el fitxer " << nomFitxer << endl;
+		return;
+	}
+
+	string line;
+	while (getline(fitxer, line)) {
+		// Skip empty lines
+		if (line.empty()) continue;
+
+		istringstream iss(line);
+		Moviment moviment;
+		if (iss >> moviment) {  // Only push if successfully read
+			push(moviment);
+		}
+		else {
+			cerr << "[WARNING] loadCua(): Linea mal formada: " << line << endl;
+		}
+	}
+
+	fitxer.close();
+	cout << "[DEBUG] loadCua(): " << m_size << " moviments carregats des de "
+		<< nomFitxer << endl;
 }

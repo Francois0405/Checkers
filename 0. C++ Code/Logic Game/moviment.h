@@ -53,6 +53,6 @@ private:
 };
 
 ostream& operator<<(ostream& out, const Moviment& mov);
-
+istream& operator>>(istream& in, Moviment& mov);
 
 #endif
