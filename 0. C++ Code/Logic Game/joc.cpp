@@ -10,6 +10,8 @@
 #include <fstream>
 #include <string>
 #include "GraphicManager.h"
+#include <thread>
+#include <chrono>
 
 
 ModeJoc Joc::menu(string& nomFitxerMoviments)
@@ -129,6 +131,58 @@ void Joc::inicialitza(ModeJoc mode, const string& nomFitxerTauler, const string&
 		nomFitxerMoviments;
 	}
 }
+
+
+void Joc::mouMaquina()
+{
+	//la linia serveix per poder tenir temps a veure el moviment de la maquina
+	this_thread::sleep_for(std::chrono::milliseconds(2000));
+
+
+	ColorFitxa colorMaquina = COLOR_BLANC; // La máquina juega como blancas
+
+	m_tauler.actualitzaMovimentsValids();
+
+	std::vector<MovimentPossible> movimentsPossibles;
+
+	// Recorremos el tablero buscando movimientos de fichas blancas
+	for (int i = 0; i < N_FILES; ++i) {
+		for (int j = 0; j < N_COLUMNES; ++j) {
+			Posicio pos(i + 1, j);
+			const Fitxa& fitxa = m_tauler.getFitxa(pos);
+
+			if (fitxa.getTipus() != TIPUS_EMPTY && fitxa.getColor() == colorMaquina) {
+				for (int k = 0; k < fitxa.getNumMovimentsValids(); ++k) {
+					MovimentPossible mp;
+					mp.origen = pos;
+					mp.moviment = fitxa.getMovimentValid(k);
+					movimentsPossibles.push_back(mp);
+				}
+			}
+		}
+	}
+
+	// Intentamos realizar una captura si hay alguna
+	bool movimentFet = false;
+	for (int i = 0; i < static_cast<int>(movimentsPossibles.size()); ++i) {
+		if (movimentsPossibles[i].moviment.getEsMovimentDeCaptura()) {
+			m_tauler.mouFitxa(movimentsPossibles[i].origen, movimentsPossibles[i].moviment.getPosicioFinal());
+			movimentFet = true;
+			break;
+		}
+	}
+
+	// Si no ha habido captura, hacemos el primer movimiento disponible
+	if (!movimentFet && !movimentsPossibles.empty()) {
+		const MovimentPossible& m = movimentsPossibles[0];
+		m_tauler.mouFitxa(m.origen, m.moviment.getPosicioFinal());
+	}
+
+	// Cambiar el turno al jugador
+	m_tornActual = COLOR_NEGRE;
+}
+
+
 
 bool Joc::actualitza(int mousePosX, int mousePosY, bool mouseStatus)
 {

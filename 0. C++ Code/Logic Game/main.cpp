@@ -58,7 +58,15 @@ int main(int argc, const char* argv[])
         int mousePosY = Mouse_getY();
         
         // PAS 2. ACTUALITZEM SI NO S'HA ACABAT I RETORNA EL BOOL (GUANYAT)
-        final = joc.actualitza(mousePosX, mousePosY, mouseStatus);
+        //final = joc.actualitza(mousePosX, mousePosY, mouseStatus);
+        if (mode == MODE_JOC_ORDINADOR && joc.getTornActual() == COLOR_BLANC)
+        {
+            joc.mouMaquina(); // Turno automático para la máquina
+        }
+        else
+        {
+            final = joc.actualitza(mousePosX, mousePosY, mouseStatus);
+        }
 
         // Actualitza la pantalla
         pantalla.update();
