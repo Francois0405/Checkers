@@ -55,6 +55,8 @@ public:
 	bool esMovimentDeCaptura(const Posicio& origen, const Posicio& desti) const;
 	void bufaFitxa(const Posicio& pos);
 
+	bool jugadorPotJugar(ColorFitxa color) const;
+	int comptaFitxes(ColorFitxa color) const;
 
 private:
 	Fitxa m_tauler[N_FILES][N_COLUMNES];

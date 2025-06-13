@@ -695,3 +695,35 @@ void Tauler::bufaFitxa(const Posicio& pos)
     if (esDinsTauler(fila, col))
         m_tauler[fila][col] = Fitxa(TIPUS_EMPTY, COLOR_BLANC, pos);
 }
+
+
+bool Tauler::jugadorPotJugar(ColorFitxa color) const
+{
+    bool potJugar = false;
+    for (int i = 0; i < N_FILES; ++i)
+    {
+        for (int j = 0; j < N_COLUMNES; ++j)
+        {
+            const Fitxa& f = m_tauler[i][j];
+            if (f.getTipus() != TIPUS_EMPTY && f.getColor() == color && f.getNumMovimentsValids() > 0)
+                potJugar = true;
+        }
+    }
+    return potJugar;
+}
+
+int Tauler::comptaFitxes(ColorFitxa color) const
+{
+    int cont = 0;
+    for (int i = 0; i < N_FILES; ++i)
+    {
+        for (int j = 0; j < N_COLUMNES; ++j)
+        {
+            const Fitxa& f = m_tauler[i][j];
+            if (f.getTipus() != TIPUS_EMPTY && f.getColor() == color)
+                cont++;
+        }
+    }
+    return cont;
+}
+

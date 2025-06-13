@@ -17,6 +17,10 @@ public:
     bool actualitza(int mousePosX, int mousePosY, bool mouseStatus);
     void finalitza();
     ColorFitxa getTornActual() const { return m_tornActual; }
+    bool comprovaFinalPartida();
+    bool m_partidaAcabada = false;
+
+
 private:
     Tauler m_tauler;
     bool m_fitxaSeleccionada = false;

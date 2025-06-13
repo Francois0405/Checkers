@@ -183,6 +183,30 @@ void Joc::mouMaquina()
 }
 
 
+bool Joc::comprovaFinalPartida()
+{
+	bool blancPotJugar = m_tauler.jugadorPotJugar(COLOR_BLANC);
+	bool negrePotJugar = m_tauler.jugadorPotJugar(COLOR_NEGRE);
+
+	int blancVives = m_tauler.comptaFitxes(COLOR_BLANC);
+	int negreVives = m_tauler.comptaFitxes(COLOR_NEGRE);
+
+	string guanyador = "";
+
+	if (!blancPotJugar || blancVives == 0)
+		guanyador = "NEGRE";
+	else if (!negrePotJugar || negreVives == 0)
+		guanyador = "BLANC";
+
+	if (!guanyador.empty())
+	{
+		cout << "GUANYADOR: " << guanyador << endl;
+		m_partidaAcabada = true;
+	}
+
+	return m_partidaAcabada;
+}
+
 
 bool Joc::actualitza(int mousePosX, int mousePosY, bool mouseStatus)
 {
@@ -190,6 +214,12 @@ bool Joc::actualitza(int mousePosX, int mousePosY, bool mouseStatus)
 	GraphicManager::getInstance()->drawSprite(GRAFIC_FONS, 0, 0);
 	GraphicManager::getInstance()->drawSprite(GRAFIC_TAULER, POS_X_TAULER, POS_Y_TAULER);
 	m_tauler.visualitza();
+
+	if (m_partidaAcabada)
+	{
+		GraphicManager::getInstance()->drawFont(FONT_GREEN_30, POS_X_TAULER + 50, POS_Y_TAULER + 500, 1.2, "PARTIDA FINALITZADA");
+		return true;  // Devuelve true para indicar que ya no hay que seguir
+	}
 
 	// Implementat indicador posMouse
 	int posTextX = POS_X_TAULER;
@@ -253,6 +283,8 @@ bool Joc::actualitza(int mousePosX, int mousePosY, bool mouseStatus)
 				else
 					m_tornActual = COLOR_BLANC;
 
+				comprovaFinalPartida();
+
 			}
 		}
 	}
@@ -304,6 +336,7 @@ bool Joc::actualitza(int mousePosX, int mousePosY, bool mouseStatus)
 	}
 	return false;
 }
+
 
 void Joc::finalitza()
 {
