@@ -171,7 +171,7 @@ void Joc::mouMaquina()
 			break;
 		}
 	}
-
+	
 	// Si no ha habido captura, hacemos el primer movimiento disponible
 	if (!movimentFet && !movimentsPossibles.empty()) {
 		const MovimentPossible& m = movimentsPossibles[0];
