@@ -27,7 +27,7 @@ Tauler::Tauler()
     {
         for (int j = 0; j < N_COLUMNES; ++j)
         {
-            m_tauler[i][j] = Fitxa(TIPUS_EMPTY, COLOR_BLANC, Posicio(i + 1, j));
+            m_tauler[i][j] = Fitxa(TIPUS_EMPTY, COLOR_BLANC, Posicio(i , j));
         }
     }
     cout << endl << "[DEBUG] Tauler() Correcte" << endl;
@@ -119,7 +119,7 @@ void Tauler::actualitzaMovimentsValids()
             // Se busca actualizar todas las piezas del juego, por lo tanto, cojemos cada fitxa.
             Fitxa& fitxa = m_tauler[i][j];
             // Setter de Posicio (atributo)
-            fitxa.setPosicio(Posicio(i + 1, j));
+            fitxa.setPosicio(Posicio(i , j));
 
             // Solo calculamos los movimientos de fitxas, no casillas vacias
             if (fitxa.getTipus() != TIPUS_EMPTY)
@@ -147,7 +147,7 @@ void Tauler::actualitzaMovimentsValids()
 void Tauler::getPosicionsPossibles(const Posicio& origen, vector<Posicio>& posicionsPossibles)
 {
     posicionsPossibles.clear(); // Limpia el vector de posiciones posibles
-    int fila = origen.getFila() - 1;
+    int fila = origen.getFila();
     int col = origen.getColumna();
 
     if (esDinsTauler(fila, col))
@@ -173,7 +173,7 @@ void Tauler::getPosicionsPossibles(const Posicio& origen, vector<Posicio>& posic
 
                         if (esDinsTauler(f, c) && m_tauler[f][c].getTipus() == TIPUS_EMPTY)
                         {
-                            posicionsPossibles.push_back(Posicio(f + 1, c));
+                            posicionsPossibles.push_back(Posicio(f, c));
                         }
                     }
                 }
@@ -188,7 +188,7 @@ void Tauler::getPosicionsPossibles(const Posicio& origen, vector<Posicio>& posic
                     {
                         if (m_tauler[f][c].getTipus() == TIPUS_EMPTY)
                         {
-                            posicionsPossibles.push_back(Posicio(f +1, c));
+                            posicionsPossibles.push_back(Posicio(f, c));
                         }
                         else
                         {
@@ -331,7 +331,7 @@ void Tauler::getCapturesDisponibles(const Fitxa& fitxa, const Moviment& movActua
             if (enemic.getTipus() != TIPUS_EMPTY && enemic.getColor() != fitxa.getColor() && desti.getTipus() == TIPUS_EMPTY)
             {
                 Moviment nouMov = movActual;
-                nouMov.afegeixPosicio(Posicio(fila2 + 1, col2)); // Recorda que fila comenca en 1
+                nouMov.afegeixPosicio(Posicio(fila2, col2)); // Recorda que fila comenca en 1
                 nouMov.setEsMovimentDeCaptura(true);
                 pendents.push_back(nouMov);
 
@@ -355,7 +355,7 @@ void Tauler::getCapturesDisponibles(const Fitxa& fitxa, const Moviment& movActua
 
 bool Tauler::mouFitxa(const Posicio& origen, const Posicio& desti)
 {
-    int filaOrig = origen.getFila() - 1;
+    int filaOrig = origen.getFila();
     int colOrig = origen.getColumna();
     bool valid = true;
 
@@ -452,12 +452,12 @@ bool Tauler::mouFitxa(const Posicio& origen, const Posicio& desti)
                             int filaCap = (f1 + f2) / 2;
                             int colCap = (c1 + c2) / 2;
 
-                            m_tauler[filaCap][colCap] = Fitxa(TIPUS_EMPTY, COLOR_BLANC, Posicio(filaCap + 1, colCap));
+                            m_tauler[filaCap][colCap] = Fitxa(TIPUS_EMPTY, COLOR_BLANC, Posicio(filaCap, colCap));
                         }
                     }
 
                     // Mover la ficha
-                    int filaDest = desti.getFila() - 1;
+                    int filaDest = desti.getFila();
                     int colDest = desti.getColumna();
 
                     m_tauler[filaDest][colDest] = fitxaOrig;
@@ -534,7 +534,7 @@ void Tauler::calculaMovimentsFitxa(int fila, int col)
                 if (esDinsTauler(nf, nc) && m_tauler[nf][nc].getTipus() == TIPUS_EMPTY)
                 {
                     Moviment m(origen);
-                    m.afegeixPosicio(Posicio(nf + 1, nc));
+                    m.afegeixPosicio(Posicio(nf, nc));
                     fitxa.afegeixMovimentValid(m);
                 }
             }
@@ -550,7 +550,7 @@ void Tauler::calculaMovimentsFitxa(int fila, int col)
                 while (esDinsTauler(f, c) && m_tauler[f][c].getTipus() == TIPUS_EMPTY)
                 {
                     Moviment mov(origen);
-                    mov.afegeixPosicio(Posicio(f + 1, c));
+                    mov.afegeixPosicio(Posicio(f, c));
                     fitxa.afegeixMovimentValid(mov);
                     f += dirs[d][0];
                     c += dirs[d][1];
@@ -680,7 +680,7 @@ bool Tauler::esMovimentDeCaptura(const Posicio& origen, const Posicio& desti) co
 
 void Tauler::bufaFitxa(const Posicio& pos)
 {
-    int fila = pos.getFila() - 1;
+    int fila = pos.getFila();
     int col = pos.getColumna();
 
     if (esDinsTauler(fila, col))
