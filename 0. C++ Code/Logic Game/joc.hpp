@@ -18,7 +18,6 @@ public:
     void finalitza();
     ColorFitxa getTornActual() const { return m_tornActual; }
     bool comprovaFinalPartida();
-    bool m_partidaAcabada = false;
 
 
 private:
@@ -27,6 +26,8 @@ private:
     int m_filaSeleccionada = -1;
     int m_colSeleccionada = -1;
     ColorFitxa m_tornActual = COLOR_BLANC;
+    string m_guanyador = "";
+    bool m_partidaAcabada = false;
 };
 
 struct MovimentPossible {

@@ -191,16 +191,14 @@ bool Joc::comprovaFinalPartida()
 	int blancVives = m_tauler.comptaFitxes(COLOR_BLANC);
 	int negreVives = m_tauler.comptaFitxes(COLOR_NEGRE);
 
-	string guanyador = "";
-
 	if (!blancPotJugar || blancVives == 0)
-		guanyador = "NEGRE";
-	else if (!negrePotJugar || negreVives == 0)
-		guanyador = "BLANC";
-
-	if (!guanyador.empty())
 	{
-		cout << "GUANYADOR: " << guanyador << endl;
+		m_guanyador = "NEGRE";
+		m_partidaAcabada = true;
+	}
+	else if (!negrePotJugar || negreVives == 0)
+	{
+		m_guanyador = "BLANC";
 		m_partidaAcabada = true;
 	}
 
@@ -217,8 +215,9 @@ bool Joc::actualitza(int mousePosX, int mousePosY, bool mouseStatus)
 
 	if (m_partidaAcabada)
 	{
-		GraphicManager::getInstance()->drawFont(FONT_GREEN_30, POS_X_TAULER + 50, POS_Y_TAULER + 500, 1.2, "PARTIDA FINALITZADA");
-		return true;  // Devuelve true para indicar que ya no hay que seguir
+		string missatge = "GUANYADOR: " + m_guanyador;
+		GraphicManager::getInstance()->drawFont(FONT_GREEN_30, POS_X_TAULER + 50, POS_Y_TAULER + 500, 1.2, missatge);
+		return true; // Detener la partida
 	}
 
 	// Implementat indicador posMouse
