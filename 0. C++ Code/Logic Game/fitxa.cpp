@@ -169,7 +169,7 @@ void Fitxa::afegeixMovimentValid(const Moviment& moviment)
 		Posicio desti = moviment.getPosicioFinal();
 		cout << "[DEBUG] Afegit moviment de captura per a fitxa " << getLletra()
 			<< " cap a (" << desti.getFila() << ", " << desti.getColumna() << ")" << endl;
-	} //QUITAR DPS
+	}
 
 	m_movimentsValids.push_back(moviment);
 }
@@ -205,13 +205,15 @@ void Fitxa::visualitza() const
 	int posY = POS_Y_TAULER + CASELLA_INICIAL_Y + (fila * ALCADA_CASELLA);
 
 	IMAGE_NAME grafic;
-	if (m_color == COLOR_BLANC) {
+	if (m_color == COLOR_BLANC)
+	{
 		if (m_tipus == TIPUS_DAMA)
 			grafic = GRAFIC_DAMA_BLANCA;
 		else
 			grafic = GRAFIC_FITXA_BLANCA;
 	}
-	else {
+	else
+	{
 		if (m_tipus == TIPUS_DAMA)
 			grafic = GRAFIC_DAMA_NEGRA;
 		else

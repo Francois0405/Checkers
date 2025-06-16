@@ -191,9 +191,10 @@ ostream& operator<<(ostream& out, const Moviment& mov)
 
 istream& operator>>(istream& in, Moviment& mov) {
 	Posicio inicio, fin;
-	if (in >> inicio >> fin) {  // Reads two positions
-		mov = Moviment(inicio);  // Create move with start position
-		mov.afegeixPosicio(fin); // Add end position
+	if (in >> inicio >> fin) 
+	{ 
+		mov = Moviment(inicio);  
+		mov.afegeixPosicio(fin);
 	}
 	return in;
 }

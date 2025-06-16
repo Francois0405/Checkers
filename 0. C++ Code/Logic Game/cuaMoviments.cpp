@@ -23,12 +23,14 @@ void CuaMoviment::push(Moviment moviment)
 {
 	NodeMoviment* nouNode = new NodeMoviment(moviment);
 
-	if (empty()) { //si la cua esta buida, nouNode es el primer i el ultim
+	if (empty()) 
+	{ //si la cua esta buida, nouNode es el primer i el ultim
 		m_front = nouNode;
 		m_back = nouNode;
 		cout << "[DEBUG] push() correcte a empty" << endl;
 	}
-	else { //si no esta buida, ho afegim al final de la cua
+	else
+	{ //si no esta buida, ho afegim al final de la cua
 		m_back->setNext(nouNode); 
 		m_back = nouNode;
 		cout << "[DEBUG] push() correcte a existent" << endl;
@@ -97,21 +99,25 @@ void CuaMoviment::print()
 void CuaMoviment::storeCua(const string& nomFitxer) 
 {
 	ofstream fitxer(nomFitxer);
-	if (!fitxer.is_open()) {
+	if (!fitxer.is_open()) 
+	{
 		cerr << "[ERROR] storeCua(): No s'ha pogut obrir el fitxer " << nomFitxer << endl;
 		return;
 	}
 
-	if (m_front == nullptr) {
+	if (m_front == nullptr) 
+	{
 		cout << "[WARNING] storeCua(): Cua buida, no s'ha guardat res" << endl;
 		fitxer.close();
 		return;
 	}
 
 	NodeMoviment* nodeActual = m_front;
-	while (nodeActual != nullptr) {
+	while (nodeActual != nullptr) 
+	{
 		const Moviment& mov = nodeActual->getMoviment();
-		if (mov.getNumPosicions() >= 2) {  // Ensure valid move
+		if (mov.getNumPosicions() >= 2) 
+		{ 
 			fitxer << mov.getPosicioInicial() << " "
 				<< mov.getPosicioFinal() << endl;
 		}
@@ -126,22 +132,25 @@ void CuaMoviment::storeCua(const string& nomFitxer)
 void CuaMoviment::loadCua(const string& nomFitxer)
 {
 	ifstream fitxer(nomFitxer);
-	if (!fitxer.is_open()) {
+	if (!fitxer.is_open()) 
+	{
 		cerr << "[ERROR] loadCua(): No s'ha pogut obrir el fitxer " << nomFitxer << endl;
 		return;
 	}
 
 	string line;
-	while (getline(fitxer, line)) {
-		// Skip empty lines
+	while (getline(fitxer, line)) 
+	{
 		if (line.empty()) continue;
 
 		istringstream iss(line);
 		Moviment moviment;
-		if (iss >> moviment) {  // Only push if successfully read
+		if (iss >> moviment)
+		{ 
 			push(moviment);
 		}
-		else {
+		else 
+		{
 			cerr << "[WARNING] loadCua(): Linea mal formada: " << line << endl;
 		}
 	}

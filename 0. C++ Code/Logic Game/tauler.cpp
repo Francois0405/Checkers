@@ -48,7 +48,8 @@ void Tauler::inicialitza(const string& nomFitxer)
 
     string linia;
     cout << "[DEBUG] Contingut del fitxer:" << endl;
-    while (getline(fitxer, linia)) {
+    while (getline(fitxer, linia)) 
+    {
         cout << linia << endl;
     }
     fitxer.clear();                 // Reseteja flags (EOF, failbit)
@@ -68,7 +69,8 @@ void Tauler::inicialitza(const string& nomFitxer)
             TipusFitxa tipusFitxa;
             ColorFitxa color;
 
-            switch (tipus) {
+            switch (tipus) 
+            {
             case 'O':
                 tipusFitxa = TIPUS_NORMAL;
                 color = COLOR_BLANC;
@@ -308,7 +310,7 @@ void Tauler::getCapturesDisponibles(const Fitxa& fitxa, const Moviment& movActua
 {
     int dirs[2][2];
     if (fitxa.getColor() == COLOR_NEGRE)
-    {
+    {       
         dirs[0][0] = -1; dirs[0][1] = -1; // arriba izquierda
         dirs[1][0] = -1; dirs[1][1] = 1;  // arriba derecha
     }
